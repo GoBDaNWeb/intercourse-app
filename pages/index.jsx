@@ -4,6 +4,7 @@ import {FaApple} from 'react-icons/fa'
 import { useState } from 'react'
 import Login from 'components/Login/Register/Login';
 import Register from 'components/Login/Register/Register';
+import { supabase } from './../utils/supabaseClient';
 
 export default function Home() {
 	const [isLogin, setIsLogin] = useState(true)
@@ -20,6 +21,13 @@ export default function Home() {
 		}
 	}
 
+	const signInWithProvider = async (provider) => {
+        await supabase.auth.signIn({
+            // provider can be 'github', 'google', 'gitlab', and more
+            provider
+        })
+    }
+
 	return (
 		<div className='h-screen w-full overflow-hidden relative'>
 			<div className='absolute right-[-300px] bottom-[-400px] opacity-30 z-10'>
@@ -31,7 +39,7 @@ export default function Home() {
 				/>
 			</div>
 			<div className='flex items-center justify-center h-full w-full p-10 gap-[16rem]'>
-				<div className='max-w-[500px] text-[#273345]'>
+				<div className='max-w-[500px] text-[#273345] 2xl:max-w-[600px]'>
 					<div className='flex items-center text-5xl font-bold mb-4'>
 						<Image src="/carbon_chat-bot.svg" alt="Vercel Logo" width={125} height={125} />
 						<span className='mt-7'>
@@ -43,17 +51,23 @@ export default function Home() {
 					</h3>
 				</div>
 				<div className='z-50'>
-					<div className='flex flex-col items-center justify-center gap-6 max-w-[790px] max-h-[636px] bg-[#273345] rounded-2xl bg-opacity-70 backdrop-blur-sm shadow-md px-16 py-10'>
+					<div className='flex flex-col items-center justify-center gap-6 max-w-[790px] max-h-[636px] bg-[#273345] rounded-2xl bg-opacity-70 backdrop-blur-sm shadow-md px-16 py-10 '>
 						{
 							isLogin 
 							? <Login handleRegister={handleRegister}/> 
 							: <Register handleRegister={handleRegister}/>
 						}
 						<div className='flex items-center justify-center gap-4 text-5xl'>
-							<button className='cursor-pointer'>
+							<button 
+								onClick={() => signInWithProvider('google')}
+								className='cursor-pointer'
+							>
 								<FcGoogle/>
 							</button>	
-							<button className='cursor-pointer'>
+							<button 
+								onClick={() => signInWithProvider('apple')}
+								className='cursor-pointer'
+							>
 								<FaApple/>
 							</button>	
 						</div>
