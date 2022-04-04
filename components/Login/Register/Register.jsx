@@ -7,17 +7,17 @@ export default function Register({handleRegister}) {
     const [password, setPassword] = useState('')
     const [confirm, setConfirm] = useState('')
 
-    const onChangeEmail = e => {
+    const onChange = (e, type) => {
         const {value} = e.target
-        setEmail(value)
-    }
-    const onChangePassword = e => {
-        const {value} = e.target
-        setPassword(value)
-    }
-    const onChangeConfirm = e => {
-        const {value} = e.target
-        setConfirm(value)
+        if (type === 'email') {
+            setEmail(value)
+        }
+        if (type === 'password') {
+            setPassword(value)
+        }
+        if (type === 'confirm') {
+            setConfirm(value)
+        }
     }
 
     const {signUp, wrongPassword} = useContext(UserContext);
@@ -27,7 +27,7 @@ export default function Register({handleRegister}) {
             <h2 className='text-center  text-3xl font-bold text-gray-100 mb-6'>create new account</h2>
             <div className='flex flex-col items-center justify-center gap-3 '>
                 <input 
-                    onChange={(e) => onChangeEmail(e)}
+                    onChange={(e) => onChange(e, 'email')}
                     value={email}
                     className='w-96 h-10 rounded-2xl p-2 outline-none'
                     type="email" 
@@ -35,7 +35,7 @@ export default function Register({handleRegister}) {
                 />
                 <div>
                     <input 
-                        onChange={(e) => onChangePassword(e)}
+                        onChange={(e) => onChange(e, 'password')}
                         value={password}
                         className={`w-96 h-10 rounded-2xl p-2 outline-none ${wrongPassword ? 'border-2 border-red-500' : ''}`}
                         type="password" 
@@ -48,7 +48,7 @@ export default function Register({handleRegister}) {
                 </div>
                 <div>
                     <input 
-                        onChange={(e) => onChangeConfirm(e)}
+                        onChange={(e) => onChange(e, 'confirm')}
                         value={confirm}
                         className={`w-96 h-10 rounded-2xl p-2 outline-none ${wrongPassword ? 'border-2 border-red-500' : ''}`}
                         type="password"

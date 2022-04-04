@@ -94,7 +94,8 @@ const AppProvider = (props) => {
             signOut,
             wrongPassword,
             user,
-            error
+            error,
+            setError
         }}>
             {props.children}
         </UserContext.Provider>
