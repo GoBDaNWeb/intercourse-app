@@ -3,12 +3,14 @@ import Message from 'components/Chat/Message';
 import {RiSendPlaneLine} from 'react-icons/ri'
 import {BsEmojiSmile} from 'react-icons/bs'
 import { useState, useContext, useEffect, useRef } from 'react';
-import Picker from 'emoji-picker-react';
 import { motion } from 'framer-motion';
 import { addMessage, useStore } from './../../utils/Store';
 import { useRouter } from 'next/router';
 import UserContext from './../../context/UserContext';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+
+const Picker = dynamic(() => {return import('emoji-picker-react')}, {ssr: false})
 
 export default function ChatWindow({sendMessage, messages}) {
     const [showPicker, setShowPicker] = useState(false)

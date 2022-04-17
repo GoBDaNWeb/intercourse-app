@@ -129,7 +129,7 @@ export default function CreateChat() {
                                 disabled={!chatTitle.length || !selectedUsers.length}
                                 onClick={() => {
                                     newChat()
-                                    setValue('')
+                                    setChatTitle('')
                                 }}
                                 className='text-white text-xl bg-[#2C4A52] px-4 rounded-full bg-opacity-80 disabled:opacity-50 disabled:pointer-events-none'
                                 whileHover={{
