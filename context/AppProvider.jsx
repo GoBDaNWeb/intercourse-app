@@ -2,37 +2,20 @@ import UserContext from './UserContext'
 import { useEffect, useState } from 'react';
 import { supabase } from './../utils/supabaseClient';
 import { useRouter } from 'next/router';
+import ChatContext from './ChatContext';
+import { useStore, fetchAllPersonalChannels } from './../utils/Store';
 
 const AppProvider = (props) => {
     // const [userLoaded, setUserLoaded] = useState(false)
 	const [user, setUser] = useState(null)
 	const [session, setSession] = useState(null)
 	const [error, setError] = useState(null)
-	// const [userRoles, setUserRoles] = useState([])
+    
 
     const router = useRouter()
 
     const [wrongPassword, setWrongPassword] = useState(false)
 	useEffect(() => {
-		// const session = supabase.auth.session()
-		// setSession(session)
-		// setUser(session?.user ?? null)
-		// setUserLoaded(session ? true : false)
-
-		// const { data: authListener } = supabase.auth.onAuthStateChange(async (session) => {
-		// 	setSession(session)
-		// 	const currentUser = session?.user
-		// 	setUser(currentUser ?? null)
-		// 	setUserLoaded(!!currentUser)
-		// 	if (currentUser) {
-		// 	  signIn(currentUser.id, currentUser.email)
-		// 	  Router.push('/home')
-		// 	}
-		// })
-		
-		// return () => {
-		// 	authListener.unsubscribe()
-		// }
         console.log(user);
         const session = supabase.auth.session()
         setUser(session?.user ?? null) 
@@ -43,12 +26,6 @@ const AppProvider = (props) => {
         }
 
         const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-            // setSession(session)
-			// const currentUser = session?.user
-			// setUser(currentUser ?? null)
-            // if (currentUser) {
-            //     router.push('/home')
-            // }
             if (event == 'SIGNED_IN') {
                 console.log('SIGNED_IN', session)
                 setUser(session?.user ?? null) 
@@ -64,12 +41,22 @@ const AppProvider = (props) => {
         }
 	}, [user]);
 
-    const signUp = async (email, password, confirm) => {
+    const signUp = async (username, email, password, confirm) => {
         if(password !== confirm) {
+
             setWrongPassword(true)
             return
         }
-        await supabase.auth.signUp({email, password})
+        await supabase.auth.signUp(
+            { 
+                email, password
+            },
+            {
+                data: {
+                    username
+                }
+            }
+        )
         router.push('/home')
     }
 
@@ -87,6 +74,15 @@ const AppProvider = (props) => {
         router.push('/')
     }
 
+
+    // ** ChatContext provider 
+    const [isPersonalChats, setIsPersonalChats] = useState(false)
+    const [searchValue, setSearchValue] = useState('')
+
+    const handleTypeChats = () => {
+        setIsPersonalChats(!isPersonalChats)
+    }
+
     return (
         <UserContext.Provider value={{
             signUp,
@@ -97,7 +93,14 @@ const AppProvider = (props) => {
             error,
             setError
         }}>
-            {props.children}
+            <ChatContext.Provider value={{
+                handleTypeChats,
+                isPersonalChats,
+                setSearchValue,
+                searchValue
+            }}>
+                {props.children}
+            </ChatContext.Provider>
         </UserContext.Provider>
     )
 }

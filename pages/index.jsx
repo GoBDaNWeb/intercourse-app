@@ -29,7 +29,7 @@ export default function Home() {
     }
 
 	return (
-		<div className='h-screen w-full overflow-hidden relative'>
+		<div className='h-screen w-full overflow-hidden relative bg-[#F4EBDB]'>
 			<div className='absolute right-[-300px] bottom-[-400px] opacity-30 z-10'>
 				<Image
 					src="/carbon_chat-bot.svg" 
@@ -63,13 +63,7 @@ export default function Home() {
 								className='cursor-pointer'
 							>
 								<FcGoogle/>
-							</button>	
-							<button 
-								onClick={() => signInWithProvider('apple')}
-								className='cursor-pointer'
-							>
-								<FaApple/>
-							</button>	
+							</button>		
 						</div>
 					</div>
 				</div>

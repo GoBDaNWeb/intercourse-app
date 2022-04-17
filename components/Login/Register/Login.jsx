@@ -11,6 +11,7 @@ export default function Login({handleRegister}) {
 
     const {signIn, error, setError, user} = useContext(UserContext)
 
+    // ** функция в зависимости от переданного типа следит за изменениями value
     const onChange = (e, type) => {
         const {value} = e.target
         if (type === 'email') {
@@ -33,16 +34,19 @@ export default function Login({handleRegister}) {
         }
     }
 
+    // ** функция монтирует элемент loader
     const isLoader = () => {
         setLoader(true)
     }
 
+    // ** следит чтобы значения в полях email/password не были пустыми
     const isEmpty = () => {
         if (!email.length && !password.length) {
             setEmpty(true)
         }
     }
 
+    // ** при появлении ошибок размонтирует элемент loader
     useEffect(() => {
         setLoader(false)
     }, [error])
@@ -56,7 +60,7 @@ export default function Login({handleRegister}) {
                     value={email}
                     className='w-96 h-10 rounded-2xl p-2 outline-none'
                     type="email" 
-                    placeholder='Enter your Email'
+                    placeholder='Enter your email'
                 />
                 <input 
                     onChange={e => onChange(e, 'password')}
