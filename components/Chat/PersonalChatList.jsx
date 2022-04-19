@@ -23,7 +23,7 @@ export default function ChatList() {
     // ** при изменении searchValue фильтруем чаты и записываем их в стейт searchChats
     useEffect(() => {
         if(filteredChats !== null) {
-            const search = filteredChats.filter(chat => chat.chat_title.includes(searchValue) && user.id === chat.created_by.id || user.id === chat.interlocutor.id)
+            const search = filteredChats.filter(chat => chat.chat_title.toLowerCase().includes(searchValue.toLowerCase()) && user.id === chat.created_by.id || user.id === chat.interlocutor.id)
             setSearchChats(search)
         }
     }, [searchValue])

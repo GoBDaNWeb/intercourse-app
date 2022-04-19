@@ -78,9 +78,14 @@ const AppProvider = (props) => {
     // ** ChatContext provider 
     const [isPersonalChats, setIsPersonalChats] = useState(false)
     const [searchValue, setSearchValue] = useState('')
+    const [showSetting, setShowSetting] = useState(false)
 
     const handleTypeChats = () => {
         setIsPersonalChats(!isPersonalChats)
+    }
+
+    const handleShowSetting = () => {
+        setShowSetting(!showSetting)
     }
 
     return (
@@ -97,7 +102,10 @@ const AppProvider = (props) => {
                 handleTypeChats,
                 isPersonalChats,
                 setSearchValue,
-                searchValue
+                searchValue,
+                showSetting,
+                handleShowSetting,
+                setShowSetting
             }}>
                 {props.children}
             </ChatContext.Provider>

@@ -26,8 +26,10 @@ export default function CreateChat() {
 
     // ** при изменениями allUsers фильтрует полученные данные 
     useEffect(() => {
+        if(allUsers !== null) {
             const filteredUsers = allUsers.filter((item) => item.id !== user.id)
             setFilteredUser(filteredUsers)
+        }
     }, [allUsers])
 
     // ** функция выбора пользователей для создания чата

@@ -36,7 +36,7 @@ export default function PreviewChat({chatData}) {
                 }}
             >
                 <div className='flex items-center justify-center font-semibold text-2xl text-white w-14 h-14 bg-[#407786] rounded-full'>
-                    {chatData && chatData.chat_title[0]}
+                    {chatData && chatData.chat_title[0].toUpperCase()}
                 </div>
                 <div>
                     <div>
@@ -45,7 +45,7 @@ export default function PreviewChat({chatData}) {
                         </h4>
                         <div className="text-gray-200 italic text-sm flex items-center gap-2">
                             chat with {user && chatData && user.id === chatData.created_by.id
-                            ? (<h4 className='text-white font-semibold text-lg'>{chatData.interlocutor.username}</h4>)
+                            ? (<h4 className='text-white font-semibold text-lg'>{chatData.interlocutor.username || chatData.interlocutor.username_google}</h4>)
                             : (<h4 className='text-white font-semibold text-lg'>{chatData.created_by.user_metadata.username}</h4>)}
                         </div>
                     </div>

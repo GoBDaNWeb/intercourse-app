@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import UserContext from './../../context/UserContext';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import {RiWechatLine} from 'react-icons/ri'
 
 const Picker = dynamic(() => {return import('emoji-picker-react')}, {ssr: false})
 
@@ -21,10 +22,12 @@ export default function ChatWindow({sendMessage, messages}) {
    
     // ** при изменении(добавлении/удалении сообщения) messages скроллит страницу вниз
     useEffect(() => {
-        messagesEndRef.current.scrollIntoView({
-            block: 'start',
-            behavior: 'smooth',
-          })
+        if(messagesEndRef.current !== null) {
+            messagesEndRef.current.scrollIntoView({
+                block: 'start',
+                behavior: 'smooth',
+              })
+        }
     }, [messages])
 
     // ** следит за иземениями в value
@@ -43,17 +46,33 @@ export default function ChatWindow({sendMessage, messages}) {
         setShowPicker(showPicker = !showPicker)
     }
 
+    console.log(messages)
+
     return (
         <div className="h-screen flex flex-col justify-end items-center pb-14">
-            <div className='px-40 flex flex-col justify-end gap-3 w-full h-full overflow-auto pb-2'>
-                {messages.map((message) => (
-                    user.id === message.user_id ?
-                    <OwnMessage key={message.id} message={message}/>
-                    : <Message  key={message.id} message={message}/>
-                ))}
-                <div ref={messagesEndRef}/>
-            </div>
-            <div className='flex items-center justify-between w-[595px] bg-white h-12 rounded-full gap-2 p-2 mt-6 shadow-custom relative'>
+            {
+                messages.length
+                &&  <div className='px-20 flex flex-col gap-3 w-full h-full overflow-auto pb-2 mt-14'>
+                    {messages.map((message) => (
+                        user.id === message.user_id ?
+                        <OwnMessage key={message.id} message={message}/>
+                        : <Message  key={message.id} message={message}/>
+                    ))}
+                    <div ref={messagesEndRef}/>
+                </div>
+            }
+            {
+                !messages.length
+                && <div className='flex justify-center items-center gap-3 w-full h-full'>
+                    <div className='flex flex-col gap-4 justify-center items-center w-96 h-96 bg-black rounded-[20px] shadow-custom bg-opacity-40'>
+                        <h3 className='text-white text-3xl font-semibold text-center'>
+                            why is the chat still empty?
+                        </h3>
+                        <RiWechatLine className='text-white text-8xl'/>
+                    </div>
+                </div>
+            }
+            <div className='flex items-center justify-between w-[50%] bg-white h-12 rounded-full gap-2 p-2 shadow-custom relative mt-1'>
                 {
                     showPicker
                     && (<div className='absolute bottom-[55px]'>
@@ -82,20 +101,33 @@ export default function ChatWindow({sendMessage, messages}) {
                     type="text"
                     placeholder='message' 
                 />
-                <div 
-                    onClick={(e) => {
-                        sendMessage(value)
-                        setValue('')
-                    }}
-                    className='flex items-center justify-center rounded-full text-2xl bg-gray-800 w-12 h-10'
-                >
-                     <Image
-                        src='/Logo.svg'
-                        alt="Logo" 
-                        width={30} 
-                        height={30} 
-                    />
-                </div>
+                {
+                    !value.length
+                    ?   <div 
+                            className='flex items-center justify-center rounded-full text-2xl bg-[#2C4A52] w-12 h-10'
+                        >
+                            <div className='pt-3 '>
+                                <Image
+                                    src='/Logo.svg'
+                                    alt="Logo" 
+                                    width={30} 
+                                    height={30} 
+                                />
+                            </div>
+                        </div>
+                    :   <motion.div 
+                            onClick={(e) => {
+                                sendMessage(value)
+                                setValue('')
+                            }}
+                            className='flex items-center justify-center rounded-full text-2xl bg-[#2C4A52] w-12 h-10 hover:cursor-pointer'
+                            whileHover={{
+                                scale: 1.05
+                            }}
+                        >
+                            <RiSendPlaneLine className='text-white'/>
+                        </motion.div>
+                }
             </div>
         </div>
     )

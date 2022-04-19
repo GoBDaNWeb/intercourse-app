@@ -2,6 +2,7 @@ import {AiOutlineSearch} from 'react-icons/ai'
 import Image from 'next/image'
 import ChatContext from './../context/ChatContext';
 import {useContext} from 'react'
+import ChatFolders from './ChatFolders';
 
 export default function Sidebar({children}) {
     const {handleTypeChats, isPersonalChats, setSearchValue} = useContext(ChatContext)
@@ -38,7 +39,7 @@ export default function Sidebar({children}) {
                         placeholder='Search'
                     />
                 </div>
-                <div className='flex justify-center items-center gap-[1px]'>
+                <div className='flex justify-center items-center px-4 mb-10 gap-[1px]'>
                     <button 
                         onClick={() => handleTypeChats()}
                         className={`bg-[#2C4A52] bg-opacity-80 py-2 rounded-l-full  text-white w-40 ${isPersonalChats ? 'bg-[#1e3035] pointer-events-none' : ''}`}
@@ -51,6 +52,9 @@ export default function Sidebar({children}) {
                     >
                         group chats
                     </button>
+                </div>
+                <div className='w-96'>
+                    <ChatFolders/>
                 </div>
                 {children}
             </div>

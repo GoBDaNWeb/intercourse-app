@@ -6,4 +6,20 @@
     .bg-gradient {
         background: linear-gradient(109.59deg, #DBF8FF -4.01%, rgba(251, 209, 252, 0) 125.57%);
     }
+    .swiper {
+        heigth: 50px;
+    }
+    .swiper-wrapper {
+        display: flex;
+        heigth: 50px;
+    }
+    #element::-webkit-scrollbar {
+        width: 5px;
+        height: 5px;
+        background: rgba(0,0,0,0.3);
+    }
+    #element::-webkit-scrollbar-thumb {
+        background: #000;
+        border-radius: 1.5rem;
+    }
 }
