@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react'
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 
 
 export default function Avatar({ url, size, children }) {

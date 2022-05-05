@@ -1,9 +1,7 @@
-import { useState, useEffect,useContext } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from 'next/router';
-import { useStore, fetchMessages } from './../../utils/Store';
-import { Login } from 'components/auth/Login';
 import { useSelector } from "react-redux";
 
 export default function PreviewChat({chatData}) {
@@ -14,15 +12,6 @@ export default function PreviewChat({chatData}) {
     const currentChat = (router.query.id === chatData.id);  
     
     const chatId = chatData.id
-
-
-    // const limitStr = (str) => {
-    //     setMessage(str.substr(0, 28).trim() + '...')
-    // }
-
-    // useEffect(() => {
-    //     limitStr(lastMessage.message)
-    // }, [])
 
 
     return (

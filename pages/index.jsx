@@ -1,14 +1,11 @@
 import Image from 'next/image'
 import {FcGoogle} from 'react-icons/fc'
-import {FaApple} from 'react-icons/fa'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Login from 'components/auth/Login';
 import Register from 'components/auth/Register';
 import ResetPassword from 'components/auth/ResetPassword';
-import { supabase } from './../utils/supabaseClient';
-import {useDispatch, useSelector} from 'react-redux'
-import { clearError, setUser, setSession, signInWithProvider } from 'store/authSlice';
-import { useRouter } from 'next/router';
+import {useDispatch} from 'react-redux'
+import { clearError, signInWithProvider } from 'store/authSlice';
 
 export default function Home() {
 	const [authComponent, setAuthComponent] = useState('Login')

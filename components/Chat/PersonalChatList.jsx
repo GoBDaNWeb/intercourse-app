@@ -1,17 +1,17 @@
 import PreviewPersonalChat from 'components/Chat/PreviewPersonalChat';
-import { fetchAllPersonalChats } from '../../utils/Store';
-import { useState, useEffect, useContext } from 'react';
+import { fetchAllPersonalChats } from 'utils/Store';
+import { useState, useEffect } from 'react';
 import { supabase } from 'utils/supabaseClient';
-import ChatContext from '../../context/ChatContext';
 import {useSelector} from 'react-redux'
 
 export default function ChatList() {
     const [filteredChats, setFilteredChats] = useState(null)
     const [searchChats, setSearchChats] = useState(null)
-    const {searchValue} = useContext(ChatContext)
 
+    const {searchValue} = useSelector(state => state.chat)
     const {user} = useSelector(state => state.auth)
 
+    // ** при монтировании/размонтировании подписываемся/отписываемся на realtime
     const useStore = (props) => {
         const [personalChats, setPersonalChats] = useState([])
         const [newPersonalChat, handleNewPersonalChat] = useState(null)
@@ -41,7 +41,6 @@ export default function ChatList() {
         return {personalChats}
     }
 
-    // ** следим за персональными чатами и рендерим их 
     const {personalChats} = useStore({})
 
     // ** при изменении personalChats фильтруем чаты и записываем их в стейт filteredChats
@@ -53,7 +52,8 @@ export default function ChatList() {
     // ** при изменении searchValue фильтруем чаты и записываем их в стейт searchChats
     useEffect(() => {
         if(filteredChats !== null) {
-            const search = filteredChats.filter(chat => chat.chat_title.toLowerCase().includes(searchValue.toLowerCase()) && user.id === chat.created_by.id || user.id === chat.interlocutor.id)
+            const search = filteredChats.filter(chat => chat.chat_title.toLowerCase().includes(searchValue.toLowerCase()))
+            console.log(search);
             setSearchChats(search)
         }
     }, [searchValue])

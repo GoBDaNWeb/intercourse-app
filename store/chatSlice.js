@@ -1,7 +1,9 @@
 import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
-    bgChat: 'standart'
+    bgChat: 'standart',
+    searchValue: '',
+    isPersonalChats: true,
 }
 
 const chatSlice = createSlice({
@@ -10,10 +12,16 @@ const chatSlice = createSlice({
     reducers: {
         setBgChat(state, action) {
             state.bgChat = action.payload
+        },
+        setSearchValue(state, action) {
+            state.searchValue = action.payload
+        },
+        handleTypeChats(state) {
+            state.isPersonalChats = !state.isPersonalChats
         }
     }
 })
 
-export const {setBgChat} = chatSlice.actions
+export const {setBgChat, setSearchValue, handleTypeChats} = chatSlice.actions
 
 export default chatSlice.reducer

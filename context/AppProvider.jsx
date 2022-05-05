@@ -1,8 +1,7 @@
 import AppContext from './AppContext'
-import { useEffect, useState } from 'react';
-import { supabase } from './../utils/supabaseClient';
+import { useEffect } from 'react';
+import { supabase } from 'utils/supabaseClient';
 import { useRouter } from 'next/router';
-import ChatContext from './ChatContext';
 import { fetchUserAvatar, updateUserStatus } from 'utils/Store';
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from 'store/authSlice'
@@ -34,8 +33,6 @@ const AppProvider = (props) => {
             fetchData.then(data => dispatch(setAvatar(data[0].avatar)))
         }
 
-        console.log('xyu');
-
         const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
             if (event == 'SIGNED_IN') {
                 console.log('SIGNED_IN', session)
@@ -56,32 +53,9 @@ const AppProvider = (props) => {
         }
 	}, [user]);
 
-    // ** ChatContext provider 
-    const [isPersonalChats, setIsPersonalChats] = useState(true)
-    const [searchValue, setSearchValue] = useState('')
-    const [showSetting, setShowSetting] = useState(false)
-
-    const handleTypeChats = () => {
-        setIsPersonalChats(!isPersonalChats)
-    }
-
-    const handleShowSetting = () => {
-        setShowSetting(!showSetting)
-    }
-
     return (
         <AppContext.Provider value={{}}>
-            <ChatContext.Provider value={{
-                handleTypeChats,
-                isPersonalChats,
-                setSearchValue,
-                searchValue,
-                showSetting,
-                handleShowSetting,
-                setShowSetting
-            }}>
-                {props.children}
-            </ChatContext.Provider>
+            {props.children}
         </AppContext.Provider>
     )
 }

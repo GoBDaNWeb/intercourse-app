@@ -53,6 +53,7 @@ export default function ChatWindow({sendMessage, messages, typingData, chatData}
         setShowPicker(showPicker = !showPicker)
     }
 
+    // ** рендерит сообщения в окне диалога
     const renderMessages = () => {
         const keys = Object.keys(messages);
     

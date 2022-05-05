@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import {useSelector, useDispatch} from 'react-redux'
 import {fetchUserAvatar, fetchCurrentUser} from 'utils/Store'
 
 
@@ -7,6 +6,7 @@ export default function TheirAvatar({ user_id, size, text_size, children }) {
     const [avatar, setAvatar] = useState(null) 
     const [currentUser, setCurrentUser] = useState(null) 
 
+    // ** при передачи user_id записываем данные о пользователе 
     useEffect(() => {
         if (user_id) {
             const fetchData = fetchUserAvatar(user_id)

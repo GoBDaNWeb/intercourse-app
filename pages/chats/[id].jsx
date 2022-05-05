@@ -1,14 +1,13 @@
 import { fetchMessages, fetchOnePersonalChat, fetchOneGroupChat } from 'utils/Store';
 import { supabase } from 'utils/supabaseClient';
-import ChatWindow from '../../components/Chat/ChatWindow';
+import ChatWindow from 'components/Chat/ChatWindow';
 import { useRouter } from 'next/router';
 import { useState, useContext } from 'react';
 import { useEffect } from 'react';
-import { addMessage, updateMessage, updateUserTypingAnyway, updateUserTypingChat, useStore  } from '../../utils/Store';
+import { addMessage, updateMessage, updateUserTypingAnyway, updateUserTypingChat  } from 'utils/Store';
 import {TiArrowBackOutline} from 'react-icons/ti'
 import {BsThreeDots} from 'react-icons/bs'
-import {motion, AnimatePresence} from 'framer-motion'
-import ChatContext from './../../context/ChatContext';
+import {motion, } from 'framer-motion'
 import {useSelector} from 'react-redux'
 
 export default function ChatsPage() {
@@ -19,7 +18,6 @@ export default function ChatsPage() {
     const router = useRouter()
     const { id: chatId } = router.query
     const {user} = useSelector(state => state.auth)
-    const {showSetting, handleShowSetting} = useContext(ChatContext)
 
     const useStore = (props) => {
         const [messages, setMessages] = useState([])
@@ -104,6 +102,8 @@ export default function ChatsPage() {
         }
     }, [router.query.id])
 
+    
+    // ** при монтировании обновляет и записывает данные TypingData
     useEffect(() => {
         if (newOrUpdatedUser !== null && user !== null && user.id !== newOrUpdatedUser.id) {
             updateUserTypingChat(user.id, router.query.id)
@@ -155,7 +155,7 @@ export default function ChatsPage() {
             && <PersonalChat chatData={personalChatData} router={router} user={user} update={update} />}
 
             {router.query.type === 'g'
-            && <GroupChat chatData={groupChatData} router={router} user={user} showSetting={showSetting} handleShowSetting={handleShowSetting} dropIn={dropIn} />}
+            && <GroupChat chatData={groupChatData} router={router} user={user} dropIn={dropIn} />}
             
             <ChatWindow sendMessage={sendMessage} messages={messages} typingData={typingData}/>
         </div>
@@ -191,7 +191,7 @@ const PersonalChat = ({chatData, user, router, update}) => (
     </div>
 )
 
-const GroupChat = ({chatData, router, showSetting, handleShowSetting, dropIn}) => (
+const GroupChat = ({chatData, router, dropIn}) => (
     <div>
         <div className='z-50 absolute top-0 left-0 right-0 w-full flex justify-center h-14 bg-secondary border-b-2 border-solid border-gray-200 dark:border-gray-800 m-auto'>
             <motion.div
@@ -213,9 +213,9 @@ const GroupChat = ({chatData, router, showSetting, handleShowSetting, dropIn}) =
                 : ''
             }
         </div>
-        <AnimatePresence>
+        {/* <AnimatePresence>
             {
-                chatData !== null  && showSetting
+                chatData !== null 
                 && <motion.div 
                         className='absolute bg-[#fafafa] w-full h-96 z-10 m-auto top-0 left-0 right-0 rounded-b-[20px] shadow-custom'
                         variants={dropIn}
@@ -249,7 +249,7 @@ const GroupChat = ({chatData, router, showSetting, handleShowSetting, dropIn}) =
                     </div>
                 </motion.div>
             }
-        </AnimatePresence>
+        </AnimatePresence> */}
     </div>
     
 )

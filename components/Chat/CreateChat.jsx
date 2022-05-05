@@ -21,9 +21,11 @@ export default function CreateChat() {
     const router = useRouter()
     const {user} = useSelector(state => state.auth)
 
+    // ** при монтировании/размонтировании подписываемся/отписываемся на realtime
     const useStore = (props) => {
         const [users] = useState(new Map())
         const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null)
+
         useEffect(() => {
             const userListener = supabase
                 .from('users')

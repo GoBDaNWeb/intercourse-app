@@ -4,6 +4,7 @@ import {updateMessage} from '../../utils/Store'
 
 export default function OwnMessage({message}) {
 
+    // ! удалить
     const update = () => {
         updateMessage()
     }

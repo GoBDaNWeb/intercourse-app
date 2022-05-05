@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { supabase } from 'utils/supabaseClient'
 import {AiFillCamera} from 'react-icons/ai'
 import {useSelector, useDispatch} from 'react-redux'
@@ -6,15 +6,14 @@ import { updateUserAvatar } from 'utils/Store';
 import {setAvatar} from 'store/profileSlice'
 
 export default function Avatar({ url, size, onUpload }) {
-	const [avatarUrl, setAvatarUrl] = useState(null)
 	const [uploading, setUploading] = useState(false)
 
 	const {user} = useSelector(state => state.auth)
 	const {avatar} = useSelector(state => state.profile)
 
 	const dispatch = useDispatch()
-	console.log(avatar)
 
+	// ** функция загрузки аватара 
 	async function uploadAvatar(event) {
 		try {
 			setUploading(true)
@@ -39,7 +38,7 @@ export default function Avatar({ url, size, onUpload }) {
 
 			onUpload(filePath)
 			updateUserAvatar(user.id, filePath)
-			setAvatar(filePath)
+			dispatch(setAvatar(filePath))
 		} catch (error) {
 			alert(error.message)
 		} finally {

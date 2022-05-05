@@ -23,44 +23,44 @@ export default function Profile() {
 
     const router = useRouter()
 
+    // ** записываем bg чата в localStorage
     const setBgChatTheme = (bg) => {
         localStorage.setItem('bgChat', bg);
         dispatch(setBgChat(bg))
     }
 
+    // ** функция выхода из аккаунта
     const signOutFunc = () => {
-        const data = updateUserStatus(user.id, 'OFFLINE')
-        data.then(item => {
-            setUserStatus(item)
-        })
+        updateUserStatus(user.id, 'OFFLINE')
         dispatch(signOut())
         router.push('/')
     }
 
-    async function updateProfile({ avatar_url }) {
-        try {
-          setLoading(true)
-          const user = supabase.auth.user()
+    // ? Не реадизованно
+    // ? async function updateProfile({ avatar_url }) {
+    //     try {
+    //       setLoading(true)
+    //       const user = supabase.auth.user()
     
-          const updates = {
-            id: user.id,
-            avatar_url,
-            updated_at: new Date(),
-          }
+    //       const updates = {
+    //         id: user.id,
+    //         avatar_url,
+    //         updated_at: new Date(),
+    //       }
     
-          let { error } = await supabase.from('users').upsert(updates, {
-            returning: 'minimal', // Don't return the value after inserting
-          })
+    //       let { error } = await supabase.from('users').upsert(updates, {
+    //         returning: 'minimal', // Don't return the value after inserting
+    //       })
     
-          if (error) {
-            throw error
-          }
-        } catch (error) {
-          alert(error.message)
-        } finally {
-          setLoading(false)
-        }
-      }
+    //       if (error) {
+    //         throw error
+    //       }
+    //     } catch (error) {
+    //       alert(error.message)
+    //     } finally {
+    //       setLoading(false)
+    //     }
+    // ?   }
         
 
     return(

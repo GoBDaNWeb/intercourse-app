@@ -4,7 +4,6 @@ import {AiOutlineClose} from 'react-icons/ai'
 import {useSelector, useDispatch} from 'react-redux'
 import {handleOpenTheirProfile} from 'store/profileSlice'
 import {fetchCurrentUser} from 'utils/Store'
-import {motion, AnimatePresence} from 'framer-motion'
 import {addPersonalChat} from 'utils/Store'
 import {useRouter} from 'next/router'
 
@@ -21,13 +20,14 @@ export default function TheirProfile() {
     const {user} = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
+    // ** при изменении theirProfileData получаем конкретный аватар
     useEffect(() => {
         const fetchData = fetchCurrentUser(theirProfileData)
         fetchData.then(data => setCurrentUser(data[0]))
         setAvatarUrl(theirProfileData)
-        console.log(theirProfileData);
     }, [theirProfileData])
 
+    // ** функция создания нового чата
     const newChat = () => {
         const randomId = len => Math.random().toString(36).substr(3, len);
         const id = randomId(15);
@@ -35,6 +35,7 @@ export default function TheirProfile() {
         router.push({pathname:'/chats/[id]', query: {type: 'p', id: `${id}`}})
     }
 
+    // ** записывает изменения в переменную
     const onChange = (e) => {
         const {value} = e.target
         setChatTitle(value)

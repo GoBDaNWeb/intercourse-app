@@ -1,14 +1,15 @@
 import PreviewGroupChat from './PreviewGroupChat';
-import { fetchAllGroupChats } from '../../utils/Store';
-import { supabase } from '../../utils/supabaseClient';
-import { useState, useEffect, useContext } from 'react';
-import ChatContext from '../../context/ChatContext';
+import { fetchAllGroupChats } from 'utils/Store';
+import { supabase } from 'utils/supabaseClient';
+import { useState, useEffect } from 'react';
 import {useSelector} from 'react-redux'
 
 export default function GroupChatList() {
     const [filteredChats, setFilteredChats] = useState(null)
     const [searchChats, setSearchChats] = useState(null)
-    const {searchValue} = useContext(ChatContext)
+
+    const {user} = useSelector(state => state.auth)
+    const {searchValue} = useSelector(state => state.chat)
 
     const useStore = (props) => {
         const [groupChats, setGroupChats] = useState([])
@@ -38,7 +39,6 @@ export default function GroupChatList() {
         return {groupChats}
     }
 
-    const {user} = useSelector(state => state.auth)
 
     // ** следим за персональными чатами и рендерим их 
     const {groupChats} = useStore({})
@@ -47,9 +47,9 @@ export default function GroupChatList() {
     useEffect(() => {
         if (user !== null) {
             const filteredByMembers = groupChats.filter(chat => {
-                const l = chat.members.map(item => item.id === user.id)
-                const j = l.indexOf(true) != -1
-                chat.filtered_by_member = j
+                const boolUsers = chat.members.map(item => item.id === user.id)
+                const containsTheCurrentUser = boolUsers.indexOf(true) != -1
+                chat.filtered_by_member = containsTheCurrentUser
                 return chat.filtered_by_member === true
             })      
             const filteredByCreated = groupChats.filter(chat => {
@@ -57,7 +57,6 @@ export default function GroupChatList() {
             })
             let tmp = []
             filteredByMembers.forEach(item => {
-                
                 tmp.push(item)
                 setFilteredChats([...tmp])
             })
@@ -67,7 +66,6 @@ export default function GroupChatList() {
             })
         } 
     }, [groupChats])
-
 
     // ** при изменении searchValue фильтруем чаты и записываем их в стейт searchChats
     useEffect(() => {

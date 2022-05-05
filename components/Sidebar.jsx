@@ -1,24 +1,24 @@
 import {AiOutlineSearch} from 'react-icons/ai'
 import Image from 'next/image'
-import ChatContext from './../context/ChatContext';
-import {useContext, useState, useEffect} from 'react'
-import ChatFolders from './ChatFolders';
 import Profile from './profile/Profile';
 import TheirProfile from './profile/TheirProfile';
 import PreviewProfileUser from './profile/PreviewProfileUser';
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import {motion, AnimatePresence} from 'framer-motion'
+import {setSearchValue, handleTypeChats} from 'store/chatSlice'
 
 export default function Sidebar({children}) {
-    const {handleTypeChats, isPersonalChats, setSearchValue} = useContext(ChatContext)
-
-    const onChange = (e) => {
-        const {value} = e.target
-        setSearchValue(value)
-    }
-
+    const {isPersonalChats} = useSelector(state => state.chat)
     const {isProfileOpen, isTheirProfileOpen} = useSelector(state => state.profile)
     const {theme} = useSelector(state => state.theme)
+
+    const dispatch = useDispatch()
+
+    // ** записывает изменения в переменную
+    const onChange = (e) => {
+        const {value} = e.target
+        dispatch(setSearchValue(value))
+    }
 
     const variant = {
         open: {
@@ -72,18 +72,18 @@ export default function Sidebar({children}) {
                         onChange={(e) => onChange(e)}
                         className="w-full bg-transparent outline-none text-xl font-semibold px-2 text-secondary"
                         type="text" 
-                        placeholder='Search'
+                        placeholder='Search chat'
                     />
                 </div>
                 <div className='flex justify-center items-center px-4 mb-2 gap-[1px]'>
                     <button 
-                        onClick={() => handleTypeChats()}
+                        onClick={() => dispatch(handleTypeChats())}
                         className={`border-2 border-solid border-gray-200 dark:border-gray-800 bg-opacity-80 py-2 rounded-l-full  text-primary font-semibold w-40 ${isPersonalChats ? 'bg-accent border-0 text-accent pointer-events-none' : ''}`}
                     >
                         personal chats
                     </button>
                     <button 
-                        onClick={() => handleTypeChats()}
+                        onClick={() => dispatch(handleTypeChats())}
                         className={`border-2 border-solid border-gray-200 dark:border-gray-800 bg-opacity-80 py-2 rounded-r-full text-primary font-semibold w-40 ${!isPersonalChats ? 'bg-accent border-0 text-accent pointer-events-none' : ''}`}
                     >
                         group chats

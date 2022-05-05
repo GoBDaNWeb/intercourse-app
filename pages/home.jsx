@@ -2,7 +2,7 @@ import { Howl } from 'howler';
 import {useEffect} from 'react'
 import { useSelector } from 'react-redux';
 import {updateUserStatus} from 'utils/Store'
-import CreateChat from './../components/Chat/CreateChat';
+import CreateChat from 'components/Chat/CreateChat';
 
 
 

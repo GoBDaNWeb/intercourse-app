@@ -3,8 +3,6 @@ import TheirAvatar from 'components/profile/TheirAvatar'
 import { motion } from "framer-motion"
 
 export default function UserSelectCard({user, selectedUsers, selectUser}) {
-
-
     return (
         <motion.div 
             onClick={() => selectUser(user)}

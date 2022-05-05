@@ -1,5 +1,3 @@
-import Image from 'next/image';
-import {motion, AnimatePresence} from 'framer-motion'
 import {useRef, useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {setTheme} from 'store/themeSlice'
@@ -11,11 +9,14 @@ export default function Switcher() {
     const dispatch = useDispatch()
     
     const checkbox = useRef(null)
+
+    // ** при изменении checkBoxChange переключает тему
     useEffect(() => {
         dispatch(setTheme(checkbox.current.checked ? 'dark' : 'light'))
         localStorage.setItem('isDarkTheme', checkbox.current.checked ? 'dark' : 'light')
     }, [checkBoxChange])
 
+    // ** при монтировании менять положение свитчера
     useEffect(() => {
         checkbox.current.checked = theme === 'dark' ? true : false
     }, [])

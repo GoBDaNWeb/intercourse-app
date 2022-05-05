@@ -5,8 +5,6 @@ import {IoMdSettings} from 'react-icons/io'
 import {signOut} from 'store/authSlice'
 import {useRouter} from 'next/router'
 import {updateUserStatus, fetchCurrentUser} from 'utils/Store'
-import {supabase} from 'utils/supabaseClient'
-import {motion} from 'framer-motion'
 import {handleOpenProfile} from 'store/profileSlice'
 import Avatar from 'components/profile/Avatar'
 
@@ -16,6 +14,7 @@ export default function PreviewProfileUser() {
     const {user} = useSelector(state => state.auth)
     const {isProfileOpen} = useSelector(state => state.profile)
     
+    // ** при изменении user записывает данные о текущем пользователе
     useEffect(() => {
         if (user !== null) {
            const current = fetchCurrentUser(user.id)
@@ -27,11 +26,9 @@ export default function PreviewProfileUser() {
 
     const dispatch = useDispatch()
 
+    // ** функция выхода из аккаунта
     const signOutFunc = () => {
-        const data = updateUserStatus(user.id, 'OFFLINE')
-        // data.then(item => {
-        //     setUserStatus(item)
-        // })
+        updateUserStatus(user.id, 'OFFLINE')
         dispatch(signOut())
         router.push('/')
     }

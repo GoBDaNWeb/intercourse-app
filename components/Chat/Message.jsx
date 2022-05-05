@@ -7,11 +7,11 @@ import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
 
 export default function Message({message, lastMessage}) {
     const isFirstMessageByUser = !lastMessage || lastMessage.user_id !== message.user_id;
-
     const {isTheirProfileOpen} = useSelector(state => state.profile)
 
     const dispatch = useDispatch()
 
+    // ! Удалить
     useEffect(() => {
         console.log(message)
     }, [message])
