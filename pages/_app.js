@@ -1,17 +1,18 @@
 import Layout from '../components/Layout'
-import {useEffect, useState} from 'react'
 import '../styles/globals.css'
-import { supabase } from './../utils/supabaseClient';
-import Router from 'next/router'
 import AppProvider from 'context/AppProvider';
+import {Provider} from 'react-redux'
+import store from '../store'
 
 function MyApp({ Component, pageProps }) {
 	return (
-		<AppProvider>
-			<Layout>
-				<Component {...pageProps} />
-			</Layout>
-		</AppProvider>
+		<Provider store={store}>
+			<AppProvider>
+				<Layout>
+					<Component {...pageProps} />
+				</Layout>
+			</AppProvider>
+		</Provider>
 	)
 }
 

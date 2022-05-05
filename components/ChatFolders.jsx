@@ -15,9 +15,6 @@ export default function ChatFolders() {
           freeMode={true}
           scrollbar={true}
           mousewheel={true}
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
-          className='h-10'
         >
           {/* <SwiperSlide className='flex justify-center bg-black bg-opacity-40 rounded-full text-white font-semibold'>Slide 1</SwiperSlide>
           <SwiperSlide className='flex justify-center bg-black bg-opacity-40 rounded-full text-white font-semibold'>Slide 2</SwiperSlide>
@@ -30,7 +27,7 @@ export default function ChatFolders() {
           <SwiperSlide >ChatsFolder</SwiperSlide>
           <SwiperSlide >ChatsFolder</SwiperSlide>
           <SwiperSlide >ChatsFolder</SwiperSlide>
-          <div className='swiper-slide swiper-wrapper swiper'>
+          <div className='swiper-slide swiper-wrapper swiper swiper-scrollbar'>
 
         </div>
         </Swiper>

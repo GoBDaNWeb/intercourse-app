@@ -1,14 +1,44 @@
 import PreviewGroupChat from './PreviewGroupChat';
-import { fetchAllPersonalChannels, useStore } from '../../utils/Store';
+import { fetchAllGroupChats } from '../../utils/Store';
+import { supabase } from '../../utils/supabaseClient';
 import { useState, useEffect, useContext } from 'react';
 import ChatContext from '../../context/ChatContext';
-import UserContext from './../../context/UserContext';
+import {useSelector} from 'react-redux'
 
 export default function GroupChatList() {
     const [filteredChats, setFilteredChats] = useState(null)
     const [searchChats, setSearchChats] = useState(null)
-    const {user} = useContext(UserContext)
     const {searchValue} = useContext(ChatContext)
+
+    const useStore = (props) => {
+        const [groupChats, setGroupChats] = useState([])
+        const [newGroupChat, handleNewGroupChat] = useState(null)
+    
+        useEffect(() => {
+            fetchAllGroupChats(setGroupChats)
+    
+            const groupChatListener = supabase
+                .from('group_chats')
+                .on('INSERT', payload => {
+                    console.log(payload);
+                    handleNewGroupChat(payload.new)
+                })
+                .on('DELETE', payload => {handleNewGroupChat(payload.old)})
+                .subscribe()
+    
+            return () => {
+                groupChatListener.unsubscribe()
+            }
+        }, [])
+        
+        useEffect(() => {
+            if (newGroupChat) setGroupChats(groupChats.concat(newGroupChat))
+        }, [newGroupChat])
+    
+        return {groupChats}
+    }
+
+    const {user} = useSelector(state => state.auth)
 
     // ** следим за персональными чатами и рендерим их 
     const {groupChats} = useStore({})
@@ -49,7 +79,7 @@ export default function GroupChatList() {
 
     
     return (
-        <div className='flex flex-col gap-2 h-96 w-full'>
+        <div className='flex flex-col w-full'>
                 {
                     !searchValue.length && filteredChats !== null
                     && filteredChats.map((chat) => (

@@ -2,16 +2,64 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer components {
+@layer base {
+    :root {
+        --color-bg-primary: #ffffff;
+        --color-bg-secondary: #f8f8f8;
+        --color-bg-select: #f2f2f2;
+        --color-bg-accent: #273345;
+        --color-bg-disable: #F3F4F6;
+        --color-text-primary: #273345;
+        --color-text-secondary: #6B7280;
+        --color-text-accent: #fff;
+    }
+
+    .dark {
+        --color-bg-primary: #2d3748;
+        --color-bg-secondary: #283141;
+        --color-bg-accent: #f8f8f8;
+        --color-bg-select: #374151;
+        --color-bg-disable: #374151;
+        --color-text-primary: #f7fafc;
+        --color-text-secondary: #e2e8f0;
+        --color-text-accent: #273345;
+    }
+    
+}
+
+@layer components { 
+    #toggle-switch::after {
+        content: '';
+        @apply h-5 w-5 rounded-full bg-primary inline-block absolute left-[2px] top-[2px] transform transition duration-300;
+    }
+    #toggle-switch:checked::after {
+        @apply transform translate-x-8;
+    }
+
+    .their-avatar-resolve:hover .their-avatar-child{
+        opacity: 100;
+        pointer-events: auto;
+    }
+
     .bg-gradient {
         background: linear-gradient(109.59deg, #DBF8FF -4.01%, rgba(251, 209, 252, 0) 125.57%);
     }
     .swiper {
-        heigth: 50px;
+        height: 50px;
     }
     .swiper-wrapper {
+    }
+    .swiper-slide {
+        background: rgba(0,0,0,.30);
+        color: #fff;
+        font-weight: 600;
         display: flex;
-        heigth: 50px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 500px;
+    }
+    .swiper-scrollbar {
+        top: -3px;
     }
     #element::-webkit-scrollbar {
         width: 5px;
@@ -22,4 +70,22 @@
         background: #000;
         border-radius: 1.5rem;
     }
-}
+    .grad-1 {
+        background-image: linear-gradient( 135deg, #2AFADF 10%, #4C83FF 100%);
+    }
+    .bg-chat-standart {
+        @apply bg-white dark:bg-[#2d3748]
+    }
+    .bg-chat-galaxy {
+        background-image: linear-gradient( 135deg, #EE9AE5 10%, #5961F9 100%);
+    }
+    .bg-chat-ocean {
+        background-image: linear-gradient( 135deg, #5EFCE8 10%, #736EFE 100%);
+    }
+    .bg-chat-sunset {
+        background-image: linear-gradient( 135deg, #FFF6B7 10%, #F6416C 100%);
+    }
+    .bg-chat-emerald {
+        background-image: linear-gradient( 135deg, #69FF97 10%, #00E4FF 100%);
+    }
+}  

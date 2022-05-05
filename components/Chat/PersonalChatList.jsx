@@ -1,15 +1,45 @@
 import PreviewPersonalChat from 'components/Chat/PreviewPersonalChat';
-import { fetchAllPersonalChannels, useStore } from '../../utils/Store';
+import { fetchAllPersonalChats } from '../../utils/Store';
 import { useState, useEffect, useContext } from 'react';
 import { supabase } from 'utils/supabaseClient';
 import ChatContext from '../../context/ChatContext';
-import UserContext from './../../context/UserContext';
+import {useSelector} from 'react-redux'
 
 export default function ChatList() {
     const [filteredChats, setFilteredChats] = useState(null)
     const [searchChats, setSearchChats] = useState(null)
-    const {user} = useContext(UserContext)
     const {searchValue} = useContext(ChatContext)
+
+    const {user} = useSelector(state => state.auth)
+
+    const useStore = (props) => {
+        const [personalChats, setPersonalChats] = useState([])
+        const [newPersonalChat, handleNewPersonalChat] = useState(null)
+    
+        useEffect(() => {
+            fetchAllPersonalChats(setPersonalChats)
+
+            const personalChatListener = supabase
+                .from('personal_chats')
+                .on('INSERT', payload => {
+                    console.log('personal',payload);
+                    handleNewPersonalChat(payload.new)
+                })
+                .on('DELETE', payload => {handleNewPersonalChat(payload.old)})
+                .subscribe()
+    
+    
+            return () => {
+                personalChatListener.unsubscribe()
+            }
+        }, [])
+    
+        useEffect(() => {
+            if (newPersonalChat) setPersonalChats(personalChats.concat(newPersonalChat))
+        }, [newPersonalChat])
+    
+        return {personalChats}
+    }
 
     // ** следим за персональными чатами и рендерим их 
     const {personalChats} = useStore({})
@@ -29,7 +59,7 @@ export default function ChatList() {
     }, [searchValue])
 
     return (
-            <div className='flex flex-col gap-2 h-96 w-full'>
+            <div className='flex flex-col h-[672px] overflow-y-auto w-full'>
                 {
 
                     !searchValue.length && filteredChats !== null

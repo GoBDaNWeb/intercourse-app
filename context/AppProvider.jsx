@@ -1,38 +1,53 @@
-import UserContext from './UserContext'
+import AppContext from './AppContext'
 import { useEffect, useState } from 'react';
 import { supabase } from './../utils/supabaseClient';
 import { useRouter } from 'next/router';
 import ChatContext from './ChatContext';
-import { useStore, fetchAllPersonalChannels } from './../utils/Store';
+import { fetchUserAvatar, updateUserStatus } from 'utils/Store';
+import {useDispatch, useSelector} from 'react-redux'
+import {setUser} from 'store/authSlice'
+import {setBgChat} from 'store/chatSlice'
+import {setAvatar} from 'store/profileSlice'
+import {setTheme} from 'store/themeSlice'
 
 const AppProvider = (props) => {
-    // const [userLoaded, setUserLoaded] = useState(false)
-	const [user, setUser] = useState(null)
-	const [session, setSession] = useState(null)
-	const [error, setError] = useState(null)
-    
-
     const router = useRouter()
+    const dispatch = useDispatch()
+    const {user} = useSelector(state => state.auth)
 
-    const [wrongPassword, setWrongPassword] = useState(false)
 	useEffect(() => {
-        console.log(user);
-        const session = supabase.auth.session()
-        setUser(session?.user ?? null) 
-        setSession(session)
+        const session = supabase.auth.session() 
+        dispatch(setUser(session?.user ?? null))
 
         if (router.pathname === '/' && user) {
             router.push('/home')
         }
 
+        if (user !== null) {
+            if (!localStorage.getItem('bgChat')) {
+                localStorage.setItem('bgChat', 'standart')
+            }
+            let bgChat = localStorage.getItem('bgChat')
+            dispatch(setBgChat(bgChat))
+            dispatch(setTheme(localStorage.getItem('isDarkTheme')))
+            const fetchData = fetchUserAvatar(user.id)
+            fetchData.then(data => dispatch(setAvatar(data[0].avatar)))
+        }
+
+        console.log('xyu');
+
         const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
             if (event == 'SIGNED_IN') {
                 console.log('SIGNED_IN', session)
-                setUser(session?.user ?? null) 
+                
+                
+                dispatch(setUser(session?.user ?? null))
+                updateUserStatus(session.user.id, 'ONLINE')
             }
             if (event == 'SIGNED_OUT') {
                 console.log('SIGNED_OUT', session)
-                setUser(session?.user ?? null) 
+                console.log(user)
+                dispatch(setUser(session?.user ?? null))
             }
         })
         
@@ -41,42 +56,8 @@ const AppProvider = (props) => {
         }
 	}, [user]);
 
-    const signUp = async (username, email, password, confirm) => {
-        if(password !== confirm) {
-
-            setWrongPassword(true)
-            return
-        }
-        await supabase.auth.signUp(
-            { 
-                email, password
-            },
-            {
-                data: {
-                    username
-                }
-            }
-        )
-        router.push('/home')
-    }
-
-    const signIn = async (email, password) => {
-        const {error} = await supabase.auth.signIn({email, password})
-        if (error) {
-            setError(error)
-        } else {
-            router.push('/home')
-        }
-    }
-
-    const signOut = async () => {
-        await supabase.auth.signOut()
-        router.push('/')
-    }
-
-
     // ** ChatContext provider 
-    const [isPersonalChats, setIsPersonalChats] = useState(false)
+    const [isPersonalChats, setIsPersonalChats] = useState(true)
     const [searchValue, setSearchValue] = useState('')
     const [showSetting, setShowSetting] = useState(false)
 
@@ -89,15 +70,7 @@ const AppProvider = (props) => {
     }
 
     return (
-        <UserContext.Provider value={{
-            signUp,
-            signIn,
-            signOut,
-            wrongPassword,
-            user,
-            error,
-            setError
-        }}>
+        <AppContext.Provider value={{}}>
             <ChatContext.Provider value={{
                 handleTypeChats,
                 isPersonalChats,
@@ -109,7 +82,7 @@ const AppProvider = (props) => {
             }}>
                 {props.children}
             </ChatContext.Provider>
-        </UserContext.Provider>
+        </AppContext.Provider>
     )
 }
 

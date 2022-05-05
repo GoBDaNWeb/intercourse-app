@@ -1,20 +1,19 @@
-import { useContext } from 'react';
-import UserContext from './../context/UserContext';
+import { useContext, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Sidebar from './Sidebar';
 import GroupChatList from './Chat/GroupChatList';
 import PersonalChatList from './Chat/PersonalChatList';
-import Menu from './Menu';
-import ChatContext from './../context/ChatContext';
+import ChatContext from 'context/ChatContext';
+import {useDispatch, useSelector} from 'react-redux'
 
 export default function Layout({children}) {
-    const {user} = useContext(UserContext)
     const router = useRouter()
-
     const {isPersonalChats} = useContext(ChatContext)
+
+    const {theme} = useSelector(state => state.theme)
     
     return (
-        <div className='h-[100vh] flex flex-col bg-[#F4EBDB]'>
+        <div className={`h-[100vh] flex flex-col overflow-hidden ${theme}`}>
             <div className='flex h-full'>
                 {
                 router.pathname !== '/' && 
@@ -25,10 +24,6 @@ export default function Layout({children}) {
                         : <GroupChatList/>
                     }
                 </Sidebar>
-                }
-                {
-                    router.pathname !== '/' && 
-                    <Menu/> 
                 }
                 {children}
             </div>

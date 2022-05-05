@@ -2,20 +2,27 @@ import {AiFillSetting} from 'react-icons/ai'
 import {MdOutlineKeyboardArrowUp} from 'react-icons/md'
 import {ImExit} from 'react-icons/im'
 import { useState, useContext } from 'react';
-import UserContext from './../context/UserContext';
 import {motion} from 'framer-motion'
 import { useRouter } from 'next/router';
+import {signOut} from '../store/authSlice'
+import {useDispatch, useSelector} from 'react-redux'
+import {updateUserStatus} from '../utils/Store'
 
 export default function Menu() {
     const [isActive, setIsActive] = useState(false)
     const router = useRouter()
-
-    const {signOut, user} = useContext(UserContext)
-    console.log(router);
+    const dispatch = useDispatch()
+    const {user} = useSelector(state => state.auth)
 
     // ** делает элемент menu активным
     const handle = () => {
         setIsActive(!isActive)
+    }
+
+    const signOutFunc = () => {
+        updateUserStatus(user.id, 'ONLINE', 'OFFLINE')
+        dispatch(signOut())
+        router.push('/')
     }
 
     const variant = {
@@ -41,23 +48,7 @@ export default function Menu() {
 
     return (
         <div className='z-50'>
-            {
-                router.pathname === '/home'
-                && <div 
-                        className="absolute flex justify-start items-center gap-2 px-2 right-0 top-0 bg-[#2C4A52] w-60 h-14 rounded-bl-[30px] shadow-custom"
-                    >
-                        <div className='w-10 h-10 bg-white rounded-full flex justify-center items-center font-bold'>
-                            A
-                        </div>
-                        {
-                            user
-                            &&  <h3 className='text-white'>
-                                hello <span className='font-bold text-xl'>{user.user_metadata.username || user.user_metadata.full_name}</span> 
-                            </h3>
-                        }
-                    </div>
-            }
-            <div className="absolute flex flex-col gap-2 right-4 bottom-4 z-50">
+            {/* <div className="absolute flex flex-col gap-2 right-4 bottom-4 z-50">
                 <motion.div 
                     className={`flex items-end justify-center bg-[#2C4A52] transition w-12 rounded-[20px]`}
                     variants={variant}
@@ -75,13 +66,13 @@ export default function Menu() {
                         <AiFillSetting/>
                     </button>
                     <button 
-                        onClick={() => signOut()}
+                        onClick={() => signOutFunc()}
                         className='text-3xl pl-2'
                     >
                         <ImExit/>
                     </button>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -2,17 +2,17 @@ import { useState, useEffect,useContext } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from 'next/router';
-import UserContext from './../../context/UserContext';
 import { useStore, fetchMessages } from './../../utils/Store';
-import { Login } from 'components/Login/Register/Login';
+import { Login } from 'components/auth/Login';
+import { useSelector } from "react-redux";
 
 export default function PreviewChat({chatData}) {
     const [lastMessage, setlastMessage] = useState('')
 
     const router = useRouter()
-    const {user} = useContext(UserContext)
-    const currentChat = (router.query.id === chatData.id);
-
+    const {user} = useSelector(state => state.auth)
+    const currentChat = (router.query.id === chatData.id);  
+    
     const chatId = chatData.id
 
 
@@ -29,38 +29,33 @@ export default function PreviewChat({chatData}) {
         <Link   
             href={{pathname: `/chats/[id]`, query: {type: 'p', id: `${chatData.id}`}}}
         >
-            <motion.div 
-                className={`flex items-center gap-3 w-full h-[85px] bg-[#2C4A52] p-2 cursor-pointer rounded-[20px] shadow-custom ${currentChat ? 'bg-[#2C3D52] pointer-events-none' : ''}`}
-                whileHover={{
-                    x: 8
-                }}
-            >
-                <div className='flex items-center justify-center font-semibold text-2xl text-white w-14 h-14 bg-[#407786] rounded-full'>
+            <motion.div className={`hover:bg-select bg-secondary transition flex items-center gap-3 w-full h-[85px]  p-2 cursor-pointer ${currentChat ? 'bg-select pointer-events-none' : ''}`}>
+                <div className='flex items-center justify-center font-semibold text-2xl text-white w-14 h-14 grad-1 rounded-full'>
                     {chatData && chatData.chat_title[0].toUpperCase()}
                 </div>
                 <div>
                     <div>
-                        <h4 className="text-xl text-white font-semibold">
+                        <h4 className="text-xl text-primary font-semibold">
                             {chatData && chatData.chat_title}
                         </h4>
-                        <div className="text-gray-200 italic text-sm flex items-center gap-2">
+                        <div className="text-secondary italic text-sm flex items-center gap-2">
                             chat with {user && chatData && user.id === chatData.created_by.id
-                            ? (<h4 className='text-white font-semibold text-lg'>{chatData.interlocutor.username || chatData.interlocutor.username_google}</h4>)
-                            : (<h4 className='text-white font-semibold text-lg'>{chatData.created_by.user_metadata.username}</h4>)}
+                            ? (<h4 className='text-primary font-semibold text-lg'>{chatData.interlocutor.username || chatData.interlocutor.username_google}</h4>)
+                            : (<h4 className='text-primary font-semibold text-lg'>{chatData.created_by.user_metadata.username || chatData.created_by.user_metadata.name}</h4>)}
                         </div>
                     </div>
                     <div className='flex gap-2'>
-                        {lastMessage.user_id === user.id 
+                        {user && lastMessage.user_id === user.id 
                         ? (
                             <div className='flex gap-2'>
-                                <h5 className="text-gray-200 font-medium">You:</h5>
+                                <h5 className="text-gray-400 font-medium">You:</h5>
                                 <p className="whitespace-nowrap font-light text-gray-300 ">
-                                    {lastMessage.message}
-                                </p>
-                            </div>)
-                        : (<p className="whitespace-nowrap font-light text-gray-300 ">
-                        {lastMessage.message}
-                    </p>)
+                                    {lastMessage.message}   
+                                </p>    
+                            </div>) 
+                        : (<p className="whitespace-nowrap font-light   text-gray-300 ">
+                        {lastMessage.message}   
+                    </p>)   
                         }
                     </div>
                 </div>
