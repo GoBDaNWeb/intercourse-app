@@ -3,7 +3,11 @@ import {createSlice} from '@reduxjs/toolkit'
 const initialState = {
     bgChat: 'standart',
     searchValue: '',
-    isPersonalChats: true,
+    isPrivatChats: true,
+    notification: [],
+    notificationForSound: [],
+    messages: [],
+    privatChats: []
 }
 
 const chatSlice = createSlice({
@@ -17,11 +21,34 @@ const chatSlice = createSlice({
             state.searchValue = action.payload
         },
         handleTypeChats(state) {
-            state.isPersonalChats = !state.isPersonalChats
+            state.isPrivatChats = !state.isPrivatChats
+        },
+        setNotification(state, action) {
+            state.notification.push(action.payload)
+        },
+        setNotificationForSound(state, action) {
+            state.notificationForSound.push(action.payload)
+        },
+        clearNotification(state, action) {
+            state.notification = action.payload
+        },
+        setMessages(state, action) {
+            state.messages = action.payload
+        },
+        setPrivatChats(state, action) {
+            state.privatChats = action.payload
         }
     }
 })
 
-export const {setBgChat, setSearchValue, handleTypeChats} = chatSlice.actions
+export const {
+    setBgChat, 
+    setSearchValue, 
+    handleTypeChats, 
+    setNotification, 
+    clearNotification, 
+    setNotificationForSound, 
+    setMessages
+} = chatSlice.actions
 
 export default chatSlice.reducer

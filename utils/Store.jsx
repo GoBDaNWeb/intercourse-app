@@ -1,102 +1,4 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
 import { supabase } from './supabaseClient';
-
-// export const useStore = (props) => {
-//     const [personalChats, setPersonalChats] = useState([])
-//     const [groupChats, setGroupChats] = useState([])
-//     const [messages, setMessages] = useState([])
-//     const [users] = useState(new Map())
-//     const [newMessage, handleNewMessage] = useState(null)
-//     const [newPersonalChat, handleNewPersonalChat] = useState(null)
-//     const [newGroupChat, handleNewGroupChat] = useState(null)
-//     const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null)
-//     const [UpdatedUser, handleUpdatedUser] = useState(null)
-//     const [UpdateUser, setUpdatedUser] = useState(null)
-//     const [deletedChannel, handleDeletedChannel] = useState(null)
-//     const [deletedMessage, handleDeletedMessage] = useState(null)
-
-//     useEffect(() => {
-//         fetchAllPersonalChats(setPersonalChats)
-//         fetchAllGroupChats(setGroupChats)
-
-//         const userListener = supabase
-//             .from('users')
-//             .on('*', payload => {
-//                 // console.log(payload)
-//                 handleNewOrUpdatedUser(payload.new)
-//             })
-//             .subscribe()
-
-//         const personalChatListener = supabase
-//             .from('personal_chats')
-//             .on('INSERT', payload => {
-//                 console.log('personal',payload);
-//                 handleNewPersonalChat(payload.new)
-//             })
-//             .on('DELETE', payload => {handleNewPersonalChat(payload.old)})
-//             .subscribe()
-
-//         const groupChatListener = supabase
-//             .from('group_chats')
-//             .on('INSERT', payload => {
-//                 console.log(payload);
-//                 handleNewGroupChat(payload.new)
-//             })
-//             .on('DELETE', payload => {handleNewGroupChat(payload.old)})
-//             .subscribe()
-
-//         let messageListener = supabase
-//             .from('messages')
-//             .on('INSERT', payload => {
-//                 console.log(payload.new);
-//                 handleNewMessage(payload.new)
-//             })
-//             .on('UPDATE', payload => {console.log(payload)})
-//             .on('DELETE', payload => {handleNewMessage(payload.old)})
-//             .subscribe()
-
-//         return () => {
-//             userListener.unsubscribe()
-//             personalChatListener.unsubscribe()
-//             groupChatListener.unsubscribe()
-//             messageListener.unsubscribe()
-//         }
-//     }, [])
-
-//     // **  следит за изменениями маршрута 
-//     useEffect(() => {
-//         if  (props.chatId) {
-//             fetchMessages(props.chatId, (messages) => {
-//                 messages.forEach((x) => {
-//                     users.set(x.user_id, x.author)
-//                 })
-//                 setMessages(messages)
-//             })
-//         }
-//     }, [props.chatId])
-
-//     useEffect(() => {
-//         if(newMessage && newMessage.chat_id === props.chatId) {
-//             setMessages(messages.concat(newMessage))
-//         }
-//     }, [newMessage])
-
-//     useEffect(() => {
-//         if (newOrUpdatedUser) users.set(newOrUpdatedUser.id, newOrUpdatedUser)
-//         console.log('update', newOrUpdatedUser)
-//       }, [newOrUpdatedUser])
-
-//     useEffect(() => {
-//         if (newPersonalChat) setPersonalChats(personalChats.concat(newPersonalChat))
-//     }, [newPersonalChat])
-    
-//     useEffect(() => {
-//         if (newGroupChat) setGroupChats(groupChats.concat(newGroupChat))
-//     }, [newGroupChat])
-
-//     return {personalChats, UpdatedUser, newPersonalChat, newOrUpdatedUser, groupChats, users, messages}
-// }
 
 // ** добавить нового пользователя в supabase
 export const addUser = async (user_id, email) => {
@@ -134,6 +36,32 @@ export const updateUserStatus = async (user_id, new_status) => {
     }
 }
 
+export const updatePrivateChatImage = async (chat_id, image) => {
+    try {
+        let { data } = await supabase
+        .from('privat_chats')
+        .update({ image: image })
+        .eq('id', chat_id)
+        console.log(data); 
+        return data
+    } catch(error) {
+        console.log(error);
+    }
+}
+
+export const updateGroupChatImage = async (chat_id, image) => {
+    try {
+        let { data } = await supabase
+        .from('group_chats')
+        .update({ image: image })
+        .eq('id', chat_id)
+        console.log(data); 
+        return data
+    } catch(error) {
+        console.log(error);
+    }
+}
+
 export const updateUserAvatar = async (user_id, avatar) => {
     try {
         let { data } = await supabase
@@ -153,7 +81,6 @@ export const fetchUserAvatar = async (user_id) => {
         .from('users')
         .select('avatar')
         .eq('id', user_id)
-        console.log(users); 
         return users
     } catch(error) {
         console.log(error);
@@ -213,11 +140,11 @@ export const addMessage = async (message, chat_id, user_id, author) => {
     }
 }
 
-// ** добавить новый персональный чат в supabase
-export const addPersonalChat = async (id, user, interlocutor, chat_title) => {
+// ** добавить новый приватный чат в supabase
+export const addPrivatChat = async (id, user, interlocutor, chat_title) => {
     try {
         let { data } = await supabase
-        .from('personal_chats')
+        .from('privat_chats')
         .insert([
             {id, created_by: user, interlocutor, chat_title, created_by_id: user.id },
         ])
@@ -294,13 +221,13 @@ export const fetchMessages = async (chatId, setState) => {
 }
 
 // ** взять все персональные чаты из supabase
-export const fetchAllPersonalChats = async (setState) => {
+export const fetchAllPrivatChats = async (setState) => {
     try {
-        let { data: personal_chats } = await supabase
-        .from('personal_chats')
+        let { data: privat_chats } = await supabase
+        .from('privat_chats')
         .select('*')
-        if (setState) setState(personal_chats)
-        return personal_chats
+        if (setState) setState(privat_chats)
+        return privat_chats
     } catch(error) {
         console.log(error);
     }
@@ -320,13 +247,14 @@ export const fetchAllGroupChats = async (setState) => {
 }
 
 // ** взять один персональный чат из supabase
-export const fetchOnePersonalChat = async (chat_id) => {
+export const fetchOnePrivatChat = async (chat_id) => {
     try {
-        let { data: personal_chats } = await supabase
-        .from('personal_chats')
+        let { data: privat_chats } = await supabase
+        .from('privat_chats')
         .select('*')
         .eq('id', chat_id)
-        let chat = personal_chats[0]
+        let chat = privat_chats[0]
+        console.log(privat_chats);
         return chat
     } catch(error) {
         console.log(error);

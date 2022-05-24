@@ -1,5 +1,5 @@
+// * redux
 import {useSelector} from 'react-redux'
-
 
 export default function Avatar({ url, size, children }) {
 	const {user} = useSelector(state => state.auth)

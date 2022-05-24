@@ -1,24 +1,43 @@
-import OwnMessage from 'components/Chat/OwnMessage';
-import Message from 'components/Chat/Message';
-import {RiSendPlaneLine} from 'react-icons/ri'
-import {BsEmojiSmile} from 'react-icons/bs'
-import { useState, useContext, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { updateUserTyping, updateMessage } from 'utils/Store';
+// * react/next
+import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import {useTranslation} from 'next-i18next'
+
+// * supabase
+import { updateUserTyping } from 'utils/Store';
+
+// * framer-motion
+import { motion, AnimatePresence } from 'framer-motion';
+
+// * icons
+import {RiSendPlaneLine} from 'react-icons/ri'
+import {BsEmojiSmile} from 'react-icons/bs'
 import {RiWechatLine} from 'react-icons/ri'
 import {useSelector} from 'react-redux'
+
+// * components
 import { ThreeDots } from 'react-loader-spinner';
-import { ImAttachment } from 'react-icons/im';
+import OwnMessage from 'components/Chat/OwnMessage';
+import Message from 'components/Chat/Message';
+
+export async function getStaticProps({locale}) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common'])),
+        }
+    }
+}
 
 const Picker = dynamic(() => {return import('emoji-picker-react')}, {ssr: false})
 
-export default function ChatWindow({sendMessage, messages, typingData, chatData}) {
+export default function ChatWindow({sendMessage, messages, typingData}) {
     const [showPicker, setShowPicker] = useState(false)
     const [value, setValue] = useState('')
     const [messageArr, setMessageArr] = useState([])
+    const {t} = useTranslation()
 
     const router = useRouter()
     const messagesEndRef = useRef(null)
@@ -74,10 +93,10 @@ export default function ChatWindow({sendMessage, messages, typingData, chatData}
       };
 
     return (
-        <div className={`h-screen flex flex-col justify-end items-center bg-chat-${bgChat}`}>
+        <div className={`transition-all duration-[0.4s] h-screen w-full flex flex-col justify-end items-center bg-chat-${bgChat}`}>
             {
                 messages.length
-                && <div className='pl-20 pr-10 flex flex-col gap-2 w-full h-full overflow-auto pb-2 mt-14 pt-2'>
+                && <div className='pl-20 pr-10 flex flex-col gap-2 w-full h-full overflow-auto custom-scroll pb-2 mt-14 pt-2'>
                     {renderMessages()}
                 </div> 
             }

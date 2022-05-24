@@ -1,4 +1,7 @@
+// * react/next
 import {useState} from 'react'
+
+// * supabase
 import {resetPassword} from 'utils/Store'
 
 export default function ResetPassword({selectAuthComponent}) {

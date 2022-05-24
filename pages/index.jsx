@@ -1,14 +1,37 @@
-import Image from 'next/image'
-import {FcGoogle} from 'react-icons/fc'
+// * react/next
 import { useState } from 'react'
-import Login from 'components/auth/Login';
-import Register from 'components/auth/Register';
-import ResetPassword from 'components/auth/ResetPassword';
+import { useRouter } from 'next/router';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import {useTranslation} from 'next-i18next'
+import Image from 'next/image'
+
+// * redux
 import {useDispatch} from 'react-redux'
 import { clearError, signInWithProvider } from 'store/authSlice';
 
+// * icons
+import {FcGoogle} from 'react-icons/fc'
+import {MdLanguage} from 'react-icons/md'
+
+// * components
+import Login from 'components/auth/Login';
+import Register from 'components/auth/Register';
+import ResetPassword from 'components/auth/ResetPassword';
+
+export async function getStaticProps({locale}) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['common'])),
+        }
+    }
+}
+
+
 export default function Home() {
+	const {t} = useTranslation()
 	const [authComponent, setAuthComponent] = useState('Login')
+
+	const router = useRouter()
 
 	const dispatch = useDispatch()
 
@@ -16,9 +39,34 @@ export default function Home() {
 		setAuthComponent(type)
 		dispatch(clearError())
 	}
+	const {asPath} = router
+
+	const handleLanguage = (lang) => {
+		router.push({asPath}, {asPath}, {locale: lang})
+		localStorage.setItem('language', lang)
+	}
+
+	console.log(router);
 
 	return (
 		<div className='h-screen w-full overflow-hidden relative bg-[#f8f8f8]'>
+			<div className='absolute top-6 right-6 flex flex-col items-end text-4xl text-[#273345] group'>
+				<MdLanguage/>
+				<div className='flex flex-col gap-1 text-sm text-gray-200 bg-[#273345] bg-opacity-70 p-2 hidden group-hover:block'>
+					<h4 
+						onClick={() => handleLanguage('ru')}
+						className='cursor-pointer'
+					>
+						{t("language.ru")}
+					</h4>
+					<h4 
+						onClick={() => {handleLanguage('en')}}
+						className='cursor-pointer'
+					>
+						{t("language.en")}
+					</h4>
+				</div>
+			</div>
 			<div className='absolute right-[-300px] bottom-[-400px] opacity-30 z-10'>
 				<Image
 					src="/carbon_chat-bot.svg" 
@@ -27,7 +75,7 @@ export default function Home() {
 					height={965} 
 				/>
 			</div>
-			<div className='flex items-center justify-center h-full w-full p-10 gap-[16rem]'>
+			<div className='xl:flex-row flex flex-col items-center justify-center h-full w-full p-10 xl:gap-[16rem] gap-2'>
 				<div className='max-w-[500px] text-[#273345] 2xl:max-w-[600px]'>
 					<div className='flex items-center text-5xl font-bold mb-4'>
 						<Image src="/carbon_chat-bot.svg" alt="Vercel Logo" width={125} height={125} />
@@ -35,12 +83,12 @@ export default function Home() {
 							Intercourse
 						</span>
 					</div>
-					<h3 className='text-6xl font-bold'>
-						Stay always in touch with your friends and loved ones
+					<h3 className='xl:block hidden text-6xl font-bold'>
+						{t('front.slogan')}
 					</h3>
 				</div>
 				<div className='z-50'>
-					<div className='flex flex-col items-center justify-center gap-6 max-w-[790px] max-h-[636px] bg-[#273345] rounded-2xl bg-opacity-70 backdrop-blur-sm shadow-md px-16 py-10 '>
+					<div className='flex flex-col items-center justify-center gap-6 max-w-[512px] max-h-[636px] bg-[#273345] rounded-2xl bg-opacity-70 backdrop-blur-sm shadow-md px-16 py-10 '>
 						{
 							authComponent === 'Login'
 							&& 

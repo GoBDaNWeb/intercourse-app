@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react"
-import TheirAvatar from 'components/profile/TheirAvatar'
+// * framer-motion
 import { motion } from "framer-motion"
+
+// * components
+import TheirAvatar from 'components/profile/TheirAvatar'
 
 export default function UserSelectCard({user, selectedUsers, selectUser}) {
     return (
         <motion.div 
             onClick={() => selectUser(user)}
-            className={`relative flex-col bg-secondary border-b-2 border-solid border-gray-200 dark:border-gray-800 font-semibold w-full text-primary min-h-14 flex flex-wrap justify-center items-center p-2 gap-1 cursor-pointer hover:bg-opacity-70 transition ${selectedUsers.includes(user) ? 'bg-disable text-secondary' : ''}`}
+            className={`transition-all duration-[0.4s] relative flex-col bg-secondary border-b-2 border-solid border-gray-200 dark:border-gray-800 font-semibold w-full text-primary min-h-14 flex flex-wrap justify-center items-center p-2 gap-1 cursor-pointer hover:bg-opacity-70 transition ${selectedUsers.includes(user) ? 'bg-disable text-secondary' : ''}`}
         >
             <TheirAvatar
                 user_id={user.id}

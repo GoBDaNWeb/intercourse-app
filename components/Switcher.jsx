@@ -1,4 +1,7 @@
+// * react/next
 import {useRef, useEffect, useState} from 'react'
+
+// * redux
 import {useSelector, useDispatch} from 'react-redux'
 import {setTheme} from 'store/themeSlice'
 

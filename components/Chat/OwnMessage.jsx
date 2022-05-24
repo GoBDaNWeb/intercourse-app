@@ -1,14 +1,10 @@
-import moment from 'moment';
+// * icons
 import {BsPencil} from 'react-icons/bs'
-import {updateMessage} from '../../utils/Store'
+
+// * moment
+import moment from 'moment';
 
 export default function OwnMessage({message}) {
-
-    // ! удалить
-    const update = () => {
-        updateMessage()
-    }
-
     return (
         <div className="flex items-center justify-end w-full min-h-10 pl-40 group">
 
@@ -16,8 +12,8 @@ export default function OwnMessage({message}) {
                 <div >
                     {message.message}
                 </div>
-                <div className='relative w-12'>
-                    <span className="absolute right-0 bottom-0 text-sm bg-black bg-opacity-10 px-2 rounded-full group-hover:opacity-0 transition">
+                <div className='relative w-20'>
+                    <span className="absolute right-0 bottom-0 text-sm bg-black bg-opacity-10 px-2 rounded-full group-hover:opacity-0 transition whitespace-normal">
                         {moment(message.inserted_at).format('h:mm')}
                     </span>
                     <div className='absolute right-0 bottom-0 p-1 bg-black bg-opacity-10 rounded-full opacity-0 group-hover:opacity-100 transition cursor-pointer'>

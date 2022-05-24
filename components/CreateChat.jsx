@@ -1,22 +1,35 @@
-import { useState } from 'react';
+// * react/next
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
+import {useTranslation} from 'next-i18next'
+
+// * redux
+import {useSelector} from 'react-redux'
+
+// * framer-motion
 import {motion} from 'framer-motion'
+
+// * supabase
+import { supabase } from 'utils/supabaseClient';
+import { addPrivatChat, addGroupChat, fetchAllUsers} from 'utils/Store';
+
+// * icons
 import {BsArrowLeftShort} from 'react-icons/bs'
 import {BiMessageAdd} from 'react-icons/bi'
-import {AiOutlineQuestionCircle} from 'react-icons/ai'
-import { addPersonalChat, addGroupChat, fetchAllUsers} from 'utils/Store';
-import { useEffect } from 'react';
-import UserSelectCard from './UserSelectCard';
-import {useSelector} from 'react-redux'
-import { useStore } from 'utils/Store';
-import { supabase } from 'utils/supabaseClient';
-import { useRouter } from 'next/router';
+
+// * components
+import UserSelectCard from './Chat/UserSelectCard';
 
 export default function CreateChat() {
-    const [createChat, setCreateChat] = useState(true)
+    const [createChat, setCreateChat] = useState(false)
     const [chatTitle, setChatTitle] = useState('')
+    const [searchValue, setSearchValue] = useState('')
     const [allUsers, setAllUser] = useState(null)
-    const [filteredUser, setFilteredUser] = useState([])
+    const [filteredUsers, setFilteredUsers] = useState([])
+    const [seacrhedUsers, setSearchedUsers] = useState([])
     const [selectedUsers, setSelectedUsers] = useState([])
+
+    const {t} = useTranslation('common')
 
     const router = useRouter()
     const {user} = useSelector(state => state.auth)
@@ -61,10 +74,18 @@ export default function CreateChat() {
     // ** при изменениями allUsers фильтрует полученные данные 
     useEffect(() => {
         if(allUsers !== null) {
-            const filteredUsers = allUsers.filter((item) => item.id !== user.id)
-            setFilteredUser(filteredUsers)
+            const filtered = allUsers.filter(item => item.id !== user.id)
+            setFilteredUsers(filtered)
         }
     }, [allUsers])
+
+    useEffect(() => {
+        if (filteredUsers !== null) {
+            const searched = filteredUsers.filter(user => (user.username_google ? user.username_google : user.username).toLowerCase().includes(searchValue.toLowerCase()))
+            console.log(searched);
+            setSearchedUsers(searched)
+        }
+    }, [searchValue])
 
     // ** функция выбора пользователей для создания чата
     const selectUser = (user) => {
@@ -80,17 +101,21 @@ export default function CreateChat() {
     }
 
     // ** следит за изменениями значения chatTitle
-    const onChange = (e) => {
+    const onChange = (e, type) => {
         const {value} = e.target
-        setChatTitle(value)
+        if (type === 'chatTitle') {
+            setChatTitle(value)
+        } else if (type === 'searchValue') {
+            setSearchValue(value)
+        }
     }
 
-    // ** функция создания нового группового/персонального чата
+    // ** функция создания нового группового/приватного чата
     const newChat = () => {
         const randomId = len => Math.random().toString(36).substr(3, len);
         const id = randomId(15);
         if (selectedUsers.length === 1) {
-            addPersonalChat(id, user, selectedUsers[0], chatTitle)
+            addPrivatChat(id, user, selectedUsers[0], chatTitle)
             router.push({pathname:'chats/[id]', query: {type: 'p', id: `${id}`}})
         }
         if (selectedUsers.length > 1) {
@@ -108,14 +133,18 @@ export default function CreateChat() {
         <div>
             {
                 !createChat &&
-                <div className='flex items-center justify-center w-full'>
+                <div className='flex items-center justify-center w-full '>
                     <div 
                         onClick={() => createChatWindow()}
-                        className='bg-secondary text-primary h-96 w-96 flex flex-col items-center justify-center gap-4 rounded-2xl cursor-pointer border-2 border-solid border-gray-200 dark:border-gray-800'
+                        className='transition-all duration-[0.4s] bg-secondary text-primary h-96 w-96 flex flex-col items-center justify-center gap-4 rounded-2xl cursor-pointer border-2 border-solid border-gray-200 dark:border-gray-800'
                     >
-                        <h3 className='text-3xl font-medium'>Want to create a chat?</h3>
+                        <h3 className='text-3xl font-medium'>
+                            {t('create-chat.create-chat-msg')}
+                        </h3>
                         <BiMessageAdd className='text-9xl'/>
-                        <h5 className='text-4xl font-bold'>Click</h5>
+                        <h5 className='text-4xl font-bold'>
+                            {t('create-chat.click')}
+                        </h5>
                     </div>
                 </div>
             }
@@ -123,47 +152,60 @@ export default function CreateChat() {
                 createChat 
                 &&
                 <div className='flex items-center justify-center w-full'>
-                    <div className='bg-secondary w-[26rem] flex flex-col items-center justify-evenly gap-4 rounded-2xl border-2 border-solid border-gray-200 dark:border-gray-800 relative py-8 px-4'>
+                    <div className='transition-all duration-[0.4s] bg-secondary w-[26rem] flex flex-col items-center justify-evenly gap-4 rounded-2xl border-2 border-solid border-gray-200 dark:border-gray-800 relative py-8 px-4'>
                         <div className='text-secondary'>
                             <h2 className='font-bold text-2xl text-primary'>
-                                create chat
+                                {t('create-chat.create-chat-title')}
                             </h2>
                             <h5 className='flex items-center gap-1'>
-                                <span className='text-3xl'>&#9737;</span> select one user to create personal chat
+                                <span className='text-3xl'>&#9737;</span> {t('create-chat.create-chat-hint-1')}
                             </h5>
                             <h5 className='flex items-center gap-1'>
-                                <span className='text-3xl'>&#9737;</span> select multiple users to create group chat
+                                <span className='text-3xl'>&#9737;</span> {t('create-chat.create-chat-hint-2')}
                             </h5>
                         </div>
                         <label className='flex flex-col items-center'>
                             <div className='text-center text-primary text-2xl font-semibold relative w-full'>
                                 <h3>
-                                    chat title
+                                    {t('create-chat.chat-title')}
                                 </h3>
-                                <AiOutlineQuestionCircle className='absolute right-3 top-[5px] text-secondary opacity-40 cursor-pointer'/>
+                                {/* <AiOutlineQuestionCircle className='absolute right-3 top-[5px] text-secondary opacity-40 cursor-pointer'/> */}
                             </div>
                             <input 
-                                onChange={(e) => onChange(e)}
-                                className='text-primary bg-primary outline-none px-4 py-2 rounded-[20px] border-2 border-solid border-gray-200 dark:border-gray-800 bg-opacity-80'
-                                placeholder='enter title'
+                                onChange={(e) => onChange(e, 'chatTitle')}
+                                className='transition-all duration-[0.4s] text-primary bg-primary outline-none px-4 py-2 rounded-[20px] border-2 border-solid border-gray-200 dark:border-gray-800 bg-opacity-80'
+                                placeholder={t('create-chat.enter-title')}
                                 type="text"
                             />
                         </label>
-                        <div className='border-2 border-solid border-gray-200 dark:border-gray-800 flex flex-col items-center bg-opacity-80 w-full h-[244px] rounded-[20px] overflow-auto'>
-                           {
-                                filteredUser !== null
-                                ? filteredUser.map((user, index) => (
+                        <div className='w-full'>
+                            <input 
+                                onChange={(e) => onChange(e, 'searchValue')}
+                                className='transition-all duration-[0.4s]  w-full text-primary bg-primary outline-none px-4 py-2 rounded-t-[20px] border-2 border-b-0 border-solid border-gray-200 dark:border-gray-800 bg-opacity-80'
+                                placeholder={t('create-chat.search-user')}
+                                type="text" 
+                            />
+                            <div className='transition-all duration-[0.4s]  border-2 border-solid border-gray-200 dark:border-gray-800 flex flex-col items-center bg-opacity-80 w-full h-[244px] rounded-b-[20px] overflow-auto custom-scroll'>
+                            {
+                                    filteredUsers !== null && seacrhedUsers.length === 0
+                                    && searchValue.length === 0 && filteredUsers.map((user, index) => (
+                                        <UserSelectCard key={user.id} user={user} index={index} selectedUsers={selectedUsers} selectUser={selectUser}/>
+                                    ))
+                            }
+                            {
+                                seacrhedUsers !== null && seacrhedUsers.length > 0
+                                && seacrhedUsers.map((user, index) => (
                                     <UserSelectCard key={user.id} user={user} index={index} selectedUsers={selectedUsers} selectUser={selectUser}/>
                                 ))
-                                : <div>empty list</div>
-                           }
+                            }
+                            </div>
                         </div>
                         <div className='flex flex-col gap-1 items-center justify-center'>
                             <div className='h-8'>
                                 {
                                     selectedUsers.length ?
                                     <h6 className='text-secondary text-sm'>
-                                        you create <span className='italic font-bold'>{selectedUsers.length > 1 ? 'group' : 'personal'}</span>  chat
+                                        you create <span className='italic font-bold'>{selectedUsers.length > 1 ? 'group' : 'privat'}</span>  chat
                                     </h6>
                                     : ''
                                 }
@@ -179,7 +221,7 @@ export default function CreateChat() {
                                     scale: 1.05
                                 }}
                             >
-                                create
+                                {t('create-chat.create')}
                             </motion.button>
                         </div>
                         <motion.button
@@ -190,7 +232,7 @@ export default function CreateChat() {
                             }}
                         >
                             <BsArrowLeftShort className='text-2xl text-primary'/>
-                            back
+                            {t('create-chat.back')}
                         </motion.button>
                     </div>
                 </div>

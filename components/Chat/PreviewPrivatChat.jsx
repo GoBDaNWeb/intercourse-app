@@ -8,31 +8,36 @@ import { useSelector, useDispatch } from "react-redux";
 import {clearNotification} from 'store/chatSlice'
 import {closeSidebar} from 'store/sidebarSlice'
 
+// * supabase
+import { updatePrivateChatImage, fetchOnePrivatChat } from 'utils/Store';
+
 // * framer-motion
 import { motion, AnimatePresence } from "framer-motion";
 
-// * components
-import GroupChatImage from 'components/chat/GroupChatImage'
+// * components 
+import PrivatChatImage from 'components/chat/PrivatChatImage'
 
-export default function PreviewGroupChat({chatData}) {
+export default function PreviewPrivatChat({chatData}) {
+    const [lastMessage, setlastMessage] = useState('')
     const [currentNotification, setCurrentNotification] = useState([])
 
+    const router = useRouter()
+    const {user} = useSelector(state => state.auth)
     const {notification} = useSelector(state => state.chat)
-
+    const currentChat = (router.query.id === chatData.id);  
+    
     const dispatch = useDispatch()
 
-    const router = useRouter()
-
-    const currentChat = (router.query.id === chatData.id);
+    const chatId = chatData.id
 
     useEffect(() => {
         const notificationByCurrentChat = notification.filter(item => item.chat_id === chatId)
         setCurrentNotification(notificationByCurrentChat)
     }, [notification])
-    
+
     return (
         <Link   
-            href={{pathname: `/chats/[id]`, query: {type: 'g', id: `${chatData.id}`}}}
+            href={{pathname: `/chats/[id]`, query: {type: 'p', id: `${chatData.id}`}}}
             locale="en"
         >
             <motion.div 
@@ -44,7 +49,7 @@ export default function PreviewGroupChat({chatData}) {
                 }}
                 className={`hover:bg-select bg-secondary transition flex items-center gap-3 w-full h-[72px]  p-2 cursor-pointer ${currentChat ? 'bg-select pointer-events-none' : ''}`}>
                 <div className='relative flex items-center justify-center font-semibold text-2xl text-white w-14 h-14 grad-1 rounded-full'>
-                    <GroupChatImage
+                    <PrivatChatImage
                         chatData={chatData}
                         size={56}
                         text_size={'2xl'}
@@ -67,6 +72,25 @@ export default function PreviewGroupChat({chatData}) {
                         <h4 className="text-xl text-primary font-semibold">
                             {chatData && chatData.chat_title}
                         </h4>
+                        <div className="text-secondary italic text-sm flex items-center gap-2">
+                            chat with {user && chatData && user.id === chatData.created_by.id
+                            ? (<h4 className='text-primary font-semibold text-lg'>{chatData.interlocutor.username || chatData.interlocutor.username_google}</h4>)
+                            : (<h4 className='text-primary font-semibold text-lg'>{chatData.created_by.user_metadata.username || chatData.created_by.user_metadata.name}</h4>)}
+                        </div>
+                    </div>
+                    <div className='flex gap-2'>
+                        {user && lastMessage.user_id === user.id 
+                        ? (
+                            <div className='flex gap-2'>
+                                <h5 className="text-gray-400 font-medium">You:</h5>
+                                <p className="whitespace-nowrap font-light text-gray-300 ">
+                                    {lastMessage.message}   
+                                </p>    
+                            </div>) 
+                        : (<p className="whitespace-nowrap font-light   text-gray-300 ">
+                        {lastMessage.message}   
+                    </p>)   
+                        }
                     </div>
                 </div>
             </motion.div>

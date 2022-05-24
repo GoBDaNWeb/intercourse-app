@@ -1,9 +1,16 @@
+// * react/next
 import { useState } from 'react'
-import { supabase } from 'utils/supabaseClient'
-import {AiFillCamera} from 'react-icons/ai'
+
+// * redux
 import {useSelector, useDispatch} from 'react-redux'
-import { updateUserAvatar } from 'utils/Store';
 import {setAvatar} from 'store/profileSlice'
+
+// * supabase
+import { supabase } from 'utils/supabaseClient'
+import { updateUserAvatar } from 'utils/Store';
+
+// * icons
+import {AiFillCamera} from 'react-icons/ai'
 
 export default function Avatar({ url, size, onUpload }) {
 	const [uploading, setUploading] = useState(false)
@@ -40,7 +47,7 @@ export default function Avatar({ url, size, onUpload }) {
 			updateUserAvatar(user.id, filePath)
 			dispatch(setAvatar(filePath))
 		} catch (error) {
-			alert(error.message)
+			console.log(error)
 		} finally {
 			setUploading(false)
 		}

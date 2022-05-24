@@ -1,8 +1,15 @@
-import PreviewGroupChat from './PreviewGroupChat';
-import { fetchAllGroupChats } from 'utils/Store';
-import { supabase } from 'utils/supabaseClient';
+// * react/next
 import { useState, useEffect } from 'react';
+
+// * redux
 import {useSelector} from 'react-redux'
+
+// * supabase
+import { supabase } from 'utils/supabaseClient';
+import { fetchAllGroupChats } from 'utils/Store';
+
+// * components
+import PreviewGroupChat from './PreviewGroupChat';
 
 export default function GroupChatList() {
     const [filteredChats, setFilteredChats] = useState(null)
@@ -21,7 +28,6 @@ export default function GroupChatList() {
             const groupChatListener = supabase
                 .from('group_chats')
                 .on('INSERT', payload => {
-                    console.log(payload);
                     handleNewGroupChat(payload.new)
                 })
                 .on('DELETE', payload => {handleNewGroupChat(payload.old)})
@@ -43,7 +49,7 @@ export default function GroupChatList() {
     // ** следим за персональными чатами и рендерим их 
     const {groupChats} = useStore({})
 
-    // ** при изменении personalChats фильтруем чаты и записываем их в стейт filteredChats
+    // ** при изменении privatChats фильтруем чаты и записываем их в стейт filteredChats
     useEffect(() => {
         if (user !== null) {
             const filteredByMembers = groupChats.filter(chat => {
@@ -77,7 +83,7 @@ export default function GroupChatList() {
 
     
     return (
-        <div className='flex flex-col w-full'>
+        <div className='flex flex-col h-full overflow-y-auto w-full custom-scroll'>
                 {
                     !searchValue.length && filteredChats !== null
                     && filteredChats.map((chat) => (

@@ -1,12 +1,29 @@
-import AppProvider from 'context/AppProvider';
-import { useState,useContext,useEffect } from 'react';
-import UserContext from 'context/AppContext';
-import { motion } from 'framer-motion';
+// * react/next
+import { useState } from 'react';
+import {useTranslation} from 'next-i18next'
+import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
+
+// * redux
 import { useDispatch, useSelector } from 'react-redux';
 import { signUp } from 'store/authSlice';
+
+// * framer-motion
+import { motion } from 'framer-motion';
+
+// * components
 import { ThreeDots } from 'react-loader-spinner';
 
+export async function getStaticProps({locale}) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['front'])),
+        }
+    }
+}
+
 export default function Register({selectAuthComponent}) {
+    const {t} = useTranslation()
+
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -47,19 +64,21 @@ export default function Register({selectAuthComponent}) {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <h2 className='text-center text-3xl font-bold text-gray-200 mb-6'>create new account</h2>
+            <h2 className='text-center text-3xl font-bold text-gray-200 mb-6'>
+                {t('front.create-title')}
+            </h2>
             <div className='flex flex-col items-center justify-center gap-3 '>
-                <div>
+                <div className='flex flex-col items-center'>
                     <input 
                         onChange={(e) => onChange(e, 'username')}
                         value={username}
                         className='w-96 h-10 rounded-2xl p-2 outline-none'
                         type="text" 
-                        placeholder='Enter your username'
+                        placeholder={t('front.enter-username')}
                     />
                     {
                         username.length < 3
-                        && <h4 className='text-sm text-center text-secondary'>username must be 3 symbol length or more</h4>
+                        && <h4 className='text-sm text-center text-gray-200'>{t('front.username-hint')}</h4>
                     }
                 </div>
                 <input 
@@ -67,7 +86,7 @@ export default function Register({selectAuthComponent}) {
                     value={email}
                     className='w-96 h-10 rounded-2xl p-2 outline-none'
                     type="email" 
-                    placeholder='Enter your email'
+                    placeholder={t('front.enter-email')}
                 />
                 <div>
                     <input 
@@ -75,11 +94,11 @@ export default function Register({selectAuthComponent}) {
                         value={password}
                         className={`w-96 h-10 rounded-2xl p-2 outline-none ${error ? 'border-2 border-red-500' : ''}`}
                         type="password" 
-                        placeholder='Enter your password'
+                        placeholder={t('front.enter-password')}
                     />
                     {
                         password.length < 6 
-                        && <h4 className='text-sm text-center text-secondary'>password must be 6 symbol length or more</h4>
+                        && <h4 className='text-sm text-center text-gray-200'>{t('front.password-hint')}</h4>
                     }
                 </div>
                 <div>
@@ -88,11 +107,11 @@ export default function Register({selectAuthComponent}) {
                         value={confirm}
                         className={`w-96 h-10 rounded-2xl p-2 outline-none ${error ? 'border-2 border-red-500' : ''}`}
                         type="password"
-                        placeholder='Confirm your password'
+                        placeholder={t('front.confirm-password')}
                     />
                     {
                         error
-                        && <h4 className='text-sm text-center text-red-500'>passwords dont match</h4>
+                        && <h4 className='text-sm text-center text-red-500'>{t('front.password-error')}</h4>
                     }
                 </div>
                 {
@@ -105,7 +124,7 @@ export default function Register({selectAuthComponent}) {
                             isLoader()
                             
                         }}
-                        className='bg-white w-36 h-10 rounded-2xl font-bold disabled:opacity-50 disabled:pointer-events-none'
+                        className='bg-white px-8 h-10 rounded-2xl font-bold disabled:opacity-50 disabled:pointer-events-none'
                         whileHover={{
                             scale: 1.05
                         }}
@@ -113,7 +132,7 @@ export default function Register({selectAuthComponent}) {
                             scale: 0.95
                         }}
                         >
-                        Sign Up
+                        {t('front.sign-up')}
                     </motion.button>
                 }
                 {loader && <ThreeDots color="#22C55E"/>}
@@ -123,7 +142,7 @@ export default function Register({selectAuthComponent}) {
                     onClick={() => selectAuthComponent('Login')}
                     className='underline cursor-pointer transition text-green-400 hover:text-green-500'
                 >
-                    You already have an account?
+                    {t('front.login-link')}
                 </h3>
             </div>
         </div>

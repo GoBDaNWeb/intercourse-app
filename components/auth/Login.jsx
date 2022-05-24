@@ -1,10 +1,29 @@
-import { useContext, useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+// * react/next
+import { useState, useEffect } from 'react';
+import {useTranslation} from 'next-i18next'
+import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
+
+// * redux
 import {useDispatch, useSelector} from 'react-redux'
 import { signIn, clearError } from 'store/authSlice';
+
+// * framer-motion
+import { motion } from 'framer-motion';
+
+// * components
 import { ThreeDots } from 'react-loader-spinner';
 
+export async function getStaticProps({locale}) {
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ['front'])),
+        }
+    }
+}
+
 export default function Login({selectAuthComponent}) {
+    const {t} = useTranslation()
+
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [loader, setLoader] = useState(false)
@@ -64,21 +83,23 @@ export default function Login({selectAuthComponent}) {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <h2 className='text-center text-3xl font-semibold text-gray-200 mb-6'>Login in to your account</h2>
+            <h2 className='text-center text-3xl font-semibold text-gray-200 mb-6'>
+                {t('front.login-title')}
+            </h2>
             <div className='flex flex-col items-center justify-center gap-3 '>
                 <input 
                     onChange={e => onChange(e, 'email')}
                     value={email}
                     className='w-96 h-10 rounded-2xl p-2 outline-none'
                     type="email" 
-                    placeholder='Enter your email'
+                    placeholder={t('front.enter-email')}
                 />
                 <input 
                     onChange={e => onChange(e, 'password')}
                     value={password}
                     className='w-96 h-10 rounded-2xl p-2 outline-none'
                     type="password" 
-                    placeholder='Enter your password'
+                    placeholder={t('front.enter-password')}
                 />
                 {
                     error && email.length > 0 && password.length > 0 && 
@@ -108,7 +129,7 @@ export default function Login({selectAuthComponent}) {
                                 scale: 0.95
                             }}
                         >
-                            Sign In
+                            {t('front.sign-in')}
                         </motion.button>
                 }
                 {loader && <ThreeDots color="#22C55E"/>}
@@ -118,14 +139,7 @@ export default function Login({selectAuthComponent}) {
                     onClick={() => selectAuthComponent('Register')}
                     className='underline cursor-pointer transition text-green-400 hover:text-green-500'
                 >
-                    Dont have account?
-                </h3>
-                |
-                <h3
-                    onClick={() => selectAuthComponent('ResetPassword')}
-                    className='underline cursor-pointer transition text-green-400 hover:text-green-500'
-                >
-                    Forgot password?
+                    {t('front.create-account-link')}
                 </h3>
             </div>
         </div>

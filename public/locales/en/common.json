@@ -1,0 +1,54 @@
+{
+    "create-chat": {
+        "back":"back",
+        "chat-title":"chat title",
+        "click":"Click",
+        "create":"create",
+        "create-chat-hint-1":" select one user to create privat chat",
+        "create-chat-hint-2":"select multiple users to create group chat",
+        "create-chat-msg":"Want to create a chat?",
+        "create-chat-title":"create chat",
+        "create-group":"you create group chat",
+        "create-privat":"you create privat chat",
+        "enter-title":"Enter title",
+        "search-user":"search user by name"
+    },
+    "front": {
+        "confirm-password":"Confirm your password",
+        "create-account-link":"Dont have account?",
+        "create-title":"create new account",
+        "enter-email":"Enter your email",
+        "enter-password":"Enter your password",
+        "enter-username":"Enter your username",
+        "login-link":"You already have an account?",
+        "login-title":"Login in to your account",
+        "password-error":"passwords dont match",
+        "password-hint":"password must be 6 symbol length or more",
+        "sign-in":"Sign in",
+        "sign-up":"Sign up",
+        "slogan":"Stay always in touch with your friends and loved ones",
+        "username-hint":"username must be 3 symbol length or more"
+    },
+    "language": {
+        "ru":"Russian",
+        "en":"English"
+    },
+    "profile": {
+        "chat-theme":"Chat Theme",
+        "dark":"dark",
+        "favorite":"Favorite Users",
+        "language":"Language",
+        "light":"light"
+    },
+    "sidebar": {
+        "chat-with":"chat with",
+        "group":"group chats",
+        "privat":"privat chats",
+        "search-chat":"Search chat",
+        "chat-theme":"Chat Theme",
+        "dark":"dark",
+        "favorite":"Favorite Users",
+        "language":"Language",
+        "light":"light"
+    }
+}

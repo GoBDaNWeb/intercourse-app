@@ -3,6 +3,7 @@ import authReducer from './authSlice'
 import profileReducer from './profileSlice'
 import chatReducer from './chatSlice'
 import themeReducer from './themeSlice'
+import sidebarReducer from './sidebarSlice'
 
 export default configureStore({
     reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
         profile: profileReducer,
         chat: chatReducer,
         theme: themeReducer,
+        sidebar: sidebarReducer,
     }
 })

@@ -1,22 +1,30 @@
+// * react/next
 import {useState, useEffect} from 'react'
-import TheirAvatar from 'components/profile/TheirAvatar'
-import {AiOutlineClose} from 'react-icons/ai'
+import {useRouter} from 'next/router'
+
+// * redux
 import {useSelector, useDispatch} from 'react-redux'
 import {handleOpenTheirProfile} from 'store/profileSlice'
+
+// * supabase
 import {fetchCurrentUser} from 'utils/Store'
-import {addPersonalChat} from 'utils/Store'
-import {useRouter} from 'next/router'
+import {addPrivatChat} from 'utils/Store'
+
+// * supabase
+import {AiOutlineClose} from 'react-icons/ai'
+
+// * components
+import TheirAvatar from 'components/profile/TheirAvatar'
 
 export default function TheirProfile() {
     const [avatarUrl, setAvatarUrl] = useState('')
     const [currentUser, setCurrentUser] = useState(null)
-    const [createChat, setCreateChat] = useState(false)
     const [chatTitle, setChatTitle] = useState('false')
 
     const router = useRouter()
 
 
-    const {isTheirProfileOpen, theirProfileData} = useSelector(state => state.profile)
+    const {theirProfileData} = useSelector(state => state.profile)
     const {user} = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
@@ -31,7 +39,7 @@ export default function TheirProfile() {
     const newChat = () => {
         const randomId = len => Math.random().toString(36).substr(3, len);
         const id = randomId(15);
-        addPersonalChat(id, user, currentUser, chatTitle)
+        addPrivatChat(id, user, currentUser, chatTitle)
         router.push({pathname:'/chats/[id]', query: {type: 'p', id: `${id}`}})
     }
 
@@ -63,7 +71,7 @@ export default function TheirProfile() {
                 </div>
                 <div className='mt-10 flex flex-col items-center text-primary'>
                     <h5 className='font-semibold'>
-                        you can create a personal chat with this user
+                        you can create a privat chat with this user
                     </h5>
                     <div 
                             className='flex flex-col items-center gap-2'

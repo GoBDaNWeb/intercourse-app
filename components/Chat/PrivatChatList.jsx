@@ -1,8 +1,15 @@
-import PreviewPersonalChat from 'components/Chat/PreviewPersonalChat';
-import { fetchAllPersonalChats } from 'utils/Store';
+// * react/next
 import { useState, useEffect } from 'react';
-import { supabase } from 'utils/supabaseClient';
+
+// * redux
 import {useSelector} from 'react-redux'
+import { supabase } from 'utils/supabaseClient';
+
+// * supabase
+import { fetchAllPrivatChats } from 'utils/Store';
+
+// * components
+import PreviewPrivatChat from 'components/Chat/PreviewPrivatChat';
 
 export default function ChatList() {
     const [filteredChats, setFilteredChats] = useState(null)
@@ -13,64 +20,63 @@ export default function ChatList() {
 
     // ** при монтировании/размонтировании подписываемся/отписываемся на realtime
     const useStore = (props) => {
-        const [personalChats, setPersonalChats] = useState([])
-        const [newPersonalChat, handleNewPersonalChat] = useState(null)
+        const [privatChats, setPrivatChats] = useState([])
+        const [newPrivatChat, handleNewPrivatChat] = useState(null)
     
         useEffect(() => {
-            fetchAllPersonalChats(setPersonalChats)
+            fetchAllPrivatChats(setPrivatChats)
 
-            const personalChatListener = supabase
-                .from('personal_chats')
+            const privatChatListener = supabase
+                .from('privat_chats')
                 .on('INSERT', payload => {
-                    console.log('personal',payload);
-                    handleNewPersonalChat(payload.new)
+                    handleNewPrivatChat(payload.new)
                 })
-                .on('DELETE', payload => {handleNewPersonalChat(payload.old)})
+                .on('DELETE', payload => {handleNewPrivatChat(payload.old)})
                 .subscribe()
     
     
             return () => {
-                personalChatListener.unsubscribe()
+                privatChatListener.unsubscribe()
             }
         }, [])
     
         useEffect(() => {
-            if (newPersonalChat) setPersonalChats(personalChats.concat(newPersonalChat))
-        }, [newPersonalChat])
+            if (newPrivatChat) setPrivatChats(privatChats.concat(newPrivatChat))
+        }, [newPrivatChat])
     
-        return {personalChats}
+        return {privatChats}
     }
 
-    const {personalChats} = useStore({})
+    const {privatChats} = useStore({})
 
-    // ** при изменении personalChats фильтруем чаты и записываем их в стейт filteredChats
+    // ** при изменении privatChats фильтруем чаты и записываем их в стейт filteredChats
     useEffect(() => {
-        const filtered = personalChats.filter(chat => user.id === chat.created_by.id || user.id === chat.interlocutor.id)
+        const filtered = privatChats.filter(chat => user.id === chat.created_by.id || user.id === chat.interlocutor.id)
         setFilteredChats(filtered)
-    }, [personalChats])
+    }, [privatChats])
 
     // ** при изменении searchValue фильтруем чаты и записываем их в стейт searchChats
     useEffect(() => {
         if(filteredChats !== null) {
             const search = filteredChats.filter(chat => chat.chat_title.toLowerCase().includes(searchValue.toLowerCase()))
-            console.log(search);
             setSearchChats(search)
         }
     }, [searchValue])
 
+
     return (
-            <div className='flex flex-col h-[672px] overflow-y-auto w-full'>
+            <div className='flex flex-col h-full overflow-y-auto w-full custom-scroll'>
                 {
 
                     !searchValue.length && filteredChats !== null
                     && filteredChats.map((chat) => (
-                        <PreviewPersonalChat key={chat.id} chatData={chat}/>
+                        <PreviewPrivatChat key={chat.id} chatData={chat}/>
                     ))
                 }
                 {
                     searchValue.length > 0 && searchChats !== null
                     && searchChats.map((chat) => (
-                        <PreviewPersonalChat key={chat.id} chatData={chat}/>
+                        <PreviewPrivatChat key={chat.id} chatData={chat}/>
                     ))
                 }
             </div>

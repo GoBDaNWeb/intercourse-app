@@ -1,11 +1,20 @@
+// * react/next
 import {useEffect, useState} from 'react'
+import {useRouter} from 'next/router'
+
+// * redux
 import {useSelector, useDispatch} from 'react-redux'
+import {handleOpenProfile} from 'store/profileSlice'
+import {signOut} from 'store/authSlice'
+
+// * icons
 import {ImExit} from 'react-icons/im'
 import {IoMdSettings} from 'react-icons/io'
-import {signOut} from 'store/authSlice'
-import {useRouter} from 'next/router'
+
+// * supabase
 import {updateUserStatus, fetchCurrentUser} from 'utils/Store'
-import {handleOpenProfile} from 'store/profileSlice'
+
+// * components
 import Avatar from 'components/profile/Avatar'
 
 export default function PreviewProfileUser() {
@@ -34,7 +43,7 @@ export default function PreviewProfileUser() {
     }
 
     return (
-        <div className={`flex items-center justify-center gap-4 group py-2 transition ${isProfileOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <div className={`flex items-center justify-center gap-4 group py-2 transition ${isProfileOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'} `}>
             {currentUser !== null 
                 ? <Avatar
                     size={64}
@@ -62,15 +71,15 @@ export default function PreviewProfileUser() {
                 </div> 
             }
            
-            <div>
-                <h2 className='font-semibold text-2xl text-primary'>
+            <div className='w-[60%]'>
+                <h2 className='font-semibold text-[3.4vw] xl:text-[1.4vw] sm:text-[2.4vw] md:text-[1.8vw] text-primary'>
                     { user !== null &&
                         user.user_metadata.name
                         ? user !== null && user.user_metadata.name
                         : user !== null && user.user_metadata.username
                     }
                 </h2>
-                <h4 className='text-secondary'>
+                <h4 className='text-secondary text-[3vw] xl:text-[1vw] sm:text-[2vw] md:text-[1.4vw]'>
                     {user !== null && user.email}
                 </h4>
             </div>

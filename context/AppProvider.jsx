@@ -1,25 +1,66 @@
-import AppContext from './AppContext'
-import { useEffect } from 'react';
-import { supabase } from 'utils/supabaseClient';
+// * react/next
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { fetchUserAvatar, updateUserStatus } from 'utils/Store';
+import AppContext from './AppContext'
+
+// * redux
 import {useDispatch, useSelector} from 'react-redux'
 import {setUser} from 'store/authSlice'
-import {setBgChat} from 'store/chatSlice'
+import {setBgChat, setMessages, setNotificationForSound, setNotification} from 'store/chatSlice'
 import {setAvatar} from 'store/profileSlice'
 import {setTheme} from 'store/themeSlice'
 
+// * supabsae
+import { supabase } from 'utils/supabaseClient';
+import { fetchUserAvatar, updateUserStatus, fetchMessages } from 'utils/Store';
+
+// * howler
+import { Howl } from 'howler';
+
 const AppProvider = (props) => {
+    const [newMessage, handleNewMessage] = useState(null)
     const router = useRouter()
     const dispatch = useDispatch()
     const {user} = useSelector(state => state.auth)
+    const {notification,  messages} = useSelector(state => state.chat)
 
 	useEffect(() => {
         const session = supabase.auth.session() 
         dispatch(setUser(session?.user ?? null))
 
+        const callSound = (src) => {
+            const sound = new Howl({
+                src,
+                html5: true
+            })
+            sound.play()
+        }
+        const {asPath} = router
+
+
+        supabase
+            .from('messages')
+            .on('INSERT', payload => {
+                if (user.id !== payload.new.user_id && 
+                    router.query.id !== payload.new.chat_id
+                    ) {
+                    if (!notification.includes(payload.new)) {
+                        dispatch(setNotificationForSound(payload.new))
+                        dispatch(setNotification(payload.new))
+                        callSound('/notification.mp3')
+                    }
+                }
+                console.log('changed');
+                handleNewMessage(payload.new)
+            })
+            .on('UPDATE', payload => {console.log(payload)})
+            .on('DELETE', payload => {handleNewMessage(payload.old)})
+            .subscribe()
+
+        const locale = localStorage.getItem('language')
+
         if (router.pathname === '/' && user) {
-            router.push('/home')
+            router.push('/main')
         }
 
         if (user !== null) {
@@ -52,6 +93,20 @@ const AppProvider = (props) => {
             authListener.unsubscribe()
         }
 	}, [user]);
+
+    useEffect(() => {
+        if(newMessage && newMessage.chat_id === router.query.id) {
+            dispatch(setMessages(messages.concat(newMessage)))
+        }
+    }, [newMessage])
+
+    useEffect(() => {
+        if  (router.query.id) {
+            fetchMessages(router.query.id, (messages) => {
+                dispatch(setMessages(messages))
+            })
+        }
+    }, [router.query.id])
 
     return (
         <AppContext.Provider value={{}}>
