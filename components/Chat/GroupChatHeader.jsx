@@ -200,8 +200,8 @@ export default function GroupChatHeader({chatData}) {
                             </div>
                             <div className='flex flex-col justify-between w-full px-10 gap-3'>
                                 {
-                                    chatData && chatData.members.map(user => (
-                                        <div className='flex gap-2'>
+                                    chatData && chatData.members.map((user, index) => (
+                                        <div key={index} className='flex gap-2'>
                                             <div
                                                 onClick={() => {
                                                     dispatch(setTheirProfileData(user.id))
