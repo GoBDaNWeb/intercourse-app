@@ -1,6 +1,5 @@
 // * react/next
 import {useEffect} from 'react'
-import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 
 // * redux
 import { useSelector, useDispatch } from 'react-redux';
@@ -11,15 +10,6 @@ import {updateUserStatus} from 'utils/Store'
 
 // * components
 import CreateChat from 'components/CreateChat'
-
-
-export async function getStaticProps({locale}) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common'])),
-        }
-    }
-}
 
 export default function Main() {
     const {user} = useSelector(state => state.auth)

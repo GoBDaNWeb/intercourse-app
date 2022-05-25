@@ -3,8 +3,6 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import {useTranslation} from 'next-i18next'
 
 // * supabase
 import { updateUserTyping } from 'utils/Store';
@@ -23,21 +21,11 @@ import { ThreeDots } from 'react-loader-spinner';
 import OwnMessage from 'components/chat/OwnMessage';
 import Message from 'components/chat/Message';
 
-export async function getStaticProps({locale}) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common'])),
-        }
-    }
-}
-
 const Picker = dynamic(() => {return import('emoji-picker-react')}, {ssr: false})
 
 export default function ChatWindow({sendMessage, messages, typingData}) {
     const [showPicker, setShowPicker] = useState(false)
     const [value, setValue] = useState('')
-    const [messageArr, setMessageArr] = useState([])
-    const {t} = useTranslation()
 
     const router = useRouter()
     const messagesEndRef = useRef(null)

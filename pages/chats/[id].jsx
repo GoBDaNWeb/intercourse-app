@@ -1,7 +1,6 @@
 // * react/next
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 
 // * redux
 import {useSelector} from 'react-redux'
@@ -17,15 +16,6 @@ import { Howl } from 'howler';
 import PrivatChatHeader from 'components/chat/PrivatChatHeader';
 import GroupChatHeader from 'components/chat/GroupChatHeader';
 import ChatWindow from 'components/chat/ChatWindow';
-
-export async function getServerSideProps({locale}) {
-    return {
-        props: {
-            ...(await serverSideTranslations(locale, ['common'])),
-        },
-    }
-}
-
 
 export default function ChatsPage() {
     const [privatChatData, setPrivatChatData] = useState(null)

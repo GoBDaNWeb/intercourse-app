@@ -1,7 +1,6 @@
 // * react/next
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import {useTranslation} from 'next-i18next'
 
 // * redux
 import {useSelector} from 'react-redux'
@@ -28,8 +27,6 @@ export default function CreateChat() {
     const [filteredUsers, setFilteredUsers] = useState([])
     const [seacrhedUsers, setSearchedUsers] = useState([])
     const [selectedUsers, setSelectedUsers] = useState([])
-
-    const {t} = useTranslation('common')
 
     const router = useRouter()
     const {user} = useSelector(state => state.auth)
@@ -139,11 +136,11 @@ export default function CreateChat() {
                         className='transition-all duration-[0.4s] bg-secondary text-primary h-96 w-96 flex flex-col items-center justify-center gap-4 rounded-2xl cursor-pointer border-2 border-solid border-gray-200 dark:border-gray-800'
                     >
                         <h3 className='text-3xl font-medium'>
-                            {t('create-chat.create-chat-msg')}
+                            Want to create a chat?
                         </h3>
                         <BiMessageAdd className='text-9xl'/>
                         <h5 className='text-4xl font-bold'>
-                            {t('create-chat.click')}
+                        Click
                         </h5>
                     </div>
                 </div>
@@ -155,26 +152,26 @@ export default function CreateChat() {
                     <div className='transition-all duration-[0.4s] bg-secondary w-[26rem] flex flex-col items-center justify-evenly gap-4 rounded-2xl border-2 border-solid border-gray-200 dark:border-gray-800 relative py-8 px-4'>
                         <div className='text-secondary'>
                             <h2 className='font-bold text-2xl text-primary'>
-                                {t('create-chat.create-chat-title')}
+                                create chat
                             </h2>
                             <h5 className='flex items-center gap-1'>
-                                <span className='text-3xl'>&#9737;</span> {t('create-chat.create-chat-hint-1')}
+                                <span className='text-3xl'>&#9737;</span> select one user to create personal chat
                             </h5>
                             <h5 className='flex items-center gap-1'>
-                                <span className='text-3xl'>&#9737;</span> {t('create-chat.create-chat-hint-2')}
+                                <span className='text-3xl'>&#9737;</span> select multiple users to create group chat
                             </h5>
                         </div>
                         <label className='flex flex-col items-center'>
                             <div className='text-center text-primary text-2xl font-semibold relative w-full'>
                                 <h3>
-                                    {t('create-chat.chat-title')}
+                                    chat title
                                 </h3>
                                 {/* <AiOutlineQuestionCircle className='absolute right-3 top-[5px] text-secondary opacity-40 cursor-pointer'/> */}
                             </div>
                             <input 
                                 onChange={(e) => onChange(e, 'chatTitle')}
                                 className='transition-all duration-[0.4s] text-primary bg-primary outline-none px-4 py-2 rounded-[20px] border-2 border-solid border-gray-200 dark:border-gray-800 bg-opacity-80'
-                                placeholder={t('create-chat.enter-title')}
+                                placeholder='enter title'
                                 type="text"
                             />
                         </label>
@@ -182,7 +179,7 @@ export default function CreateChat() {
                             <input 
                                 onChange={(e) => onChange(e, 'searchValue')}
                                 className='transition-all duration-[0.4s]  w-full text-primary bg-primary outline-none px-4 py-2 rounded-t-[20px] border-2 border-b-0 border-solid border-gray-200 dark:border-gray-800 bg-opacity-80'
-                                placeholder={t('create-chat.search-user')}
+                                placeholder='search user by name'
                                 type="text" 
                             />
                             <div className='transition-all duration-[0.4s]  border-2 border-solid border-gray-200 dark:border-gray-800 flex flex-col items-center bg-opacity-80 w-full h-[244px] rounded-b-[20px] overflow-auto custom-scroll'>
@@ -221,7 +218,7 @@ export default function CreateChat() {
                                     scale: 1.05
                                 }}
                             >
-                                {t('create-chat.create')}
+                                create
                             </motion.button>
                         </div>
                         <motion.button
@@ -232,7 +229,7 @@ export default function CreateChat() {
                             }}
                         >
                             <BsArrowLeftShort className='text-2xl text-primary'/>
-                            {t('create-chat.back')}
+                            back
                         </motion.button>
                     </div>
                 </div>
