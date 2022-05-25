@@ -20,8 +20,8 @@ import {useSelector} from 'react-redux'
 
 // * components
 import { ThreeDots } from 'react-loader-spinner';
-import OwnMessage from 'components/Chat/OwnMessage';
-import Message from 'components/Chat/Message';
+import OwnMessage from 'components/chat/OwnMessage';
+import Message from 'components/chat/Message';
 
 export async function getStaticProps({locale}) {
     return {

@@ -6,8 +6,8 @@ import {useSelector} from 'react-redux'
 
 // * components
 import Sidebar from './Sidebar';
-import GroupChatList from './Chat/GroupChatList';
-import PrivatChatList from './Chat/PrivatChatList';
+import GroupChatList from './chat/GroupChatList';
+import PrivatChatList from './chat/PrivatChatList';
 
 export default function Layout({children}) {
     const router = useRouter()

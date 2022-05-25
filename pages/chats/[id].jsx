@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import {serverSideTranslations} from 'next-i18next/serverSideTranslations'
 
 // * redux
-import {useSelector, useDispatch} from 'react-redux'
+import {useSelector} from 'react-redux'
 
 // * supabase
 import { supabase } from 'utils/supabaseClient';
@@ -14,9 +14,9 @@ import { addMessage, updateMessage, updateUserTypingAnyway, updateUserTypingChat
 import { Howl } from 'howler';
 
 // * components
-import PrivatChatHeader from 'components/Chat/PrivatChatHeader';
-import GroupChatHeader from 'components/Chat/GroupChatHeader';
-import ChatWindow from 'components/Chat/ChatWindow';
+import PrivatChatHeader from 'components/chat/PrivatChatHeader';
+import GroupChatHeader from 'components/chat/GroupChatHeader';
+import ChatWindow from 'components/chat/ChatWindow';
 
 export async function getServerSideProps({locale}) {
     return {

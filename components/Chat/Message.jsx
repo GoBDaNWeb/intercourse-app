@@ -2,9 +2,6 @@
 import {useDispatch, useSelector} from 'react-redux'
 import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
 
-// * icons
-import {AiOutlineStar} from 'react-icons/ai'
-
 // * components
 import TheirAvatar from 'components/profile/TheirAvatar'
 

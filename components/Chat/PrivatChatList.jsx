@@ -9,7 +9,7 @@ import { supabase } from 'utils/supabaseClient';
 import { fetchAllPrivatChats } from 'utils/Store';
 
 // * components
-import PreviewPrivatChat from 'components/Chat/PreviewPrivatChat';
+import PreviewPrivatChat from 'components/chat/PreviewPrivatChat';
 
 export default function ChatList() {
     const [filteredChats, setFilteredChats] = useState(null)

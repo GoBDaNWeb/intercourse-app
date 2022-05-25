@@ -8,9 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 import {clearNotification} from 'store/chatSlice'
 import {closeSidebar} from 'store/sidebarSlice'
 
-// * supabase
-import { updatePrivateChatImage, fetchOnePrivatChat } from 'utils/Store';
-
 // * framer-motion
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -77,20 +74,6 @@ export default function PreviewPrivatChat({chatData}) {
                             ? (<h4 className='text-primary font-semibold text-lg'>{chatData.interlocutor.username || chatData.interlocutor.username_google}</h4>)
                             : (<h4 className='text-primary font-semibold text-lg'>{chatData.created_by.user_metadata.username || chatData.created_by.user_metadata.name}</h4>)}
                         </div>
-                    </div>
-                    <div className='flex gap-2'>
-                        {user && lastMessage.user_id === user.id 
-                        ? (
-                            <div className='flex gap-2'>
-                                <h5 className="text-gray-400 font-medium">You:</h5>
-                                <p className="whitespace-nowrap font-light text-gray-300 ">
-                                    {lastMessage.message}   
-                                </p>    
-                            </div>) 
-                        : (<p className="whitespace-nowrap font-light   text-gray-300 ">
-                        {lastMessage.message}   
-                    </p>)   
-                        }
                     </div>
                 </div>
             </motion.div>

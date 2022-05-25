@@ -19,10 +19,13 @@ import { Howl } from 'howler';
 
 const AppProvider = (props) => {
     const [newMessage, handleNewMessage] = useState(null)
+    
     const router = useRouter()
     const dispatch = useDispatch()
     const {user} = useSelector(state => state.auth)
     const {notification,  messages} = useSelector(state => state.chat)
+
+    console.log(router.query.id)
 
 	useEffect(() => {
         const session = supabase.auth.session() 
@@ -35,29 +38,27 @@ const AppProvider = (props) => {
             })
             sound.play()
         }
-        const {asPath} = router
-
 
         supabase
             .from('messages')
             .on('INSERT', payload => {
-                if (user.id !== payload.new.user_id && 
-                    router.query.id !== payload.new.chat_id
-                    ) {
+                console.log(router.query.id !== payload.new.chat_id)
+                console.log('use',router.query.id)
+                console.log( payload.new.chat_id)
+                console.log( currentId)
+                if (user.id !== payload.new.user_id && router.query.id !== payload.new.chat_id) {
                     if (!notification.includes(payload.new)) {
                         dispatch(setNotificationForSound(payload.new))
                         dispatch(setNotification(payload.new))
                         callSound('/notification.mp3')
                     }
                 }
-                console.log('changed');
                 handleNewMessage(payload.new)
             })
             .on('UPDATE', payload => {console.log(payload)})
             .on('DELETE', payload => {handleNewMessage(payload.old)})
             .subscribe()
 
-        const locale = localStorage.getItem('language')
 
         if (router.pathname === '/' && user) {
             router.push('/main')
