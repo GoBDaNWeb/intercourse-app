@@ -1,5 +1,7 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
+## About project 
+This is a real-time chat application, similar to Telegram, in which you can create private/group chats. A special feature of this application is that you can create many private chats with one user, if any are required
+------------------------------------------------------------------------------------------------------------------------------------------------
+> Это приложение для чата в реальном времени, похожее на telegram, в котором вы можете создавать приватные/групповые чаты. Особенная черта этого приложения, то что можно создавать с одним пользователем множество приватных чатов, если таковые требуются 
 ## Getting Started
 
 First, run the development server:
