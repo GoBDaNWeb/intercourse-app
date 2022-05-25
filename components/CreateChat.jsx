@@ -18,7 +18,7 @@ import {BsArrowLeftShort} from 'react-icons/bs'
 import {BiMessageAdd} from 'react-icons/bi'
 
 // * components
-import UserSelectCard from './chat/UserSelectCard';
+import UserSelectCard from 'components/chat/UserSelectCard';
 
 export default function CreateChat() {
     const [createChat, setCreateChat] = useState(false)
