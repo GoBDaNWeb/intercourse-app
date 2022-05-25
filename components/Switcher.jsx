@@ -7,6 +7,7 @@ import {setTheme} from 'store/themeSlice'
 
 export default function Switcher() {
     const [checkBoxChange, setCheckBoxChange] = useState(false)
+    const [isDark, setIsDark] = useState(false)
     
     const {theme} = useSelector(state => state.theme)
     const dispatch = useDispatch()
@@ -15,8 +16,7 @@ export default function Switcher() {
 
     // ** при изменении checkBoxChange переключает тему
     useEffect(() => {
-        dispatch(setTheme(checkbox.current.checked ? 'dark' : 'light'))
-        localStorage.setItem('isDarkTheme', checkbox.current.checked ? 'dark' : 'light')
+        
     }, [checkBoxChange])
 
     // ** при монтировании менять положение свитчера
@@ -29,7 +29,11 @@ export default function Switcher() {
             <h5>light</h5>
             <label className='relative' htmlFor='toggle-switch'>
                 <input 
-                    onChange={() => setCheckBoxChange(!checkBoxChange)}
+                    onChange={() => {
+                        setCheckBoxChange(!checkBoxChange)
+                        dispatch(setTheme(checkbox.current.checked ? 'dark' : 'light'))
+                        localStorage.setItem('isDarkTheme', checkbox.current.checked ? 'dark' : 'light')
+                    }}
                     type="checkbox" 
                     ref={checkbox} 
                     id='toggle-switch' 

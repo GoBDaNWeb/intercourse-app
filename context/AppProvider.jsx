@@ -42,10 +42,6 @@ const AppProvider = (props) => {
         supabase
             .from('messages')
             .on('INSERT', payload => {
-                console.log(router.query.id !== payload.new.chat_id)
-                console.log('use',router.query.id)
-                console.log( payload.new.chat_id)
-                console.log( currentId)
                 if (user.id !== payload.new.user_id && router.query.id !== payload.new.chat_id) {
                     if (!notification.includes(payload.new)) {
                         dispatch(setNotificationForSound(payload.new))
