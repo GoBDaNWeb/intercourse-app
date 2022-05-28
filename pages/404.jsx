@@ -4,7 +4,7 @@ import {useRouter} from 'next/router'
 // * icons
 import {BsArrowLeftShort} from 'react-icons/bs'
 
-export default function custom404() {
+export default function Custom404() {
     const router = useRouter()
 
     return (
