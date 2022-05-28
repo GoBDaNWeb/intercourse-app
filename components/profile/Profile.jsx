@@ -9,6 +9,7 @@ import {handleOpenProfile} from 'store/profileSlice'
 import {setBgChat} from 'store/chatSlice'
 
 // * supabase
+import {supabase} from 'utils/supabaseClient'
 import {updateUserStatus} from 'utils/Store'
 
 // * framer-motion

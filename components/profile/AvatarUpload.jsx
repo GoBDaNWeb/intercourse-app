@@ -41,11 +41,11 @@ export default function Avatar({ url, size, onUpload }) {
 			.from('avatars')
 			.upload(filePath, file)
 
-			// if (uploadError) {
-			// 	throw uploadError
-			// }
+			if (uploadError) {
+				throw uploadError
+			}
 			console.log(filePath);
-			// onUpload(filePath)
+			onUpload(filePath)
 			updateUserAvatar(user.id, filePath)
 			dispatch(setAvatar(filePath))
 		} catch (error) {

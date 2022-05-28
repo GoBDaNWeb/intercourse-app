@@ -3,8 +3,6 @@ import '../styles/globals.css'
 import AppProvider from 'context/AppProvider';
 import {Provider} from 'react-redux'
 import store from '../store'
-import { ThreeDots } from 'react-loader-spinner';
-import { appWithTranslation } from 'next-i18next'
 
 function MyApp({ Component, pageProps }) {
 	return (
@@ -18,4 +16,4 @@ function MyApp({ Component, pageProps }) {
 	)
 }
 
-export default appWithTranslation(MyApp)
+export default MyApp
