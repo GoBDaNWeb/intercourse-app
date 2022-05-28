@@ -18,6 +18,8 @@ export default function Avatar({ url, size, onUpload }) {
 	const {user} = useSelector(state => state.auth)
 	const {avatar} = useSelector(state => state.profile)
 
+	console.log(avatar);
+
 	const dispatch = useDispatch()
 
 	// ** функция загрузки аватара 
@@ -39,11 +41,11 @@ export default function Avatar({ url, size, onUpload }) {
 			.from('avatars')
 			.upload(filePath, file)
 
-			if (uploadError) {
-			throw uploadError
-			}
-
-			onUpload(filePath)
+			// if (uploadError) {
+			// 	throw uploadError
+			// }
+			console.log(filePath);
+			// onUpload(filePath)
 			updateUserAvatar(user.id, filePath)
 			dispatch(setAvatar(filePath))
 		} catch (error) {

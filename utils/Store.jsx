@@ -29,7 +29,6 @@ export const updateUserStatus = async (user_id, new_status) => {
         .from('users')
         .update({ status: new_status })
         .eq('id', user_id)
-        console.log(data); 
         return data
     } catch(error) {
         console.log(error);

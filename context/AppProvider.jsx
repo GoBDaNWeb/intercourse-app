@@ -25,12 +25,8 @@ const AppProvider = (props) => {
     const {user} = useSelector(state => state.auth)
     const {notification,  messages} = useSelector(state => state.chat)
 
-    console.log(router.query.id)
-
-	useEffect(() => {
-        const session = supabase.auth.session() 
-        dispatch(setUser(session?.user ?? null))
-
+    useEffect(() => {
+        // ** функция вызова звука 
         const callSound = (src) => {
             const sound = new Howl({
                 src,
@@ -38,15 +34,24 @@ const AppProvider = (props) => {
             })
             sound.play()
         }
-
+        
+        // ** подписываемся на обновления messages 
         supabase
             .from('messages')
             .on('INSERT', payload => {
-                if (user.id !== payload.new.user_id && router.query.id !== payload.new.chat_id) {
+                console.log(router);
+                console.log(router.query.id !== payload.new.chat_id );
+                if (
+                        user !== null 
+                        && user.id !== payload.new.user_id 
+                        && router.query.id !== payload.new.chat_id 
+                        || router.pathname === '/main'
+                    ) {
                     if (!notification.includes(payload.new)) {
                         dispatch(setNotificationForSound(payload.new))
                         dispatch(setNotification(payload.new))
                         callSound('/notification.mp3')
+                        console.log('sound');
                     }
                 }
                 handleNewMessage(payload.new)
@@ -54,42 +59,7 @@ const AppProvider = (props) => {
             .on('UPDATE', payload => {console.log(payload)})
             .on('DELETE', payload => {handleNewMessage(payload.old)})
             .subscribe()
-
-
-        if (router.pathname === '/' && user) {
-            router.push('/main')
-        }
-
-        if (user !== null) {
-            if (!localStorage.getItem('bgChat')) {
-                localStorage.setItem('bgChat', 'standart')
-            }
-            let bgChat = localStorage.getItem('bgChat')
-            dispatch(setBgChat(bgChat))
-            dispatch(setTheme(localStorage.getItem('isDarkTheme')))
-            const fetchData = fetchUserAvatar(user.id)
-            fetchData.then(data => dispatch(setAvatar(data[0].avatar)))
-        }
-
-        const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-            if (event == 'SIGNED_IN') {
-                console.log('SIGNED_IN', session)
-                
-                
-                dispatch(setUser(session?.user ?? null))
-                updateUserStatus(session.user.id, 'ONLINE')
-            }
-            if (event == 'SIGNED_OUT') {
-                console.log('SIGNED_OUT', session)
-                console.log(user)
-                dispatch(setUser(session?.user ?? null))
-            }
-        })
-        
-        return () => {
-            authListener.unsubscribe()
-        }
-	}, [user]);
+    }, [router.isReady])
 
     useEffect(() => {
         if(newMessage && newMessage.chat_id === router.query.id) {
@@ -104,6 +74,44 @@ const AppProvider = (props) => {
             })
         }
     }, [router.query.id])
+
+	useEffect(() => {
+        const session = supabase.auth.session() 
+        dispatch(setUser(session?.user ?? null))
+
+        if (router.pathname === '/' && user) {
+            router.push('/main')
+        } 
+
+        // ** при загрузке берем данные из localStorage при их наличии 
+        if (user !== null) {
+            if (!localStorage.getItem('bgChat')) {
+                localStorage.setItem('bgChat', 'standart')
+            }
+            let bgChat = localStorage.getItem('bgChat')
+            dispatch(setBgChat(bgChat))
+            dispatch(setTheme(localStorage.getItem('isDarkTheme')))
+            const fetchData = fetchUserAvatar(user.id)
+            fetchData.then(data => dispatch(setAvatar(data[0].avatar)))
+        }
+
+        const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+            if (event == 'SIGNED_IN') {
+                console.log('SIGNED_IN', session)
+                dispatch(setUser(session?.user ?? null))
+                updateUserStatus(session.user.id, 'ONLINE')
+            }
+            if (event == 'SIGNED_OUT') {
+                console.log('SIGNED_OUT', session)
+                console.log(user)
+                dispatch(setUser(session?.user ?? null))
+            }
+        })
+        
+        return () => {
+            authListener.unsubscribe()
+        }
+	}, [user]);
 
     return (
         <AppContext.Provider value={{}}>

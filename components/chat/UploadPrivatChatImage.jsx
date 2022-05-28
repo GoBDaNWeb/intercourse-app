@@ -37,8 +37,6 @@ export default function UploadPrivatChatImage({ url, size, onUpload, text_size})
 			const fileName = `${Math.random()}.${fileExt}`
 			const filePath = `${fileName}`
 
-			localStorage.setItem('image-privat-chats', filePath)
-
 			let { error: uploadError } = await supabase.storage
 			.from('image-privat-chats')
 			.upload(filePath, file)

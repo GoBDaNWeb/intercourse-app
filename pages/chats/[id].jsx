@@ -27,8 +27,7 @@ export default function ChatsPage() {
     const {user} = useSelector(state => state.auth)
     const {messages} = useSelector(state => state.chat)
 
-    const useStore = (props) => {
-        // const [messages, setMessages] = useState([])
+    const useStore = () => {
         const [users] = useState(new Map())
         const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null)
         useEffect(() => {
@@ -108,10 +107,6 @@ export default function ChatsPage() {
             data.then(chat => setGroupChatData(chat))
         }
     }, [router.query.id])
-
-    const update = () => {
-        updateMessage()
-    }
 
     const dropIn = {
         before: {

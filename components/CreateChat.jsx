@@ -52,7 +52,6 @@ export default function CreateChat() {
     
         useEffect(() => {
             if (newOrUpdatedUser) users.set(newOrUpdatedUser.id, newOrUpdatedUser)
-            console.log('update', newOrUpdatedUser)
           }, [newOrUpdatedUser])
     
         return {newOrUpdatedUser}
@@ -79,7 +78,6 @@ export default function CreateChat() {
     useEffect(() => {
         if (filteredUsers !== null) {
             const searched = filteredUsers.filter(user => (user.username_google ? user.username_google : user.username).toLowerCase().includes(searchValue.toLowerCase()))
-            console.log(searched);
             setSearchedUsers(searched)
         }
     }, [searchValue])
@@ -87,11 +85,11 @@ export default function CreateChat() {
     // ** функция выбора пользователей для создания чата
     const selectUser = (user) => {
         const tmpArr = selectedUsers
-        if(selectedUsers.includes(user)) {
+        if (selectedUsers.includes(user)) {
             const filtered = tmpArr.filter(item => item.id !== user.id)
             setSelectedUsers([...filtered])
         }
-        if(!selectedUsers.includes(user)) {
+        if (!selectedUsers.includes(user)) {
             tmpArr.push(user)
             setSelectedUsers([...tmpArr])
         }

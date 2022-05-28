@@ -19,7 +19,7 @@ export default function ChatList() {
     const {user} = useSelector(state => state.auth)
 
     // ** при монтировании/размонтировании подписываемся/отписываемся на realtime
-    const useStore = (props) => {
+    const useStore = () => {
         const [privatChats, setPrivatChats] = useState([])
         const [newPrivatChat, handleNewPrivatChat] = useState(null)
     
