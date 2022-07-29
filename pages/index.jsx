@@ -40,7 +40,7 @@ export default function Home() {
 			</div>
 			<div className='xl:flex-row flex flex-col items-center justify-center h-full w-full p-10 xl:gap-[16rem] gap-2'>
 				<div className='max-w-[500px] text-[#273345] 2xl:max-w-[600px]'>
-					<div className='flex items-center text-5xl font-bold mb-4'>
+					<div className='flex flex-col sm:flex-row items-center text-5xl font-bold mb-4'>
 						<Image src="/carbon_chat-bot.svg" alt="Vercel Logo" width={125} height={125} />
 						<span className='mt-7'>
 							Intercourse
@@ -51,7 +51,7 @@ export default function Home() {
 					</h3>
 				</div>
 				<div className='z-50'>
-					<div className='flex flex-col items-center justify-center gap-6 max-w-[512px] max-h-[636px] bg-[#273345] rounded-2xl bg-opacity-70 backdrop-blur-sm shadow-md px-16 py-10 '>
+					<div className='flex flex-col items-center justify-center gap-6 max-w-[280px] sm:max-w-[512px] max-h-[636px] bg-[#273345] rounded-2xl bg-opacity-70 backdrop-blur-sm shadow-md px-16 py-10'>
 						{
 							authComponent === 'Login'
 							&& 

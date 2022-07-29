@@ -52,7 +52,7 @@ export default function Register({selectAuthComponent}) {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <h2 className='text-center text-3xl font-bold text-gray-200 mb-6'>
+            <h2 className='text-center text-lg sm:text-3xl font-bold text-gray-200 mb-6'>
                 create new account
             </h2>
             <div className='flex flex-col items-center justify-center gap-3 '>
@@ -60,7 +60,7 @@ export default function Register({selectAuthComponent}) {
                     <input 
                         onChange={(e) => onChange(e, 'username')}
                         value={username}
-                        className='w-96 h-10 rounded-2xl p-2 outline-none'
+                        className='sm:w-96 w-60 h-10 rounded-2xl p-2 outline-none'
                         type="text" 
                         placeholder='Enter your username'
                     />
@@ -72,7 +72,7 @@ export default function Register({selectAuthComponent}) {
                 <input 
                     onChange={(e) => onChange(e, 'email')}
                     value={email}
-                    className='w-96 h-10 rounded-2xl p-2 outline-none'
+                    className='sm:w-96 w-60 h-10 rounded-2xl p-2 outline-none'
                     type="email" 
                     placeholder='Enter your email'
                 />
@@ -80,7 +80,7 @@ export default function Register({selectAuthComponent}) {
                     <input 
                         onChange={(e) => onChange(e, 'password')}
                         value={password}
-                        className={`w-96 h-10 rounded-2xl p-2 outline-none ${error ? 'border-2 border-red-500' : ''}`}
+                        className={`sm:w-96 w-60 h-10 rounded-2xl p-2 outline-none ${error ? 'border-2 border-red-500' : ''}`}
                         type="password" 
                         placeholder='Enter your password'
                     />
@@ -93,7 +93,7 @@ export default function Register({selectAuthComponent}) {
                     <input 
                         onChange={(e) => onChange(e, 'confirm')}
                         value={confirm}
-                        className={`w-96 h-10 rounded-2xl p-2 outline-none ${error ? 'border-2 border-red-500' : ''}`}
+                        className={`sm:w-96 w-60 h-10 rounded-2xl p-2 outline-none ${error ? 'border-2 border-red-500' : ''}`}
                         type="password"
                         placeholder='Confirm your password'
                     />

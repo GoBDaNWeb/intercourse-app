@@ -71,21 +71,21 @@ export default function Login({selectAuthComponent}) {
 
     return (
         <div className="flex flex-col items-center gap-4">
-            <h2 className='text-center text-3xl font-semibold text-gray-200 mb-6'>
+            <h2 className='text-center sm:text-3xl text-lg font-semibold text-gray-200 mb-6'>
                 Login in to your account
             </h2>
             <div className='flex flex-col items-center justify-center gap-3 '>
                 <input 
                     onChange={e => onChange(e, 'email')}
                     value={email}
-                    className='w-96 h-10 rounded-2xl p-2 outline-none'
+                    className='sm:w-96 w-60 h-10 rounded-2xl p-2 outline-none'
                     type="email" 
                     placeholder='Enter your email'
                 />
                 <input 
                     onChange={e => onChange(e, 'password')}
                     value={password}
-                    className='w-96 h-10 rounded-2xl p-2 outline-none'
+                    className='sm:w-96 w-60 h-10 rounded-2xl p-2 outline-none'
                     type="password" 
                     placeholder='Enter your password'
                 />
