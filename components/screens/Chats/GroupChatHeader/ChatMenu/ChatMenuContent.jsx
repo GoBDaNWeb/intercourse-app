@@ -3,7 +3,7 @@ import {useState, useContext} from 'react'
 import GroupChatContext from 'context/GroupChat/GroupChatContext'
 
 // * supabase
-import {supabase} from 'utils/supabaseClient'
+import {supabase} from 'supabase/supabaseClient'
 
 // * icons
 import {AiOutlineEdit} from 'react-icons/ai'

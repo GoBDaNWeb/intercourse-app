@@ -1,5 +1,3 @@
-
-
 export default function ChatTitleForm({setChatTitle, chatTitle}) {
     const onChangeChatTitle = (e) => {
         const {value} = e.target

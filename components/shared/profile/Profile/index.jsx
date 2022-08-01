@@ -1,15 +1,11 @@
 // * react/next
 import {useState, memo} from 'react'
-import {useRouter} from 'next/router'
 
 // * redux
-import {useDispatch, useSelector} from 'react-redux'
-import {signOut} from 'store/authSlice'
-import {setBgChat} from 'store/chatSlice'
+import {useSelector} from 'react-redux'
 
 // * supabase
-import {supabase} from 'utils/supabaseClient'
-import {updateUserStatus} from 'utils/Store'
+import {supabase} from 'supabase/supabaseClient'
 
 // * components
 import AvatarUpload from 'components/shared/profile/Profile/AvatarUpload'

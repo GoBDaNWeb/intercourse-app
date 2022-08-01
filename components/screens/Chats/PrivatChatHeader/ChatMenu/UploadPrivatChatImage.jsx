@@ -2,9 +2,10 @@
 import { useState, useEffect, useContext } from 'react'
 import {useRouter} from 'next/router'
 import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
+
 // * supabase
-import { supabase } from 'utils/supabaseClient'
-import { updatePrivateChatImage, fetchOnePrivatChat } from 'utils/Store';
+import { supabase } from 'supabase/supabaseClient'
+import { updatePrivateChatImage } from 'supabase/modules/chat';
 
 // * icons
 import {AiFillCamera} from 'react-icons/ai'

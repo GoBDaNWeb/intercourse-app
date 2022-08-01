@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic';
 import { useSelector} from 'react-redux'
 
 // * supabase
-import { updateUserTyping } from 'utils/Store';
+import { updateUserTyping } from 'supabase/modules/user';
 
 // * framer-motion
 import { motion } from 'framer-motion';

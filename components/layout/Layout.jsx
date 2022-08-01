@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import {useSelector} from 'react-redux'
 
 // * components
-import Sidebar from './Sidebar';
+import Sidebar from './Sidebar/index';
 import GroupChatList from 'components/shared/chat/groupChat/GroupChatList';
 import PrivatChatList from 'components/shared/chat/privatChat/PrivatChatList';
 

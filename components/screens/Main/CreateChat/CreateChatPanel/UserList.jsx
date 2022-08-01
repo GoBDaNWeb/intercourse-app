@@ -1,12 +1,12 @@
 // * react/next
-import { useState, useEffect, memo, useCallback } from 'react';
+import { useState, useEffect, memo } from 'react';
 
 // * redux
 import {useSelector} from 'react-redux'
 
 // * supabase
-import { supabase } from 'utils/supabaseClient';
-import { fetchAllUsers} from 'utils/Store';
+import { supabase } from 'supabase/supabaseClient';
+import { fetchAllUsers} from 'supabase/modules/user';
 
 // * components
 import UserSelectCard from './UserSelectCard';

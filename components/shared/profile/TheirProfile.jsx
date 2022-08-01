@@ -7,8 +7,8 @@ import {useSelector, useDispatch} from 'react-redux'
 import {handleOpenTheirProfile} from 'store/profileSlice'
 
 // * supabase
-import {fetchCurrentUser} from 'utils/Store'
-import {addPrivatChat, fetchUserAvatar} from 'utils/Store'
+import {fetchCurrentUser, fetchUserAvatar} from 'supabase/modules/user'
+import {addPrivatChat} from 'supabase/modules/chat'
 
 // * supabase
 import {AiOutlineClose} from 'react-icons/ai'

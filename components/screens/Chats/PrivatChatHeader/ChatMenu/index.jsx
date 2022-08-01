@@ -6,7 +6,7 @@ import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
 import {useSelector} from 'react-redux'
 
 // * supabase
-import {supabase} from 'utils/supabaseClient'
+import {supabase} from 'supabase/supabaseClient'
 
 // * framer-motion
 import {motion, AnimatePresence} from 'framer-motion'

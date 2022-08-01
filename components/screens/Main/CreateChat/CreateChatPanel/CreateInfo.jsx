@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import {useSelector} from 'react-redux'
 
 // * supabase
-import { addPrivatChat, addGroupChat} from 'utils/Store';
+import { addPrivatChat, addGroupChat} from 'supabase/modules/chat';
 
 // * framer-motion
 import {motion} from 'framer-motion'
@@ -34,15 +34,16 @@ export default memo(function CreateInfo({selectedUsers, chatTitle, setChatTitle}
         <div className='flex flex-col gap-1 items-center justify-center'>
             <div className='h-8'>
                 {
-                    selectedUsers?.length ?
-                    <h6 className='text-secondary text-sm'>
-                        you create 
-                            <span className='italic font-bold'>
-                                {selectedUsers?.length > 1 ? 'group' : 'privat'}
-                            </span>  
-                        chat
-                    </h6>
-                    : ''
+                    selectedUsers?.length 
+                    ? (
+                        <h6 className='text-secondary text-sm'>
+                            you create 
+                                <span className='italic font-bold'>
+                                    {selectedUsers?.length > 1 ? 'group' : 'privat'}
+                                </span>  
+                            chat
+                        </h6>
+                    ) : null
                 }
             </div>
             <motion.button 

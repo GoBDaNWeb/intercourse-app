@@ -5,10 +5,9 @@ import {useRouter} from 'next/router'
 import {useDispatch, useSelector} from 'react-redux'
 import {signOut} from 'store/authSlice'
 import {handleOpenProfile} from 'store/profileSlice'
-import {setBgChat} from 'store/chatSlice'
 
 // * supabase
-import {updateUserStatus} from 'utils/Store'
+import {updateUserStatus} from 'supabase/modules/user'
 
 // * icons
 import {AiOutlineClose} from 'react-icons/ai'

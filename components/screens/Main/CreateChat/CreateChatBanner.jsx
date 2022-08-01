@@ -1,6 +1,5 @@
 import {BiMessageAdd} from 'react-icons/bi'
 
-
 export default function CreateChatBanner({createChatWindow}) {
     return (
         <div className='flex items-center justify-center w-full '>

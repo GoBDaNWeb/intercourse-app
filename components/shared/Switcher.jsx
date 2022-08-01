@@ -13,11 +13,6 @@ export default function Switcher() {
     
     const checkbox = useRef(null)
 
-    // ** при изменении checkBoxChange переключает тему
-    useEffect(() => {
-        
-    }, [checkBoxChange])
-
     // ** при монтировании менять положение свитчера
     useEffect(() => {
         checkbox.current.checked = theme === 'dark' ? true : false

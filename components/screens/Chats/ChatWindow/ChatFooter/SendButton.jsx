@@ -10,7 +10,6 @@ import {useSelector} from 'react-redux'
 
 export default function SendButton({setValue, sendMessage, value}) {
     const {theme} = useSelector(state => state.theme)
-    const {user} = useSelector(state => state.auth)
 
     const sendMessageFunc = () => {
         sendMessage(value)

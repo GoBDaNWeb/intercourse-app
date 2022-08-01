@@ -1,5 +1,5 @@
 // * react/next
-import { useState, memo, useContext } from 'react'
+import { memo, useContext } from 'react'
 import {useRouter} from 'next/router'
 import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
 

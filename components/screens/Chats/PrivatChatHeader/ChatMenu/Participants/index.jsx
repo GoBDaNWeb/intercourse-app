@@ -1,13 +1,3 @@
-// * react/next
-import { useState, useEffect, useContext } from 'react'
-import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
-
-// * redux 
-import {useSelector} from 'react-redux'
-
-// * supabase
-import {fetchCurrentUser} from 'utils/Store'
-
 // * components
 import Creator from './Creator'
 import Interlocutor from './Interlocutor'

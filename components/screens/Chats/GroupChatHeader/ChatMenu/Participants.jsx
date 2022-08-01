@@ -1,32 +1,16 @@
 // * react/next
-import {useState, useEffect, useContext} from 'react'
-import {useRouter} from 'next/router'
+import {useContext} from 'react'
 import GroupChatContext from 'context/GroupChat/GroupChatContext'
 
 // * redux
-import {useSelector, useDispatch} from 'react-redux'
-import {handleOpenSidebar} from 'store/sidebarSlice'
+import {useSelector} from 'react-redux'
 import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
-
-// * supabase
-import {supabase} from 'utils/supabaseClient'
-import {fetchCurrentUser} from 'utils/Store'
-
-// * framer-motion
-import {motion, AnimatePresence} from 'framer-motion'
-
-// * icons
-import {TiArrowBackOutline} from 'react-icons/ti'
-import {IoMdSettings} from 'react-icons/io'
-import {AiOutlineEdit} from 'react-icons/ai'
 
 // * components
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
-import ChatMenuContent from './ChatMenuContent'
-import Creator from './Creator'
 
 export default function Participants() {
-    const {isOpenMenu, groupChatData} = useContext(GroupChatContext)
+    const {groupChatData} = useContext(GroupChatContext)
 
     const {isTheirProfileOpen} = useSelector(state => state.profile)
 
@@ -36,6 +20,7 @@ export default function Participants() {
             dispatch(handleOpenTheirProfile())
         }
     }
+
 
     return (
         <div className='flex flex-col justify-between w-full px-10 gap-3'>
@@ -47,7 +32,8 @@ export default function Participants() {
                             className='cursor-pointer'
                         >
                             <TheirAvatar
-                                user_id={user.id}
+                                avatar={user.avatar}
+                                usaername={user.username || user.username_google}
                                 size={64}
                                 text_size={'xl'}
                             />

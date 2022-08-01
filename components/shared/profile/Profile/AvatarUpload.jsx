@@ -6,8 +6,8 @@ import {useSelector, useDispatch} from 'react-redux'
 import {setAvatar} from 'store/authSlice'
 
 // * supabase
-import { supabase } from 'utils/supabaseClient'
-import { updateUserAvatar } from 'utils/Store';
+import { supabase } from 'supabase/supabaseClient'
+import { updateUserAvatar } from 'supabase/modules/user';
 
 // * icons
 import {AiFillCamera} from 'react-icons/ai'

@@ -4,9 +4,8 @@ import {useRouter} from 'next/router'
 import GroupChatContext from 'context/GroupChat/GroupChatContext';
 
 // * supabase
-import { supabase } from 'utils/supabaseClient'
-import { updateGroupChatImage, fetchOneGroupChat } from 'utils/Store';
-
+import { supabase } from 'supabase/supabaseClient'
+import { updateGroupChatImage } from 'supabase/modules/chat';
 
 // * icons
 import {AiFillCamera} from 'react-icons/ai'

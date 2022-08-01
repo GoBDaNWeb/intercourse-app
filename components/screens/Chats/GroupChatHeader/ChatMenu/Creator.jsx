@@ -7,7 +7,7 @@ import {useSelector} from 'react-redux'
 import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
 
 // * supabase
-import {fetchCurrentUser} from 'utils/Store'
+import {fetchCurrentUser} from 'supabase/modules/user'
 
 // * components
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
@@ -35,6 +35,8 @@ export default function Creator() {
         }
     }
 
+    const username = creatorUser?.username || creatorUser?.username_google
+
     return (
         <div className='flex flex-col gap-2'>
             <h3 className='text-primary'>creator</h3>
@@ -44,14 +46,15 @@ export default function Creator() {
                     className='cursor-pointer'
                 >
                     <TheirAvatar
-                        user_id={creatorUser?.id}
+                        avatar={creatorUser?.avatar}
+                        username={username}
                         size={64}
                         text_size={'xl'}
                     />
                 </div>
                 <div className='flex flex-col text-primary'>
                     <h3 className='font-semibold text-2xl'>   
-                        {creatorUser?.username || creatorUser?.username_google}
+                        {username}
                     </h3>
                     <h5>
                         {creatorUser?.email}

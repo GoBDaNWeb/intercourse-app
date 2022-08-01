@@ -10,8 +10,9 @@ import {setBgChat, setMessages, setNotificationForSound, setNotification} from '
 import {setTheme} from 'store/themeSlice'
 
 // * supabsae
-import { supabase } from 'utils/supabaseClient';
-import { fetchUserAvatar, updateUserStatus, fetchMessages } from 'utils/Store';
+import { supabase } from 'supabase/supabaseClient';
+import { fetchUserAvatar, updateUserStatus } from 'supabase/modules/user';
+import { fetchMessages } from 'supabase/modules/message';
 
 // * howler
 import { Howl } from 'howler';

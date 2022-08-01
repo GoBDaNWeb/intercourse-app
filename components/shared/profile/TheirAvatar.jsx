@@ -1,10 +1,3 @@
-// * react/next
-import { useEffect, useState } from 'react'
-
-// * supabase
-import {fetchCurrentUser} from 'utils/Store'
-
-
 export default function TheirAvatar({ avatar, username, size, text_size, children }) {
     return (
             <div 

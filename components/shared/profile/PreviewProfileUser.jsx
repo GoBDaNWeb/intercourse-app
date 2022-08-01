@@ -12,24 +12,14 @@ import {ImExit} from 'react-icons/im'
 import {IoMdSettings} from 'react-icons/io'
 
 // * supabase
-import {updateUserStatus, fetchCurrentUser} from 'utils/Store'
+import {updateUserStatus} from 'supabase/modules/user'
 
 // * components
 import Avatar from 'components/shared/profile/Avatar'
 
 export default function PreviewProfileUser() {
-    const [currentUser, setCurrentUser] = useState(null)
-
     const {user} = useSelector(state => state.auth)
     const {isProfileOpen} = useSelector(state => state.profile)
-    
-    // ** при изменении user записывает данные о текущем пользователе
-    useEffect(() => {
-        if (user !== null) {
-           const current = fetchCurrentUser(user.id)
-           current.then(data => setCurrentUser(data[0]))
-        }
-    }, [user])
 
     const router = useRouter()
 

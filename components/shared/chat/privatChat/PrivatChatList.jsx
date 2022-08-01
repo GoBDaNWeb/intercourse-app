@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 
 // * redux
 import {useSelector} from 'react-redux'
-import { supabase } from 'utils/supabaseClient';
 
 // * supabase
-import { fetchAllPrivatChats } from 'utils/Store';
+import { supabase } from 'supabase/supabaseClient';
+import { fetchAllPrivatChats } from 'supabase/modules/chat';
 
 // * components
 import PreviewPrivatChat from './PreviewPrivatChat';

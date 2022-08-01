@@ -6,7 +6,7 @@ import {useEffect} from 'react'
 import { useSelector } from 'react-redux';
 
 // * supabase
-import {updateUserStatus} from 'utils/Store'
+import {updateUserStatus} from 'supabase/modules/user'
 
 // * components
 import CreateChat from './CreateChat'

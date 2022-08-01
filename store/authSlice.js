@@ -1,6 +1,5 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit'
-import {supabase} from '../utils/supabaseClient'
-import {useRouter} from 'next/router'
+import {supabase} from 'supabase/supabaseClient'
 
 const initialState = {
     user: null,

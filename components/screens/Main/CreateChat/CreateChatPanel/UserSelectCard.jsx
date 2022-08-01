@@ -1,9 +1,6 @@
 // * react  
 import {memo} from 'react'
 
-// * framer-motion
-import { motion } from "framer-motion"
-
 // * components
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
 

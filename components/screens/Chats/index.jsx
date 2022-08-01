@@ -9,8 +9,10 @@ import GroupChatContext from 'context/GroupChat/GroupChatContext'
 import {useSelector} from 'react-redux'
 
 // * supabase
-import { supabase } from 'utils/supabaseClient';
-import { addMessage, updateUserTypingAnyway, updateUserTypingChat, fetchOnePrivatChat, fetchOneGroupChat } from 'utils/Store'
+import { supabase } from 'supabase/supabaseClient';
+import { updateUserTypingAnyway, updateUserTypingChat } from 'supabase/modules/user'
+import { fetchOnePrivatChat, fetchOneGroupChat } from 'supabase/modules/chat'
+import { addMessage} from 'supabase/modules/message'
 
 // * howler
 import { Howl } from 'howler';
