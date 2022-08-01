@@ -28,18 +28,11 @@ export default function AuthPanel() {
             <div className='flex flex-col items-center justify-center gap-6 max-w-[280px] sm:max-w-[512px] max-h-[636px] bg-[#273345] rounded-2xl bg-opacity-70 backdrop-blur-sm shadow-md px-16 py-10'>
                 {
                     authComponent === 'Login'
-                    && 
-                    <Login selectAuthComponent={selectAuthComponent}/> 
+                    && <Login selectAuthComponent={selectAuthComponent}/> 
                 }
                 {
                     authComponent === 'Register'
-                    &&
-                    <Register selectAuthComponent={selectAuthComponent}/>
-                }
-                {
-                    authComponent === 'ResetPassword'
-                    &&
-                    <ResetPassword selectAuthComponent={selectAuthComponent}/>
+                    && <Register selectAuthComponent={selectAuthComponent}/>
                 }
                 <div className='flex items-center justify-center gap-4 text-5xl'>
                     <button 

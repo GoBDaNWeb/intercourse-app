@@ -4,7 +4,7 @@ import {useRouter} from 'next/router'
 import GroupChatContext from 'context/GroupChat/GroupChatContext'
 
 // * components
-import ChatHeader from './ChatHeader'
+import ChatHeader from './ChatHeader/index'
 import ChatMenu from './ChatMenu'
 
 export default function GroupChatHeader() {
