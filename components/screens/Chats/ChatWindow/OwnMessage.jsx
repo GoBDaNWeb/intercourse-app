@@ -1,7 +1,10 @@
+// * react
+import {memo} from 'react'
+
 // * moment
 import moment from 'moment';
 
-export default function OwnMessage({message}) {
+export default memo(function OwnMessage({message}) {
     return (
         <div className="flex items-center justify-end w-full min-h-10 pl-40">
             <div className="flex gap-2 items-end min-h-10 min-w-20 max-w-[85%] bg-[#21978B] text-white p-2 rounded-2xl shadow-custom">
@@ -14,4 +17,4 @@ export default function OwnMessage({message}) {
             </div>
         </div>
     )
-}
+})

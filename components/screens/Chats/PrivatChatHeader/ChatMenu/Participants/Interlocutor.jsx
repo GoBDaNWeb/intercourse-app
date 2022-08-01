@@ -2,33 +2,34 @@
 import { useContext } from 'react'
 import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
 
+// * redux 
+import {useSelector} from 'react-redux'
+
 // * components
 import Avatar from 'components/shared/profile/Avatar'
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
 
-export default function Interlocutor ({currentUser, interlocutorUser}) {
+export default function Interlocutor () {
     const {privatChatData} = useContext(PrivatChatContext)
+    const {user} = useSelector(state => state.auth)
+    const username = privatChatData.interlocutor.username_google || privatChatData.interlocutor.username
 
     return (
         <div className='flex gap-4'>
             <div>
                 <h3 className='font-semibold text-2xl'>   
-                    {
-                        interlocutorUser?.username_google 
-                        || interlocutorUser?.username
-                    }
+                    {username}
                 </h3>
                 <h5>
-                    {
-                        interlocutorUser?.email
-                    }
+                    {privatChatData.interlocutor.email}
                 </h5>
             </div>
             {
-                privatChatData && interlocutorUser && currentUser?.id === interlocutorUser?.id
+                user.id === privatChatData.interlocutor.id
                 ? <Avatar size={64}/>  
                 : <TheirAvatar 
-                    user_id={privatChatData && interlocutorUser?.id} 
+                    avatar={privatChatData.interlocutor.avatar} 
+                    username={username}
                     size={64} 
                     text_size={'xl'}
                 />

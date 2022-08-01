@@ -1,5 +1,5 @@
 // * react/next
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useCallback } from 'react';
 
 // * redux
 import {useSelector} from 'react-redux'
@@ -9,43 +9,41 @@ import { supabase } from 'utils/supabaseClient';
 import { fetchAllUsers} from 'utils/Store';
 
 // * components
-import UserSelectCard from 'components/shared/chat/UserSelectCard';
+import UserSelectCard from './UserSelectCard';
 import { ThreeDots } from 'react-loader-spinner';
 
+const useStore = (props) => {
+    const [users] = useState(new Map())
+    const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null)
 
-export default function UserList({selectedUsers, setSelectedUsers}) {
+    useEffect(() => {
+        const userListener = supabase
+            .from('users')
+            .on('*', payload => {
+                // console.log(payload)
+                handleNewOrUpdatedUser(payload.new)
+            })
+            .subscribe()
+
+        return () => {
+            userListener.unsubscribe()
+        }
+    }, [])
+
+    useEffect(() => {
+        if (newOrUpdatedUser) users.set(newOrUpdatedUser.id, newOrUpdatedUser)
+      }, [newOrUpdatedUser])
+
+    return {newOrUpdatedUser}
+}
+
+export default memo(function UserList({selectedUsers, setSelectedUsers}) {
     const [searchValue, setSearchValue] = useState('')
     const [seacrhedUsers, setSearchedUsers] = useState([])
     const [allUsers, setAllUser] = useState(null)
     const [filteredUsers, setFilteredUsers] = useState([])
 
     const {user} = useSelector(state => state.auth)
-
-    // ** при монтировании/размонтировании подписываемся/отписываемся на realtime
-    const useStore = (props) => {
-        const [users] = useState(new Map())
-        const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null)
-
-        useEffect(() => {
-            const userListener = supabase
-                .from('users')
-                .on('*', payload => {
-                    // console.log(payload)
-                    handleNewOrUpdatedUser(payload.new)
-                })
-                .subscribe()
-    
-            return () => {
-                userListener.unsubscribe()
-            }
-        }, [])
-    
-        useEffect(() => {
-            if (newOrUpdatedUser) users.set(newOrUpdatedUser.id, newOrUpdatedUser)
-          }, [newOrUpdatedUser])
-    
-        return {newOrUpdatedUser}
-    }
 
     const {newOrUpdatedUser} = useStore({})
 
@@ -91,6 +89,9 @@ export default function UserList({selectedUsers, setSelectedUsers}) {
         }
     }
 
+    const userListCondition = filteredUsers !== null && seacrhedUsers.length === 0 && searchValue.length === 0
+
+    const searchUserCondition = seacrhedUsers !== null && seacrhedUsers.length > 0
 
     return (
         <div className='w-full'>
@@ -102,8 +103,8 @@ export default function UserList({selectedUsers, setSelectedUsers}) {
             />
             <div className='transition-all duration-[0.4s]  border-2 border-solid border-gray-200 dark:border-gray-800 flex flex-col items-center bg-opacity-80 w-full h-[244px] rounded-b-[20px] overflow-auto custom-scroll'>
             {
-                    filteredUsers !== null && seacrhedUsers.length === 0
-                    && searchValue.length === 0 && filteredUsers.map((user, index) => (
+                    userListCondition
+                    && filteredUsers.map((user, index) => (
                         <UserSelectCard 
                             key={user.id} 
                             user={user} 
@@ -114,7 +115,7 @@ export default function UserList({selectedUsers, setSelectedUsers}) {
                     ))
             }
             {
-                seacrhedUsers !== null && seacrhedUsers.length > 0
+                searchUserCondition
                 && seacrhedUsers.map((user, index) => (
                     <UserSelectCard 
                         key={user.id}
@@ -132,4 +133,4 @@ export default function UserList({selectedUsers, setSelectedUsers}) {
             </div>
         </div>
     )
-}
+})

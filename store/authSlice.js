@@ -4,6 +4,7 @@ import {useRouter} from 'next/router'
 
 const initialState = {
     user: null,
+    avatar: null,
     status: null,
     error: null,
     session: null,
@@ -94,6 +95,9 @@ const authSlice = createSlice({
         setUser(state, action) {
             state.user = action.payload
         },
+        setAvatar(state, action) {
+            state.avatar = action.payload
+        },
         setSession(state, action) {
             state.session = action.payload
         },
@@ -106,6 +110,6 @@ const authSlice = createSlice({
     }
 })
 
-export const {clearError, setUser, setSession} = authSlice.actions
+export const {clearError, setUser, setAvatar, setSession} = authSlice.actions
 
 export default authSlice.reducer

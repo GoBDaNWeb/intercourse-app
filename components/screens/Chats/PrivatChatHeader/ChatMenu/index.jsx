@@ -15,7 +15,7 @@ import {motion, AnimatePresence} from 'framer-motion'
 import {AiOutlineEdit} from 'react-icons/ai'
 
 // * components
-import UploadPrivatChatImage from 'components/shared/chat/UploadPrivatChatImage'
+import UploadPrivatChatImage from './UploadPrivatChatImage'
 import Participants from './Participants'
 
 const dropIn = {
@@ -46,8 +46,7 @@ const dropIn = {
 export default function ChatMenu() {
     const [image_url, setImageUrl] = useState(null)
     const [loading, setLoading] = useState(false)
-
-
+    
     const {isOpenMenu, setIsOpenMenu, privatChatData} = useContext(PrivatChatContext)    
 
     async function updatePivatChat({ image_url }) {

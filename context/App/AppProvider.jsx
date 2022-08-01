@@ -5,9 +5,8 @@ import AppContext from './AppContext'
 
 // * redux
 import {useDispatch, useSelector} from 'react-redux'
-import {setUser} from 'store/authSlice'
+import {setUser, setAvatar} from 'store/authSlice'
 import {setBgChat, setMessages, setNotificationForSound, setNotification} from 'store/chatSlice'
-import {setAvatar} from 'store/profileSlice'
 import {setTheme} from 'store/themeSlice'
 
 // * supabsae
@@ -39,8 +38,6 @@ const AppProvider = (props) => {
         supabase
             .from('messages')
             .on('INSERT', payload => {
-                console.log(router);
-                console.log(router.query.id !== payload.new.chat_id );
                 if (
                         user !== null 
                         && user.id !== payload.new.user_id 

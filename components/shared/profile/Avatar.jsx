@@ -1,10 +1,9 @@
 // * redux
 import {useSelector} from 'react-redux'
 
-export default function Avatar({ url, size, children }) {
-	const {user} = useSelector(state => state.auth)
-	const {avatar} = useSelector(state => state.profile)
-
+export default function Avatar({ size, children }) {
+	const {user, avatar} = useSelector(state => state.auth)
+	const username = user?.user_metadata.name ? user?.user_metadata.name[0].toUpperCase() : user?.user_metadata.username[0].toUpperCase()
 return (
 	<div 
 	className='relative flex justify-center text-8xl font-bold text-accent items-center grad-1 rounded-full group'
@@ -18,11 +17,7 @@ return (
 		/>
 		) : (
 		<div className='absolute text-3xl transition text-white'>
-			{ user !== null && 
-				user.user_metadata.name
-				? user !== null && user.user_metadata.name[0].toUpperCase()
-				: user !== null && user.user_metadata.username[0].toUpperCase()
-			}
+			{username}
 		</div>
 		)}
 		{children}

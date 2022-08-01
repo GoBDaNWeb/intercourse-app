@@ -1,4 +1,7 @@
-export default function CreateChatHeading() {
+// * react 
+import {memo} from 'react'
+
+export default memo(function CreateChatHeading() {
     return (
         <div className='text-secondary'>
             <h2 className='font-bold text-2xl text-primary'>
@@ -12,4 +15,4 @@ export default function CreateChatHeading() {
             </h5>
         </div>
     )
-}
+})

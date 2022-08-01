@@ -1,4 +1,5 @@
 // * react/next
+import {memo} from 'react'
 import Image from 'next/image'
 
 // * redux
@@ -12,11 +13,30 @@ import {motion, AnimatePresence} from 'framer-motion'
 import {AiOutlineSearch} from 'react-icons/ai'
 
 // * components
-import Profile from '../shared/profile/Profile';
-import TheirProfile from '../shared/profile/TheirProfile';
-import PreviewProfileUser from '../shared/profile/PreviewProfileUser';
+import Profile from 'components/shared/profile/Profile/index';
+import TheirProfile from 'components/shared/profile/TheirProfile';
+import PreviewProfileUser from 'components/shared/profile/PreviewProfileUser';
 
-export default function Sidebar({children}) {
+const variant = {
+    open: {
+        height: '100vh',
+        transition: {
+            duration: 0.3,
+            damping: 45,
+            stiffness: 900,
+        },
+    },
+    close: {
+        height: '80px',
+        transition: {
+            duration: 0.5,
+            damping: 45,
+            stiffness: 900,
+        },
+    }
+}
+
+export default memo(function Sidebar({children}) {
     const {isPrivatChats} = useSelector(state => state.chat)
     const {isProfileOpen, isTheirProfileOpen} = useSelector(state => state.profile)
     const {theme} = useSelector(state => state.theme)
@@ -29,25 +49,7 @@ export default function Sidebar({children}) {
         dispatch(setSearchValue(value))
     }
 
-    const variant = {
-        open: {
-            height: '100vh',
-            transition: {
-                duration: 0.3,
-                damping: 45,
-                stiffness: 900,
-            },
-        },
-        close: {
-            height: '80px',
-            transition: {
-                duration: 0.5,
-                damping: 45,
-                stiffness: 900,
-            },
-        }
-    }
-
+    console.log('a)')
     return (
         <div id='sidebar' className={`xl:w-[35%] sm:w-[26.5rem] w-full transition-all duration-[0.4s] max-w-[700px] fixed xl:relative top-0 left-0 bottom-0 right-0 flex flex-col items-between justify-between h-full bg-secondary z-50 overflow-hidden`}>
             <div className='h-full flex flex-col overflow-hidden'>
@@ -127,4 +129,4 @@ export default function Sidebar({children}) {
             </div>
         </div>
     )
-}
+})

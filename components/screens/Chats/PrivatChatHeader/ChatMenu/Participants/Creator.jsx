@@ -2,19 +2,25 @@
 import { useContext } from 'react'
 import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
 
+// * redux 
+import {useSelector} from 'react-redux'
+
 // * components
 import Avatar from 'components/shared/profile/Avatar'
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
 
-export default function Creator({currentUser, creatorUser, interlocutorUser}) {
+export default function Creator() {
     const {privatChatData} = useContext(PrivatChatContext)
+    const {user} = useSelector(state => state.auth)
+    const username = privatChatData.created_by.user_metadata.username_google || privatChatData.created_by.user_metadata.username
 
     return (
         <div className='flex gap-4'>
             {
-                privatChatData && currentUser?.id === interlocutorUser?.id
+                user?.id === privatChatData.interlocutor.id
                 ? <TheirAvatar 
-                    user_id={privatChatData && creatorUser?.id} 
+                    avatar={privatChatData.created_by.avatar} 
+                    username={username}
                     size={64} 
                     text_size={'xl'}
                     />
@@ -22,15 +28,10 @@ export default function Creator({currentUser, creatorUser, interlocutorUser}) {
             }
             <div>
                 <h3 className='font-semibold text-2xl'>   
-                    {
-                        creatorUser?.username_google 
-                        || creatorUser?.username
-                    }
+                    {username}
                 </h3>
                 <h5>
-                    {
-                        creatorUser?.email
-                    }
+                    {privatChatData.created_by.email}
                 </h5>
             </div>
         </div>

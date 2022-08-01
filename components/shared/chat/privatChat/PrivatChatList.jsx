@@ -9,7 +9,36 @@ import { supabase } from 'utils/supabaseClient';
 import { fetchAllPrivatChats } from 'utils/Store';
 
 // * components
-import PreviewPrivatChat from 'components/shared/chat/PreviewPrivatChat';
+import PreviewPrivatChat from './PreviewPrivatChat';
+
+// ** при монтировании/размонтировании подписываемся/отписываемся на realtime
+const useStore = () => {
+    const [privatChats, setPrivatChats] = useState([])
+    const [newPrivatChat, handleNewPrivatChat] = useState(null)
+
+    useEffect(() => {
+        fetchAllPrivatChats(setPrivatChats)
+
+        const privatChatListener = supabase
+            .from('privat_chats')
+            .on('INSERT', payload => {
+                handleNewPrivatChat(payload.new)
+            })
+            .on('DELETE', payload => {handleNewPrivatChat(payload.old)})
+            .subscribe()
+
+
+        return () => {
+            privatChatListener.unsubscribe()
+        }
+    }, [])
+
+    useEffect(() => {
+        if (newPrivatChat) setPrivatChats(privatChats.concat(newPrivatChat))
+    }, [newPrivatChat])
+
+    return {privatChats}
+}
 
 export default function ChatList() {
     const [filteredChats, setFilteredChats] = useState(null)
@@ -17,35 +46,6 @@ export default function ChatList() {
 
     const {searchValue} = useSelector(state => state.chat)
     const {user} = useSelector(state => state.auth)
-
-    // ** при монтировании/размонтировании подписываемся/отписываемся на realtime
-    const useStore = () => {
-        const [privatChats, setPrivatChats] = useState([])
-        const [newPrivatChat, handleNewPrivatChat] = useState(null)
-    
-        useEffect(() => {
-            fetchAllPrivatChats(setPrivatChats)
-
-            const privatChatListener = supabase
-                .from('privat_chats')
-                .on('INSERT', payload => {
-                    handleNewPrivatChat(payload.new)
-                })
-                .on('DELETE', payload => {handleNewPrivatChat(payload.old)})
-                .subscribe()
-    
-    
-            return () => {
-                privatChatListener.unsubscribe()
-            }
-        }, [])
-    
-        useEffect(() => {
-            if (newPrivatChat) setPrivatChats(privatChats.concat(newPrivatChat))
-        }, [newPrivatChat])
-    
-        return {privatChats}
-    }
 
     const {privatChats} = useStore({})
 
@@ -63,21 +63,28 @@ export default function ChatList() {
         }
     }, [searchValue])
 
-
+    const chatListCondition = !searchValue.length && filteredChats !== null
+    const searchChatCondition = searchValue.length > 0 && searchChats !== null && searchChats.length > 0
+    
     return (
             <div className='flex flex-col h-full overflow-y-auto w-full custom-scroll'>
                 {
 
-                    !searchValue.length && filteredChats !== null
-                    && filteredChats.map((chat) => (
+                    chatListCondition
+                    ? filteredChats.map((chat) => (
                         <PreviewPrivatChat key={chat.id} chatData={chat}/>
                     ))
+                    : (
+                        <div className='text-white text-3xl text-center font-semibold'>
+                            Chats not found
+                        </div>
+                    )
                 }
                 {
-                    searchValue.length > 0 && searchChats !== null
+                    searchChatCondition
                     && searchChats.map((chat) => (
                         <PreviewPrivatChat key={chat.id} chatData={chat}/>
-                    ))
+                    )) 
                 }
             </div>
         

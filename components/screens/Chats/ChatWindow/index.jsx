@@ -7,8 +7,8 @@ import {RiWechatLine} from 'react-icons/ri'
 import {useSelector} from 'react-redux'
 
 // * components
-import OwnMessage from 'components/shared/chat/OwnMessage';
-import Message from 'components/shared/chat/Message';
+import OwnMessage from './OwnMessage';
+import Message from './Message';
 import ChatFooter from './ChatFooter/index';
 
 export default function ChatWindow({sendMessage, messages, typingData}) {

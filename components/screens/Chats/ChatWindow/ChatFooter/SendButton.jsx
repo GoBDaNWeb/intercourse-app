@@ -1,25 +1,12 @@
 // * react/next
-import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/router';
 import Image from 'next/image';
-import dynamic from 'next/dynamic';
-
-// * supabase
-import { updateUserTyping } from 'utils/Store';
 
 // * framer-motion
 import { motion, AnimatePresence } from 'framer-motion';
 
 // * icons
 import {RiSendPlaneLine} from 'react-icons/ri'
-import {BsEmojiSmile} from 'react-icons/bs'
-import {RiWechatLine} from 'react-icons/ri'
 import {useSelector} from 'react-redux'
-
-// * components
-import { ThreeDots } from 'react-loader-spinner';
-import OwnMessage from 'components/shared/chat/OwnMessage';
-import Message from 'components/shared/chat/Message';
 
 export default function SendButton({setValue, sendMessage, value}) {
     const {theme} = useSelector(state => state.theme)

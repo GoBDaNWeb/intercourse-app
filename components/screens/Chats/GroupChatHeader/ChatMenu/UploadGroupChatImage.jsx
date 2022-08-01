@@ -1,27 +1,26 @@
 // * react/next
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import {useRouter} from 'next/router'
+import GroupChatContext from 'context/GroupChat/GroupChatContext';
 
 // * supabase
 import { supabase } from 'utils/supabaseClient'
-import { updatePrivateChatImage, fetchOnePrivatChat } from 'utils/Store';
+import { updateGroupChatImage, fetchOneGroupChat } from 'utils/Store';
+
 
 // * icons
 import {AiFillCamera} from 'react-icons/ai'
 
-export default function UploadPrivatChatImage({ url, size, onUpload, text_size}) {
+export default function UploadGroupChatImage({ url, size, onUpload, text_size}) {
 	const [uploading, setUploading] = useState(false)
 	const [chatImage, setChatImage] = useState(null)
 	const [chatTitle, setChatTitle] = useState(null)
 
     const router = useRouter()
-
+ 	const {groupChatData} = useContext(GroupChatContext)
 	useEffect(() => {
-		const fetchData = fetchOnePrivatChat(router.query.id)
-		fetchData.then(data => {
-			setChatImage(data.image ? data.image : null)
-			setChatTitle(data.chat_title)
-		})
+		setChatImage(groupChatData.image)
+		setChatTitle(groupChatData.chat_title)
 	}, [])
 
 	// ** функция загрузки аватара 
@@ -38,7 +37,7 @@ export default function UploadPrivatChatImage({ url, size, onUpload, text_size})
 			const filePath = `${fileName}`
 
 			let { error: uploadError } = await supabase.storage
-			.from('image-privat-chats')
+			.from('image-group-chats')
 			.upload(filePath, file)
 
 			if (uploadError) {
@@ -46,7 +45,7 @@ export default function UploadPrivatChatImage({ url, size, onUpload, text_size})
 			}
 
 			onUpload(filePath)
-			updatePrivateChatImage(router.query.id, filePath)
+			updateGroupChatImage(router.query.id, filePath)
 		} catch (error) {
 			console.log(error.message)
 		} finally {
@@ -62,7 +61,7 @@ export default function UploadPrivatChatImage({ url, size, onUpload, text_size})
 	>
             {chatImage ? (
                 <img
-                src={`https://bxnclqtavxncwdogrurd.supabase.co/storage/v1/object/public/image-privat-chats/${chatImage}`}
+                src={`https://bxnclqtavxncwdogrurd.supabase.co/storage/v1/object/public/image-group-chats/${chatImage}`}
                 alt="chatImage"
                 className="rounded-full"
                 style={{ height: size, width: size }}

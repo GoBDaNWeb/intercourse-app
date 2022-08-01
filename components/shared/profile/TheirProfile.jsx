@@ -8,7 +8,7 @@ import {handleOpenTheirProfile} from 'store/profileSlice'
 
 // * supabase
 import {fetchCurrentUser} from 'utils/Store'
-import {addPrivatChat} from 'utils/Store'
+import {addPrivatChat, fetchUserAvatar} from 'utils/Store'
 
 // * supabase
 import {AiOutlineClose} from 'react-icons/ai'
@@ -30,9 +30,12 @@ export default function TheirProfile() {
 
     // ** при изменении theirProfileData получаем конкретный аватар
     useEffect(() => {
-        const fetchData = fetchCurrentUser(theirProfileData)
-        fetchData.then(data => setCurrentUser(data[0]))
-        setAvatarUrl(theirProfileData)
+        const responseUserData = fetchCurrentUser(theirProfileData)
+        responseUserData.then(data => setCurrentUser(data[0]))
+
+        const responseUserAvatar = fetchUserAvatar(theirProfileData)
+        responseUserAvatar.then(data => setAvatarUrl(data[0].avatar))
+
     }, [theirProfileData])
 
     // ** функция создания нового чата
@@ -48,25 +51,23 @@ export default function TheirProfile() {
         const {value} = e.target
         setChatTitle(value)
     }
+ 
+    const username = currentUser?.username ? currentUser?.username : currentUser?.username_google
 
     return (
         <div>
             <div className='flex flex-col items-center py-10 justify-center w-full'>
                 <TheirAvatar
-                    user_id={avatarUrl}
+                    avatar={avatarUrl}
                     size={208}
                     text_size={'7xl'}
                 />
                 <div className='text-center mt-2'>
                     <h2 className='font-semibold text-4xl text-primary'>
-                        { currentUser !== null &&
-                            currentUser.username
-                            ? currentUser !== null && currentUser.username
-                            : currentUser !== null && currentUser.username_google
-                        }
+                        { username}
                     </h2>
                     <h4 className='text-secondary'>
-                        {currentUser !== null && currentUser.email}
+                        {currentUser?.email}
                     </h4>
                 </div>
                 <div className='mt-10 flex flex-col items-center text-primary'>

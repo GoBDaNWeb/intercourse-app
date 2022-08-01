@@ -1,4 +1,5 @@
 // * react/next
+import Head from "next/head";
 import Image from 'next/image'
 
 // * components
@@ -6,7 +7,11 @@ import AuthPanel from './AuthPanel';
 
 export default function Auth() {
 	return (
-		<div className='h-screen w-full overflow-hidden relative bg-[#f8f8f8]'>
+		<>
+			<Head>
+				<title>Auth</title>
+			</Head>
+			<div className='h-screen w-full overflow-hidden relative bg-[#f8f8f8]'>
 			<div className='absolute right-[-300px] bottom-[-400px] opacity-30 z-10'>
 				<Image
 					src="/carbon_chat-bot.svg" 
@@ -30,5 +35,6 @@ export default function Auth() {
 				<AuthPanel/>
 			</div>
 		</div>
+		</>
 	)
 }

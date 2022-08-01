@@ -67,7 +67,6 @@ export const updateUserAvatar = async (user_id, avatar) => {
         .from('users')
         .update({ avatar: avatar })
         .eq('id', user_id)
-        console.log(data); 
         return data
     } catch(error) {
         console.log(error);
@@ -128,11 +127,11 @@ export const updateUserTypingAnyway = async (user_id) => {
 }
 
 // ** добавить новое сообщение в supabase
-export const addMessage = async (message, chat_id, user_id, author) => {
+export const addMessage = async ({message, chat_id, user_id, author, author_avatar}) => {
     try {
       let { body } = await supabase
       .from('messages')
-      .insert([{ message, chat_id, user_id, author }])
+      .insert([{ message, chat_id, user_id, author, author_avatar }])
       return body
     } catch (error) {
       console.log('error', error)
@@ -253,7 +252,7 @@ export const fetchOnePrivatChat = async (chat_id) => {
         .select('*')
         .eq('id', chat_id)
         let chat = privat_chats[0]
-        console.log(privat_chats);
+        console.log('fetch one privat chat',privat_chats);
         return chat
     } catch(error) {
         console.log(error);

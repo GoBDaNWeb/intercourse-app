@@ -52,16 +52,17 @@ export default function LoginFields() {
         }
     }
 
-    // ** функция монтирует элемент loader
-    const isLoader = () => {
-        setLoader(true)
-    }
-
     // ** следит чтобы значения в полях email/password не были пустыми
     const isEmpty = () => {
         if (!email.length && !password.length) {
             setEmpty(true)
         }
+    }
+
+    const login = () => {
+        signInFunc(email, password)
+        setLoader(true)
+        isEmpty()
     }
 
     // ** при появлении ошибок размонтирует элемент loader
@@ -101,11 +102,7 @@ export default function LoginFields() {
             {
                 !loader 
                 && <motion.button 
-                        onClick={() => {
-                            signInFunc(email, password)
-                            isLoader()
-                            isEmpty()
-                        }}
+                        onClick={login}
                         className='bg-white w-36 h-10 rounded-2xl font-semibold'
                         whileHover={{
                             scale: 1.05

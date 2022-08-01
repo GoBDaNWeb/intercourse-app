@@ -9,7 +9,7 @@ import {supabase} from 'utils/supabaseClient'
 import {AiOutlineEdit} from 'react-icons/ai'
 
 // * components
-import UploadGroupChatImage from 'components/shared/chat/UploadGroupChatImage'
+import UploadGroupChatImage from 'components/screens/Chats/GroupChatHeader/ChatMenu/UploadGroupChatImage'
 
 export default function ChatMenuContent() {
     const [image_url, setImageUrl] = useState(null)

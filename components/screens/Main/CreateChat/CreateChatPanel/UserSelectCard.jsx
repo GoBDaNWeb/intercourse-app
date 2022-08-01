@@ -1,17 +1,22 @@
+// * react  
+import {memo} from 'react'
+
 // * framer-motion
 import { motion } from "framer-motion"
 
 // * components
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
 
-export default function UserSelectCard({user, selectedUsers, selectUser}) {
+export default memo(function UserSelectCard({user, selectedUsers, selectUser}) {
+    const username = user.username || user.username_google
     return (
-        <motion.div 
+        <div 
             onClick={() => selectUser(user)}
             className={`transition-all duration-[0.4s] relative flex-col bg-secondary border-b-2 border-solid border-gray-200 dark:border-gray-800 font-semibold w-full text-primary min-h-14 flex flex-wrap justify-center items-center p-2 gap-1 cursor-pointer hover:bg-opacity-70 transition ${selectedUsers.includes(user) ? 'bg-disable text-secondary' : ''}`}
         >
             <TheirAvatar
-                user_id={user.id}
+                avatar={user.avatar}
+                username={username}
                 size={32}
                 text_size={'lg'}
             />
@@ -30,6 +35,6 @@ export default function UserSelectCard({user, selectedUsers, selectUser}) {
                 </h3>
             </div>
 
-        </motion.div>
+        </div>
     )
-}
+})

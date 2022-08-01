@@ -1,4 +1,5 @@
 // * react/next
+import {memo} from 'react'
 import { useRouter } from 'next/router';
 
 // * redux
@@ -10,7 +11,7 @@ import { addPrivatChat, addGroupChat} from 'utils/Store';
 // * framer-motion
 import {motion} from 'framer-motion'
 
-export default function CreateInfo({selectedUsers, chatTitle, setChatTitle}) {
+export default memo(function CreateInfo({selectedUsers, chatTitle, setChatTitle}) {
 
     const {user} = useSelector(state => state.auth)
 
@@ -59,4 +60,4 @@ export default function CreateInfo({selectedUsers, chatTitle, setChatTitle}) {
             </motion.button>
         </div>
     )
-}
+})

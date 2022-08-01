@@ -4,7 +4,6 @@ const initialState = {
     isProfileOpen: false,
     isTheirProfileOpen: false,
     theirProfileData: '',
-    avatar: null,
 }
 
 const profileSlice = createSlice({
@@ -18,9 +17,6 @@ const profileSlice = createSlice({
         handleOpenTheirProfile(state) {
             state.isTheirProfileOpen = !state.isTheirProfileOpen
             state.isProfileOpen = false
-        },
-        setAvatar(state, action) {
-            state.avatar = action.payload
         },
         setTheirProfileData(state, action) {
             state.theirProfileData = action.payload

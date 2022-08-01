@@ -41,43 +41,22 @@ export default function PreviewProfileUser() {
         dispatch(signOut())
         router.push('/')
     }
+    
+    const username = user?.user_metadata.name ? user?.user_metadata.name : user?.user_metadata.username
 
     return (
         <div className={`flex items-center justify-center gap-4 group py-2 transition ${isProfileOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'} `}>
-            {currentUser !== null 
-                ? (
-                    <Avatar size={64}>
-                        <div 
-                            onClick={() => dispatch(handleOpenProfile())}
-                            className='absolute flex justify-center text-xl items-center w-8 h-8 bg-accent rounded-full -top-2 -right-2 border-2 border-solid border-white dark:border-[#283141] cursor-pointer opacity-0 group-hover:opacity-100 transition'
-                        >
-                            <IoMdSettings/>
-                        </div>  
-                    </Avatar>
-                ) : (
-                    <div className='relative flex justify-center text-3xl font-bold text-accent items-center w-16 h-16 grad-1 rounded-full '>
-                        <div 
-                            onClick={() => dispatch(handleOpenProfile())}
-                            className=' absolute flex justify-center text-xl items-center w-8 h-8 bg-secondary rounded-full -top-2 -right-2 border-2 border-solid border-white  cursor-pointer opacity-0 group-hover:opacity-100 transition'
-                        >
-                            <IoMdSettings/>
-                        </div>
-                        { 
-                            user?.user_metadata?.name
-                            ? user?.user_metadata?.name[0].toUpperCase()
-                            : user?.user_metadata?.username[0].toUpperCase()
-                        }
-                    </div>
-                )  
-            }
-           
+            <Avatar size={64}>
+                <div 
+                    onClick={() => dispatch(handleOpenProfile())}
+                    className='absolute flex justify-center text-xl items-center w-8 h-8 bg-accent rounded-full -top-2 -right-2 border-2 border-solid border-white dark:border-[#283141] cursor-pointer opacity-0 group-hover:opacity-100 transition'
+                >
+                    <IoMdSettings/>
+                </div>  
+            </Avatar>
             <div className='w-[60%]'>
                 <h2 className='font-semibold text-[3.4vw] xl:text-[1.4vw] sm:text-[2.4vw] md:text-[1.8vw] text-primary'>
-                    { 
-                        user?.user_metadata?.name
-                        ? user !== null && user?.user_metadata?.name
-                        : user !== null && user?.user_metadata?.username
-                    }
+                    {username}
                 </h2>
                 <h4 className='text-secondary text-[3vw] xl:text-[1vw] sm:text-[2vw] md:text-[1.4vw]'>
                     {user?.email}
