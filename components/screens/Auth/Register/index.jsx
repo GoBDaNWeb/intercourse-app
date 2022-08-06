@@ -1,7 +1,10 @@
+// * react/next 
+import {memo} from 'react'
+
 // * components
 import RegisterFields from './RegisterFields'
 
-export default function Register({selectAuthComponent}) {
+export default memo(function Register({selectAuthComponent}) {
 
     return (
         <div className="flex flex-col items-center gap-4">
@@ -19,4 +22,4 @@ export default function Register({selectAuthComponent}) {
             </div>
         </div>
     )
-}
+})

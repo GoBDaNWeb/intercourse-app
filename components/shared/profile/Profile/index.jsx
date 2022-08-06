@@ -1,11 +1,8 @@
 // * react/next
-import {useState, memo} from 'react'
+import {memo} from 'react'
 
-// * redux
-import {useSelector} from 'react-redux'
-
-// * supabase
-import {supabase} from 'supabase/supabaseClient'
+// * hooks 
+import {useProfile} from './useProfile'
 
 // * components
 import AvatarUpload from 'components/shared/profile/Profile/AvatarUpload'
@@ -14,40 +11,18 @@ import ThemePicker from './ThemePicker'
 import Buttons from './Buttons'
 
 export default memo(function Profile() {
-    const [loading, setLoading] = useState(false)
-    const [avatar_url, setAvatarUrl] = useState(null)
-
-    const {isProfileOpen} = useSelector(state => state.profile)
-    const {user} = useSelector(state => state.auth)
-
-    // ? Не реадизованно
-    async function updateProfile({ avatar_url }) {
-        try {
-          setLoading(true)
-          const user = supabase.auth.user()
-    
-          const updates = {
-            id: user.id,
+    const {
+        models: {
+            user,
             avatar_url,
-            updated_at: new Date(),
-          }
-    
-          let { error } = await supabase.from('users').upsert(updates, {
-            returning: 'minimal', // Don't return the value after inserting
-          })
-    
-          if (error) {
-            throw error
-          }
-        } catch (error) {
-          alert(error.message)
-        } finally {
-          setLoading(false)
+            isProfileOpen,
+            username
+        }, 
+        commands: {
+            uploadUserAvatar
         }
-    }
+    } = useProfile()
         
-    const username = user?.user_metadata.name ? user?.user_metadata.name : user?.user_metadata.username
-
     return(
         <>
             {
@@ -58,10 +33,7 @@ export default memo(function Profile() {
                             <AvatarUpload
                                 url={avatar_url}
                                 size={208}
-                                onUpload={(url) => {
-                                    setAvatarUrl(url)
-                                    updateProfile({ avatar_url: url })
-                                }}
+                                onUpload={uploadUserAvatar}
                             />
                             <div className='text-center mt-2'>
                                 <h2 className='font-semibold text-4xl text-primary'>

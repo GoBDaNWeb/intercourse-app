@@ -1,7 +1,8 @@
 // * react/next
 import {memo} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
-import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
+
+// * hooks 
+import {useChatWindow} from './useChatWindow'
 
 // * components
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
@@ -10,19 +11,14 @@ import TheirAvatar from 'components/shared/profile/TheirAvatar'
 import moment from 'moment';
 
 export default memo(function Message({message, lastMessage}) {
+    const {
+        commands: {
+            openProfile
+        }
+    } = useChatWindow(message)
+
     const isFirstMessageByUser = !lastMessage || lastMessage.user_id !== message.user_id;
     const firstMessageCondition = isFirstMessageByUser && message
-
-    const {isTheirProfileOpen} = useSelector(state => state.profile)
-
-    const dispatch = useDispatch()
-
-    const openProfile = () => {
-        dispatch(setTheirProfileData(message.user_id))
-        if (!isTheirProfileOpen) {
-            dispatch(handleOpenTheirProfile())
-        }
-    }
 
     return (
         <div className="relative flex items-start justify-start gap-2 w-full min-h-10 ">

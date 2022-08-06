@@ -1,17 +1,23 @@
-// * react/next
-import { useContext } from 'react'
-import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
+// * react/next 
+import {memo} from 'react'
 
-// * redux
-import {useSelector } from 'react-redux'
+// * hooks
+import {useChatHeader} from './useChatHeader'
 
 // * icons
 import {IoMdSettings} from 'react-icons/io'
 
 
-export default function HeaderContent() {
-    const {user} = useSelector(state => state.auth)
-    const {isOpenMenu, setIsOpenMenu, privatChatData} = useContext(PrivatChatContext)
+export default memo(function HeaderContent() {
+    const {
+        models: {
+            user,
+            privatChatData
+        },
+        commands: {
+            handleOpenMenu
+        }
+    } = useChatHeader()
 
     return (
         <div className='flex flex-col items-center'>
@@ -19,7 +25,7 @@ export default function HeaderContent() {
                 <h4 className='relative'>
                     {privatChatData?.chat_title} 
                     <span 
-                        onClick={() => setIsOpenMenu(!isOpenMenu)}
+                        onClick={handleOpenMenu}
                         className='absolute right-[-30px] bottom-1 group-hover:opacity-100 opacity-100 xl:opacity-0  transition cursor-pointer'
                     >
                         <IoMdSettings/>
@@ -43,4 +49,4 @@ export default function HeaderContent() {
             </div>
         </div>
     )
-}
+})

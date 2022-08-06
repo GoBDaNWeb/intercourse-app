@@ -1,17 +1,20 @@
-// * react/next
-import { useContext } from 'react'
-import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
+// * react/next 
+import {memo} from 'react'
 
-// * redux 
-import {useSelector} from 'react-redux'
+// * hooks 
+import {useParticipants} from './useParticipants'
 
 // * components
 import Avatar from 'components/shared/profile/Avatar'
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
 
-export default function Creator() {
-    const {privatChatData} = useContext(PrivatChatContext)
-    const {user} = useSelector(state => state.auth)
+export default memo(function Creator() {
+    const {
+        models: {
+            user,
+            privatChatData
+        }
+    } = useParticipants()
     const username = privatChatData.created_by.user_metadata.username_google || privatChatData.created_by.user_metadata.username
 
     return (
@@ -36,4 +39,4 @@ export default function Creator() {
             </div>
         </div>
     )
-}
+})

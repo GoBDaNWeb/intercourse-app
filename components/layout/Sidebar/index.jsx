@@ -24,7 +24,7 @@ export default memo(function Sidebar({children}) {
     )
 })
 
-const Logo = () => {
+const Logo = memo(() => {
     const {theme} = useSelector(state => state.theme)
 
     return (
@@ -49,4 +49,4 @@ const Logo = () => {
             </h3>
         </div>
     )
-}
+})

@@ -1,37 +1,16 @@
 // * react/next
 import Head from "next/head";
-import {useEffect} from 'react'
 
-// * redux
-import { useSelector } from 'react-redux';
-
-// * supabase
-import {updateUserStatus} from 'supabase/modules/user'
+// * hooks
+import {useMain} from './useMain'
 
 // * components
 import CreateChat from './CreateChat'
 import Burger from 'components/shared/Burger'
 
 export default function Main() {
-    const {user} = useSelector(state => state.auth)
+    useMain()
     
-    useEffect(() => {
-        document.addEventListener("visibilitychange", () => {
-            if (document.hidden){
-                if(user !== null) {
-                    updateUserStatus(user.id, 'OFFLINE')
-                }
-                console.log('Вкладка не активна');
-        
-            } else {
-                if(user !== null) {
-                    updateUserStatus(user.id, 'ONLINE')
-                }
-                console.log('Вкладка активна');
-            }
-        });
-    })
-
     return (
         <>
             <Head>

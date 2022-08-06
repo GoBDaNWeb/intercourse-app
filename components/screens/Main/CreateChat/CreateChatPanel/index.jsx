@@ -1,5 +1,8 @@
-// * react/next
-import { useState } from 'react';
+// * react/next 
+import {memo} from 'react'
+
+// * hooks
+import {useCreateChatPanel} from './useCreateChatPanel'
 
 // * framer-motion
 import {motion} from 'framer-motion'
@@ -13,26 +16,35 @@ import UserList from './UserList';
 import CreateInfo from './CreateInfo';
 import ChatTitleForm from './ChatTitleForm';
 
-export default function CreateChatPanel({createChatWindow}) {
-    const [chatTitle, setChatTitle] = useState('')
-    const [selectedUsers, setSelectedUsers] = useState([])
+export default memo(function CreateChatPanel({createChatWindow}) {
+    const {
+        models: {
+            chatTitle,
+            selectedUsers,
+        },
+        commands: {
+            onChangeChatTitle,
+            createChat,
+            selectUser
+        }
+    } = useCreateChatPanel()
 
     return (
-        <div className='flex items-center justify-center w-full'>
+        <>
             <div className='transition-all duration-[0.4s] bg-secondary w-[26rem] flex flex-col items-center justify-evenly gap-4 rounded-2xl border-2 border-solid border-gray-200 dark:border-gray-800 relative py-8 px-4'>
                 <CreateChatHeading/>
                 <ChatTitleForm
-                    setChatTitle={setChatTitle}
+                    onChangeChatTitle={onChangeChatTitle}
                     chatTitle={chatTitle}
                 />
-                <UserList 
-                    selectedUsers={selectedUsers} 
-                    setSelectedUsers={setSelectedUsers}
+                <UserList
+                    selectUser={selectUser}
+                    selectedUsers={selectedUsers}
                 />
                 <CreateInfo
                     selectedUsers={selectedUsers}
                     chatTitle={chatTitle}
-                    setChatTitle={setChatTitle}
+                    createChat={createChat}
                 />
                 <motion.button
                     onClick={createChatWindow}
@@ -45,6 +57,6 @@ export default function CreateChatPanel({createChatWindow}) {
                     back
                 </motion.button>
             </div>
-        </div>
+        </>
     )
-}
+})

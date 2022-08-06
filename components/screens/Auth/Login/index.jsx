@@ -1,7 +1,10 @@
+// * react/next 
+import {memo} from 'react'
+
 // * components
 import LoginFields from './LoginFields'
 
-export default function Login({selectAuthComponent}) {
+export default memo(function Login({selectAuthComponent}) {
     return (
         <div className="flex flex-col items-center gap-4">
             <h2 className='text-center sm:text-3xl text-lg font-semibold text-gray-200 mb-6'>
@@ -18,4 +21,4 @@ export default function Login({selectAuthComponent}) {
             </div>
         </div>
     )
-}
+})

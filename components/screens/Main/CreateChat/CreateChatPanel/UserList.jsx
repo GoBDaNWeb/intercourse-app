@@ -1,97 +1,26 @@
 // * react/next
-import { useState, useEffect, memo } from 'react';
+import {memo} from 'react'
 
-// * redux
-import {useSelector} from 'react-redux'
-
-// * supabase
-import { supabase } from 'supabase/supabaseClient';
-import { fetchAllUsers} from 'supabase/modules/user';
+// * hooks
+import { useCreateChatPanel } from './useCreateChatPanel';
 
 // * components
 import UserSelectCard from './UserSelectCard';
 import { ThreeDots } from 'react-loader-spinner';
 
-const useStore = (props) => {
-    const [users] = useState(new Map())
-    const [newOrUpdatedUser, handleNewOrUpdatedUser] = useState(null)
-
-    useEffect(() => {
-        const userListener = supabase
-            .from('users')
-            .on('*', payload => {
-                // console.log(payload)
-                handleNewOrUpdatedUser(payload.new)
-            })
-            .subscribe()
-
-        return () => {
-            userListener.unsubscribe()
+export default memo(function UserList({selectUser, selectedUsers}) {
+    const {
+        models: {
+            seacrhedUsers,
+            allUsers,
+            filteredUsers,
+            userListCondition,
+            searchUserCondition
+        },
+        commands: {
+            onChangeSearchValue,
         }
-    }, [])
-
-    useEffect(() => {
-        if (newOrUpdatedUser) users.set(newOrUpdatedUser.id, newOrUpdatedUser)
-      }, [newOrUpdatedUser])
-
-    return {newOrUpdatedUser}
-}
-
-export default memo(function UserList({selectedUsers, setSelectedUsers}) {
-    const [searchValue, setSearchValue] = useState('')
-    const [seacrhedUsers, setSearchedUsers] = useState([])
-    const [allUsers, setAllUser] = useState(null)
-    const [filteredUsers, setFilteredUsers] = useState([])
-
-    const {user} = useSelector(state => state.auth)
-
-    const {newOrUpdatedUser} = useStore({})
-
-    // ** при монтировании элемента получает данные о всех пользователях
-    useEffect(() => {
-        const data = fetchAllUsers()
-        data.then(users => {
-            setAllUser(users)
-        })
-    }, [newOrUpdatedUser])
-
-    // ** при изменениями allUsers фильтрует полученные данные 
-    useEffect(() => {
-        if(allUsers !== null) {
-            const filtered = allUsers.filter(item => item.id !== user.id)
-            setFilteredUsers(filtered)
-        }
-    }, [allUsers])
-
-    // ** следит за изменениями значения 
-    const onChangeSearchValue = (e) => {
-        const {value} = e.target
-        setSearchValue(value)
-    }
-
-    useEffect(() => {
-        if (filteredUsers !== null) {
-            const searched = filteredUsers.filter(user => (user.username_google ? user.username_google : user.username).toLowerCase().includes(searchValue.toLowerCase()))
-            setSearchedUsers(searched)
-        }
-    }, [searchValue])
-
-    // ** функция выбора пользователей для создания чата
-    const selectUser = (user) => {
-        const tmpArr = selectedUsers
-        if (selectedUsers.includes(user)) {
-            const filtered = tmpArr.filter(item => item.id !== user.id)
-            setSelectedUsers([...filtered])
-        }
-        if (!selectedUsers.includes(user)) {
-            tmpArr.push(user)
-            setSelectedUsers([...tmpArr])
-        }
-    }
-
-    const userListCondition = filteredUsers !== null && seacrhedUsers.length === 0 && searchValue.length === 0
-
-    const searchUserCondition = seacrhedUsers !== null && seacrhedUsers.length > 0
+    } = useCreateChatPanel()
 
     return (
         <div className='w-full'>
@@ -109,8 +38,8 @@ export default memo(function UserList({selectedUsers, setSelectedUsers}) {
                             key={user.id} 
                             user={user} 
                             index={index} 
-                            selectedUsers={selectedUsers} 
                             selectUser={selectUser}
+                            selectedUsers={selectedUsers}
                         />
                     ))
             }
@@ -120,9 +49,9 @@ export default memo(function UserList({selectedUsers, setSelectedUsers}) {
                     <UserSelectCard 
                         key={user.id}
                         user={user} 
-                        index={index} 
-                        selectedUsers={selectedUsers} 
+                        index={index}
                         selectUser={selectUser}
+                        selectedUsers={selectedUsers}
                     />
                 ))
             }

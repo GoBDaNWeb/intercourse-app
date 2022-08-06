@@ -1,5 +1,5 @@
 // * react
-import {memo} from 'react'
+import {memo, useCallback} from 'react'
 
 // * redux
 import {useDispatch, useSelector} from 'react-redux'
@@ -19,10 +19,10 @@ export default memo(function ThemePicker() {
     const {bgChat} = useSelector(state => state.chat)
 
     // ** записываем bg чата в localStorage
-    const setBgChatTheme = (bg) => {
+    const setBgChatTheme = useCallback((bg) => {
         localStorage.setItem('bgChat', bg);
         dispatch(setBgChat(bg))
-    }
+    }, [])
     return (
         <>
             <div className='flex flex-col items-center mt-6 w-full h-full'>

@@ -2,12 +2,13 @@ import {createSlice} from '@reduxjs/toolkit'
 
 const initialState = {
     bgChat: 'standart',
-    searchValue: '',
-    isPrivatChats: true,
     notification: [],
     notificationForSound: [],
     messages: [],
-    privatChats: []
+    privatChatData: {},
+    groupChatData: {},
+    isOpenMenuPrivatChatHeader: false,
+    isOpenMenuGroupChatHeader: false,
 }
 
 const chatSlice = createSlice({
@@ -16,12 +17,6 @@ const chatSlice = createSlice({
     reducers: {
         setBgChat(state, action) {
             state.bgChat = action.payload
-        },
-        setSearchValue(state, action) {
-            state.searchValue = action.payload
-        },
-        handleTypeChats(state) {
-            state.isPrivatChats = !state.isPrivatChats
         },
         setNotification(state, action) {
             state.notification.push(action.payload)
@@ -35,20 +30,31 @@ const chatSlice = createSlice({
         setMessages(state, action) {
             state.messages = action.payload
         },
-        setPrivatChats(state, action) {
-            state.privatChats = action.payload
-        }
+        setPrivatChatData(state, action) {
+            state.privatChatData = action.payload
+        },
+        setGroupChatData(state, action) {
+            state.groupChatData = action.payload
+        },
+        setOpenMenuPrivatChatHeader(state, action) {
+            state.isOpenMenuPrivatChatHeader = action.payload
+        },
+        setOpenMenuGroupChatHeader(state, action) {
+            state.isOpenMenuGroupChatHeader = action.payload
+        },
     }
 })
 
 export const {
     setBgChat, 
-    setSearchValue, 
-    handleTypeChats, 
     setNotification, 
-    clearNotification, 
     setNotificationForSound, 
-    setMessages
+    clearNotification, 
+    setMessages,
+    setPrivatChatData,
+    setGroupChatData,
+    setOpenMenuPrivatChatHeader,
+    setOpenMenuGroupChatHeader
 } = chatSlice.actions
 
 export default chatSlice.reducer

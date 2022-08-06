@@ -1,4 +1,4 @@
-// * react 
+// * react/next 
 import {memo} from 'react'
 
 export default memo(function CreateChatHeading() {

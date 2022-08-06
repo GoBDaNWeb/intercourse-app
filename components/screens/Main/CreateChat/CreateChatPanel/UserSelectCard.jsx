@@ -1,11 +1,12 @@
-// * react  
+// * react/next
 import {memo} from 'react'
 
 // * components
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
 
-export default memo(function UserSelectCard({user, selectedUsers, selectUser}) {
+export default memo(function UserSelectCard({user, selectUser, selectedUsers}) {
     const username = user.username || user.username_google
+    
     return (
         <div 
             onClick={() => selectUser(user)}

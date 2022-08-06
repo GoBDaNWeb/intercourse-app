@@ -1,20 +1,24 @@
+// * react
+import {memo, useCallback} from 'react'
+
 // * redux
 import {useSelector, useDispatch} from 'react-redux'
-import {setSearchValue, handleTypeChats} from 'store/chatSlice'
+import {setSearchValue, handleTypeChats} from 'store/sidebarSlice'
 
 // * icons
 import {AiOutlineSearch} from 'react-icons/ai'
 
-export default function SidebarForm() {
-    const {isPrivatChats} = useSelector(state => state.chat)
+export default memo(function SidebarForm() {
+    const {isPrivatChats} = useSelector(state => state.sidebar)
 
     const dispatch = useDispatch()
 
     // ** записывает изменения в переменную
-    const onChange = (e) => {
+    const onChange = useCallback(e => {
         const {value} = e.target
         dispatch(setSearchValue(value))
-    }
+    }, [])
+    
     return (
         <div className='flex flex-col gap-2 items-center justify-center h-full w-full px-2'>
             <div className='flex items-center rounded-full border-2 border-solid border-gray-200 dark:border-gray-800 h-12 w-full bg-opacity-80 text-secondary px-4 mt-2'>
@@ -44,4 +48,4 @@ export default function SidebarForm() {
             </div>
         </div>
     )
-}
+})

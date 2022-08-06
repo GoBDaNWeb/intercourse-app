@@ -1,17 +1,21 @@
-// * react/next
-import { useContext } from 'react'
-import PrivatChatContext from 'context/PrivatChat/PrivatChatContext'
+// * react/next 
+import {memo} from 'react'
 
-// * redux 
-import {useSelector} from 'react-redux'
+// * hooks 
+import {useParticipants} from './useParticipants'
 
 // * components
 import Avatar from 'components/shared/profile/Avatar'
 import TheirAvatar from 'components/shared/profile/TheirAvatar'
 
-export default function Interlocutor () {
-    const {privatChatData} = useContext(PrivatChatContext)
-    const {user} = useSelector(state => state.auth)
+export default memo(function Interlocutor () {
+    const {
+        models: {
+            user,
+            privatChatData
+        }
+    } = useParticipants()
+
     const username = privatChatData.interlocutor.username_google || privatChatData.interlocutor.username
 
     return (
@@ -36,5 +40,5 @@ export default function Interlocutor () {
             }
         </div>
     )
-}
+})
 

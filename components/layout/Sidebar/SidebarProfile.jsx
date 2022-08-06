@@ -1,3 +1,6 @@
+// * raect/next 
+import {memo} from 'react'
+
 // * redux
 import {useSelector} from 'react-redux'
 
@@ -5,7 +8,7 @@ import {useSelector} from 'react-redux'
 import {motion, AnimatePresence} from 'framer-motion'
 
 // * components
-import Profile from 'components/shared/profile/Profile/index';
+import Profile from 'components/shared/profile/Profile';
 import TheirProfile from 'components/shared/profile/TheirProfile';
 import PreviewProfileUser from 'components/shared/profile/PreviewProfileUser';
 
@@ -28,7 +31,7 @@ const variant = {
     }
 }
 
-export default function SidebarProfile() {
+export default memo(function SidebarProfile() {
     const {isProfileOpen, isTheirProfileOpen} = useSelector(state => state.profile)
 
     return (
@@ -56,4 +59,4 @@ export default function SidebarProfile() {
             </motion.div>
         </div>
     )
-}
+})

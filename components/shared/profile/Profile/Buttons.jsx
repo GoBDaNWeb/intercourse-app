@@ -1,8 +1,9 @@
 // * react/next
+import {memo} from 'react'
 import {useRouter} from 'next/router'
 
 // * redux
-import {useDispatch, useSelector} from 'react-redux'
+import {useDispatch} from 'react-redux'
 import {signOut} from 'store/authSlice'
 import {handleOpenProfile} from 'store/profileSlice'
 
@@ -13,7 +14,7 @@ import {updateUserStatus} from 'supabase/modules/user'
 import {AiOutlineClose} from 'react-icons/ai'
 import {ImExit} from 'react-icons/im'
 
-export default function Buttons() {
+export default memo(function Buttons() {
     const dispatch = useDispatch()
 
     const router = useRouter()
@@ -40,4 +41,4 @@ export default function Buttons() {
             </button>
         </>
     )
-}
+})

@@ -1,8 +1,7 @@
-export default function ChatTitleForm({setChatTitle, chatTitle}) {
-    const onChangeChatTitle = (e) => {
-        const {value} = e.target
-        setChatTitle(value)
-    }
+// * react/next
+import {memo} from 'react'
+
+export default memo(function ChatTitleForm({onChangeChatTitle, chatTitle}) {
     return (
         <label className='flex flex-col items-center'>
             <div className='text-center text-primary text-2xl font-semibold relative w-full'>
@@ -19,4 +18,4 @@ export default function ChatTitleForm({setChatTitle, chatTitle}) {
             />
         </label>
     )
-}
+})
