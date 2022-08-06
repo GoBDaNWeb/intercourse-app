@@ -15,14 +15,14 @@ export default memo(function Creator() {
             privatChatData
         }
     } = useParticipants()
-    const username = privatChatData.created_by.user_metadata.username_google || privatChatData.created_by.user_metadata.username
+    const username = privatChatData.created_by?.user_metadata.username_google || privatChatData.created_by?.user_metadata.username
 
     return (
         <div className='flex gap-4'>
             {
-                user?.id === privatChatData.interlocutor.id
+                user?.id === privatChatData.interlocutor?.id
                 ? <TheirAvatar 
-                    avatar={privatChatData.created_by.avatar} 
+                    avatar={privatChatData.created_by?.avatar} 
                     username={username}
                     size={64} 
                     text_size={'xl'}
@@ -34,7 +34,7 @@ export default memo(function Creator() {
                     {username}
                 </h3>
                 <h5>
-                    {privatChatData.created_by.email}
+                    {privatChatData.created_by?.email}
                 </h5>
             </div>
         </div>

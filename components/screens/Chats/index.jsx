@@ -17,10 +17,12 @@ export default memo(function ChatsPage() {
 
     const {
         models: {
-            typingData
+            typingData,
+            privatChatData,
+            groupChatData
         }
     } = useChats()
-
+    
     return (
         <>
             <Head>
@@ -30,12 +32,12 @@ export default memo(function ChatsPage() {
             </Head>
             <div id='chat' className='z-50 transition-all duration-[0.4s] w-full fixed xl:relative top-0 left-0 bottom-0 right-0 border-l-2 border-solid border-gray-200 dark:border-gray-800'>
                 {
-                    router.query.type === 'p' 
+                    privatChatData && router.query.type === 'p' 
                     ? <PrivatChatHeader/>
                     : null
                 }
                 {
-                    router.query.type === 'g' 
+                    groupChatData && router.query.type === 'g' 
                     ? <GroupChatHeader/>
                     : null
                 }

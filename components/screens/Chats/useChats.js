@@ -13,12 +13,6 @@ import {useUser} from 'hooks/useUser'
 import { updateUserTypingAnyway, updateUserTypingChat } from 'supabase/modules/user'
 import { fetchOnePrivatChat, fetchOneGroupChat } from 'supabase/modules/chat'
 
-// * howler
-import { Howl } from 'howler';
-
-// * components
-
-
 
 export function useChats() {
     const [typingData, setTypingData] = useState(null)
@@ -31,7 +25,7 @@ export function useChats() {
     const {newOrUpdatedUser} = useUser()
 
     const {user} = useSelector(state => state.auth)
-
+    const {privatChatData, groupChatData} = useSelector(state => state.chat)
     
     const userCondition = newOrUpdatedUser !== null && user !== null && user.id !== newOrUpdatedUser.id
 
@@ -69,11 +63,13 @@ export function useChats() {
             const data = fetchOneGroupChat(chatId)
             data.then(chat => dispatch(setGroupChatData(chat)))
         }
-    }, [chatId])
+    }, [chatId, router.query.type])
 
     return {
         models: {
-            typingData
+            typingData,
+            privatChatData,
+            groupChatData
         }
     }
 }

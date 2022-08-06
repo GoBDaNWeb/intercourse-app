@@ -20,7 +20,7 @@ export default memo(function Members() {
     return (
         <div className='flex flex-col justify-between w-full px-10 gap-3'>
             {
-                groupChatData?.members?.map((user, index) => (
+                groupChatData.members?.map((user, index) => (
                     <div key={index} className='flex gap-2'>
                         <div
                             onClick={openProfile}

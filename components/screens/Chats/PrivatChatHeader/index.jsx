@@ -8,11 +8,22 @@ import ChatHeader from './ChatHeader'
 import ChatMenu from './ChatMenu'
 
 export default memo(function PrivatChatHeader() {
-    usePrivatChatHeader()
+    const {
+        models: {
+            privatChatData
+        }
+    } = usePrivatChatHeader()
     return (
         <>
-            <ChatHeader />
-            <ChatMenu />
-        </>
+        {
+            privatChatData
+            ? (
+                <>
+                    <ChatHeader/>
+                    <ChatMenu/>
+                </>
+            ) : null
+        }
+    </>
     )
 })

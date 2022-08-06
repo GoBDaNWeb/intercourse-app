@@ -25,7 +25,7 @@ export function useChatMenu() {
 	useEffect(() => {
 		setChatImage(privatChatData.image)
 		setChatTitle(privatChatData.chat_title)
-	}, [])
+	}, [privatChatData])
 
     const handleOpenMenu = () => {
         dispatch(setOpenMenuPrivatChatHeader(false))

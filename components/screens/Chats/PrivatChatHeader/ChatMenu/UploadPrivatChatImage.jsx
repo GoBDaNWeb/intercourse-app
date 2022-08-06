@@ -15,7 +15,7 @@ export default function UploadPrivatChatImage({ size, text_size}) {
             uploadAvatar
         }
     } = useChatMenu()
-
+	
   	return (
 		<label 
 			className='relative flex justify-center items-center text-8xl font-bold text-accent grad-1 rounded-full group cursor-pointer'
@@ -33,8 +33,9 @@ export default function UploadPrivatChatImage({ size, text_size}) {
 					/>
 				) : (
 					<div className={`absolute group-hover:opacity-0 opacity-100 transition text-white text-${text_size}`}>
-						{ chatTitle !== null && 
-							chatTitle[0].toUpperCase()
+						{ 
+							chatTitle && chatTitle !== null 
+							&& chatTitle[0].toUpperCase()
 						}
 					</div>
 				)

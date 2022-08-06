@@ -24,10 +24,10 @@ export default function UploadGroupChatImage({ size, text_size}) {
 			style={{ height: size, width: size }}
 		>
 				{
-					groupChatData.image 
+					groupChatData?.image 
 					? (
 						<img
-							src={`https://bxnclqtavxncwdogrurd.supabase.co/storage/v1/object/public/image-group-chats/${groupChatData.image}`}
+							src={`https://bxnclqtavxncwdogrurd.supabase.co/storage/v1/object/public/image-group-chats/${groupChatData?.image}`}
 							alt="chatImage"
 							className="rounded-full"
 							style={{ height: size, width: size }}
@@ -35,8 +35,8 @@ export default function UploadGroupChatImage({ size, text_size}) {
 					) : (
 						<div className={`absolute group-hover:opacity-0 opacity-100 transition text-white text-${text_size}`}>
 							{ 
-								groupChatData.chat_title !== null && 
-								groupChatData.chat_title[0].toUpperCase()
+								groupChatData?.chat_title && groupChatData?.chat_title !== null && 
+								groupChatData?.chat_title[0].toUpperCase()
 							}
 						</div>
 					)

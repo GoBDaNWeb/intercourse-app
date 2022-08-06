@@ -6,12 +6,23 @@ import ChatHeader from './ChatHeader/index'
 import ChatMenu from './ChatMenu'
 
 export default function GroupChatHeader() {
-    useGroupChatHeader()
+    const {
+        models: {
+            groupChatData
+        }
+    } = useGroupChatHeader()
 
     return (
         <>
-            <ChatHeader/>
-            <ChatMenu/>
+            {
+                groupChatData
+                ? (
+                    <>
+                        <ChatHeader/>
+                        <ChatMenu/>
+                    </>
+                ) : null
+            }
         </>
     )
 }

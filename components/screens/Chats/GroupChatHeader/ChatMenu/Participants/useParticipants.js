@@ -15,14 +15,14 @@ export function useParticipants() {
 
     const {user} = useSelector(state => state.auth)
     const {isTheirProfileOpen} = useSelector(state => state.profile)
-    const {isOpenMenuGroupChatHeader, groupChatData} = useSelector(state => state.chat)
+    const {groupChatData} = useSelector(state => state.chat)
 
     useEffect(() => {
-        if (user !== null && groupChatData) {
-            const fetchDataCreator = fetchCurrentUser(groupChatData?.created_by?.id)
-            fetchDataCreator.then(data => setCreatorUser(data[0]))
+        if (user !== null && groupChatData && groupChatData.created_by) {
+            const fetchDataCreator = fetchCurrentUser(groupChatData.created_by.id)
+            fetchDataCreator.then(data => data && setCreatorUser(data[0]))
         }
-    }, [])
+    }, [groupChatData])
 
     const openProfile = () => {
         dispatch(setTheirProfileData(user.id))

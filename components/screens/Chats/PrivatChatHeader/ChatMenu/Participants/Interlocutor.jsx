@@ -16,7 +16,7 @@ export default memo(function Interlocutor () {
         }
     } = useParticipants()
 
-    const username = privatChatData.interlocutor.username_google || privatChatData.interlocutor.username
+    const username = privatChatData.interlocutor?.username_google || privatChatData.interlocutor?.username
 
     return (
         <div className='flex gap-4'>
@@ -25,14 +25,14 @@ export default memo(function Interlocutor () {
                     {username}
                 </h3>
                 <h5>
-                    {privatChatData.interlocutor.email}
+                    {privatChatData.interlocutor?.email}
                 </h5>
             </div>
             {
-                user.id === privatChatData.interlocutor.id
+                user.id === privatChatData.interlocutor?.id
                 ? <Avatar size={64}/>  
                 : <TheirAvatar 
-                    avatar={privatChatData.interlocutor.avatar} 
+                    avatar={privatChatData.interlocutor?.avatar} 
                     username={username}
                     size={64} 
                     text_size={'xl'}
