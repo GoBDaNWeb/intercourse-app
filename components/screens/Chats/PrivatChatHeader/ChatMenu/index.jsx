@@ -1,28 +1,27 @@
 // * react/next 
 import {memo} from 'react'
+import {useRouter} from 'next/router'
 
-// * hooks
-import {useChatMenu} from './useChatMenu'
+// * redux
+import {useSelector, useDispatch} from 'react-redux'
+import {setOpenMenuPrivatChatHeader} from 'store/chatSlice'
 
 // * icons
 import {AiOutlineEdit} from 'react-icons/ai'
 
 // * components
-import UploadPrivatChatImage from './UploadPrivatChatImage'
+import UploadChatImage from 'components/shared/UploadChatImage'
 import Participants from './Participants'
 
-export default memo(function ChatMenu() {
-    const {
-        models: {
-            isOpenMenuPrivatChatHeader,
-            privatChatData,
-            image_url,
-        },
-        commands: {
-            handleOpenMenu,
-            uploadImage
-        }
-    } = useChatMenu()
+const ChatMenu = memo(() => {
+    const dispatch = useDispatch()
+    const router = useRouter()
+    const {id} = router.query
+    const {isOpenMenuPrivatChatHeader, privatChatData} = useSelector(state => state.chat)
+
+    const handleOpenMenu = () => {
+        dispatch(setOpenMenuPrivatChatHeader(false))
+    }
 
     return (
         <div className={`flex flex-col justify-start items-center py-4 pt-28 w-full h-[500px] bg-primary absolute z-10 border-b-2 border-solid border-gray-200 dark:border-gray-800 shadow transition duration-700 ${isOpenMenuPrivatChatHeader ? 'translate-y-[0vh] opacity-100' : 'translate-y-[-100vh] opacity-0'}`}>   
@@ -35,15 +34,14 @@ export default memo(function ChatMenu() {
             </div>
             <div className='flex flex-col gap-5 items-center w-full'>
                 <div className='flex flex-col items-center'>
-                    <UploadPrivatChatImage 
-                        url={image_url}
+                    <UploadChatImage 
+                        isPrivate={true}
+                        id={id}
                         size={128}
-                        onUpload={uploadImage}
                         text_size={'6xl'}
                     />
-                    {/* {chatData && chatData.chat_title[0].toUpperCase()} */}
                     <div className='relative flex items-center gap-2 text-primary font-semibold text-2xl'>
-                        {privatChatData?.chat_title}
+                        {privatChatData.chat_title}
                         <span 
                             className='absolute right-[-30px] cursor-pointer group-hover:opacity-100 opacity-0 transition'
                         >
@@ -56,3 +54,7 @@ export default memo(function ChatMenu() {
         </div>
     )
 })
+
+ChatMenu.displayName = 'ChatMenu';
+
+export default ChatMenu

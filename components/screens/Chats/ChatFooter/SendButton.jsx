@@ -2,8 +2,8 @@
 import {memo} from 'react'
 import Image from 'next/image';
 
-// * hooks 
-import {useChatFooter} from './useChatFooter'
+// * redux 
+import { useSelector} from 'react-redux'
 
 // * framer-motion
 import { motion, AnimatePresence } from 'framer-motion';
@@ -11,16 +11,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 // * icons
 import {RiSendPlaneLine} from 'react-icons/ri'
 
-export default memo(function SendButton() {
-    const {
-        models: {
-            theme,
-            value,
-        },
-        commands: {
-            sendMessageMouse,
-        }
-    } = useChatFooter()
+const SendButton = memo(({value, sendMessageMouse}) => {
+    const {theme} = useSelector(state => state.theme)
 
     return (
         <div className='flex items-center justify-center rounded-full text-2xl bg-accent w-10 h-10'>
@@ -75,3 +67,7 @@ export default memo(function SendButton() {
         </div>
     )
 })
+
+SendButton.displayName = 'SendButton';
+
+export default SendButton

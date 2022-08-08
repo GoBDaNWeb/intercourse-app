@@ -4,7 +4,7 @@ import {memo} from 'react'
 // * framer-motion
 import {motion} from 'framer-motion'
 
-export default memo(function CreateInfo({selectedUsers, chatTitle, createChat}) {
+const CreateInfo = memo(({selectedUsers, chatTitle, createChat}) => {
     return (
         <div className='flex flex-col gap-1 items-center justify-center'>
             <div className='h-8'>
@@ -34,3 +34,7 @@ export default memo(function CreateInfo({selectedUsers, chatTitle, createChat}) 
         </div>
     )
 })
+
+CreateInfo.displayName = 'CreateInfo';
+
+export default CreateInfo

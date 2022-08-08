@@ -1,21 +1,21 @@
 // * react/next 
 import {memo} from 'react'
 
-// * hooks 
-import {useParticipants} from './useParticipants'
+// * redux 
+import {useSelector} from 'react-redux'
 
 // * components
-import TheirAvatar from 'components/shared/profile/TheirAvatar'
+import Avatar from 'components/shared/Avatar'
 
-export default memo(function Members() {
-    const {
-        models: {
-            groupChatData
-        },
-        commands: {
-            openProfile
+const Members = memo(() => {
+    const {groupChatData} = useSelector(state => state.chat)
+
+    const openProfile = () => {
+        dispatch(setTheirProfileData(user.id))
+        if (!isTheirProfileOpen) {
+            dispatch(handleOpenTheirProfile())
         }
-    } = useParticipants()
+    }
 
     return (
         <div className='flex flex-col justify-between w-full px-10 gap-3'>
@@ -26,7 +26,7 @@ export default memo(function Members() {
                             onClick={openProfile}
                             className='cursor-pointer'
                         >
-                            <TheirAvatar
+                            <Avatar
                                 avatar={user.avatar}
                                 usaername={user.username || user.username_google}
                                 size={64}
@@ -47,3 +47,7 @@ export default memo(function Members() {
         </div>
     )
 })
+
+Members.displayName = 'Members';
+
+export default Members

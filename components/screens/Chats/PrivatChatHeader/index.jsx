@@ -1,29 +1,39 @@
-import {memo} from 'react'
+// * react/next
+import {memo, useEffect} from 'react'
+import {useRouter} from 'next/router'
 
-// * hooks 
-import {usePrivatChatHeader} from './usePrivatChatHeader'
+// * redux 
+import {useDispatch, useSelector} from 'react-redux'
+import {setOpenMenuPrivatChatHeader} from 'store/chatSlice'
 
 // * components
 import ChatHeader from './ChatHeader'
 import ChatMenu from './ChatMenu'
 
-export default memo(function PrivatChatHeader() {
-    const {
-        models: {
-            privatChatData
-        }
-    } = usePrivatChatHeader()
+const PrivatChatHeader = memo(() => {
+    const router = useRouter()
+    const dispatch = useDispatch()
+    const {privatChatData} = useSelector(state => state.chat)
+
+    useEffect(() => {
+        dispatch(setOpenMenuPrivatChatHeader(false))
+    }, [router.query.id])
+
     return (
         <>
-        {
-            privatChatData
-            ? (
-                <>
-                    <ChatHeader/>
-                    <ChatMenu/>
-                </>
-            ) : null
-        }
-    </>
+            {
+                privatChatData
+                && (
+                    <>
+                        <ChatHeader/>
+                        <ChatMenu/>
+                    </>
+                ) 
+            }
+        </>
     )
 })
+
+PrivatChatHeader.displayName = 'PrivatChatHeader';
+
+export default PrivatChatHeader

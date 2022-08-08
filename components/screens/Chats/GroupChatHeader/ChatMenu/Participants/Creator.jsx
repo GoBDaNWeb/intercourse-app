@@ -1,21 +1,38 @@
 // * react/next 
-import {memo} from 'react'
+import {useEffect, useState, memo} from 'react'
 
-// * hooks
-import {useParticipants} from './useParticipants'
+// * redux 
+import {useSelector, useDispatch} from 'react-redux'
+
+// * supabase 
+import {fetchCurrentUser} from 'supabase/modules/user'
 
 // * components
-import TheirAvatar from 'components/shared/profile/TheirAvatar'
+import Avatar from 'components/shared/Avatar'
 
-export default memo(function Creator() {
-    const {
-        models: {
-            creatorUser
-        },
-        commands: {
-            openProfile
+const Creator = memo(() => {
+    const [creatorUser, setCreatorUser] = useState(null)
+
+    const dispatch = useDispatch()
+
+    const {user} = useSelector(state => state.auth)
+    const {groupChatData} = useSelector(state => state.chat)
+
+    const openProfile = () => {
+        dispatch(setTheirProfileData(user.id))
+        if (!isTheirProfileOpen) {
+            dispatch(handleOpenTheirProfile())
         }
-    } = useParticipants()
+    }
+
+    const fetchCreatorUser = async () => {
+        const response = await fetchCurrentUser(groupChatData?.created_by.id)
+        setCreatorUser(response[0])
+    }
+
+    useEffect(() => {
+        fetchCreatorUser()
+    }, [groupChatData, user])
 
     const username = creatorUser?.username || creatorUser?.username_google
 
@@ -27,7 +44,7 @@ export default memo(function Creator() {
                     onClick={openProfile}
                     className='cursor-pointer'
                 >
-                    <TheirAvatar
+                    <Avatar
                         avatar={creatorUser?.avatar}
                         username={username}
                         size={64}
@@ -46,3 +63,7 @@ export default memo(function Creator() {
         </div>
     )
 })
+
+Creator.displayName = 'Creator';
+
+export default Creator

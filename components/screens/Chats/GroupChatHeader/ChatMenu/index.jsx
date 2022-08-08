@@ -1,46 +1,19 @@
-// * hooks 
-import {useChatMenu} from './useChatMenu'
-
-// * framer-motion
-import {motion, AnimatePresence} from 'framer-motion'
+// * redux 
+import {useSelector, useDispatch} from 'react-redux'
+import {setOpenMenuGroupChatHeader} from 'store/chatSlice'
 
 // * components
 import ChatMenuContent from './ChatMenuContent'
 import Participants from './Participants'
 
-const dropIn = {
-    before: {
-        y: '-100vh',
-        opacity: 0,
-    },
-    in: {
-        y: 0,
-        opacity: 1,
-        transition: {
-            duration: 0.1,
-            type: 'spring',
-            damping: 55,
-            stiffness: 600,
-        },
-    },
-    after: {
-        y: '-100vh',
-        opacity: 0,
-        transition: {
-            duration: 0.5,
-        },
-    },
-}
+const ChatMenu = () => {
+    const dispatch = useDispatch()
 
-export default function ChatMenu() {
-    const {
-        models: {
-            isOpenMenuGroupChatHeader
-        },
-        commands: {
-            handleOpenMenu
-        }
-    } = useChatMenu()
+    const {isOpenMenuGroupChatHeader} = useSelector(state => state.chat)
+
+    const handleOpenMenu = () => {
+        dispatch(setOpenMenuGroupChatHeader(!isOpenMenuGroupChatHeader))
+    }
 
     return (
         <div 
@@ -59,3 +32,5 @@ export default function ChatMenu() {
         </div>
     )
 }
+
+export default ChatMenu

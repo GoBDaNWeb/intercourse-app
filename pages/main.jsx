@@ -1,6 +1,8 @@
 // * components
 import Main from 'components/screens/Main'
 
-export default function MainPage() {
+const MainPage = () => {
     return <Main/>
 }
+
+export default MainPage

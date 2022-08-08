@@ -1,13 +1,14 @@
 // * react/next;
-import {memo} from 'react'
+import {memo, useState} from 'react'
 import {useRouter} from 'next/router'
 import dynamic from 'next/dynamic';
 
-// * hooks
-import {useChatFooter} from './useChatFooter'
+// * redux 
+import { useSelector} from 'react-redux'
 
 // * supabase
 import { updateUserTyping } from 'supabase/modules/user';
+import { addMessage} from 'supabase/modules/message'
 
 // * framer-motion
 import { motion } from 'framer-motion';
@@ -21,22 +22,64 @@ import SendButton from './SendButton';
 
 const Picker = dynamic(() => {return import('emoji-picker-react')}, {ssr: false})
 
-export default memo(function ChatFooter({typingData}) {
-    const {
-        models: {
-            user,
-            value,
-            showPicker
-        },
-        commands: {
-            onEmojiClick,
-            handlePicker,
-            sendMessageEnter,
-            onChange
-        }
-    } = useChatFooter()
+const ChatFooter = memo(({typingData}) => {
+    const [showPicker, setShowPicker] = useState(false)
+    const [value, setValue] = useState('')
+
+    const {user, avatar} = useSelector(state => state.auth)
 
     const router = useRouter()
+    const { id: chatId } = router.query
+
+    const callSound = (src) => {
+        const sound = new Howl({
+            src,
+            html5: true
+        })
+        sound.play()
+    }
+
+    // ** следит за иземениями в value
+    const onChange = (e) => {
+        const {value} = e.target 
+        setValue(value)
+    }
+
+    // ** функция добавляет выбранный emoji в value 
+    const onEmojiClick = (event, emojiObject) => {
+        setValue(value + emojiObject.emoji)
+    }
+
+    // ** функция монтирует/размонтирует элемент emojiPicker
+    const handlePicker = () => {
+        setShowPicker(showPicker = !showPicker)
+    }
+
+    // ** функция отправки сообщения 
+    const sendMessage = (value) => {
+        const authorCondition =  user.user_metadata.name ? user.user_metadata.name : user.user_metadata.username
+        const message = {
+            message: value,
+            user_id: user.id,
+            chat_id: chatId,
+            author: authorCondition,
+            author_avatar: avatar
+        }
+        addMessage(message)
+        callSound('/sendMessage.mp3')
+    }
+
+    const sendMessageMouse = () => {
+        sendMessage(value)
+        setValue('')
+    }
+
+    const sendMessageEnter = (e) => {
+        if(e.code === 'Enter') {
+            sendMessage(value)
+            setValue('')
+        }
+    }
 
     const typingCondition = typingData !== null && typingData.chat === router.query.id && typingData.typing 
 
@@ -83,8 +126,15 @@ export default memo(function ChatFooter({typingData}) {
                     type="text"
                     placeholder='message' 
                 />
-                <SendButton />
+                <SendButton 
+                    value={value}
+                    sendMessageMouse={sendMessageMouse}
+                />
             </div>
         </div>
     )
 })
+
+ChatFooter.displayName = 'ChatFooter';
+
+export default ChatFooter

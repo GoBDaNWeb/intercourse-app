@@ -1,6 +1,8 @@
 // * components
 import Auth from 'components/screens/Auth'
 
-export default function AuthPage() {
+const AuthPage = () => {
 	return <Auth/>
 }
+
+export default AuthPage

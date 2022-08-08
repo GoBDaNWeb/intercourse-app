@@ -1,6 +1,7 @@
+// * icons
 import {BiMessageAdd} from 'react-icons/bi'
 
-export default function CreateChatBanner({createChatWindow}) {
+const CreateChatBanner = ({createChatWindow}) => {
     return (
         <>
             <div 
@@ -18,3 +19,5 @@ export default function CreateChatBanner({createChatWindow}) {
         </>
     )
 }
+
+export default CreateChatBanner

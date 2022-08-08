@@ -1,24 +1,32 @@
 // * react/next
 import {memo} from 'react'
 
-// * hooks 
-import {useChatWindow} from './useChatWindow'
+// * redux 
+import {useSelector, useDispatch} from 'react-redux'
+import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
 
 // * components
-import TheirAvatar from 'components/shared/profile/TheirAvatar'
+import Avatar from 'components/shared/Avatar'
 
 // * moment
 import moment from 'moment';
 
-export default memo(function Message({message, lastMessage}) {
-    const {
-        commands: {
-            openProfile
-        }
-    } = useChatWindow(message)
+const Message = memo(({messageData, lastMessage}) => {
+    const {isTheirProfileOpen} = useSelector(state => state.profile)
 
-    const isFirstMessageByUser = !lastMessage || lastMessage.user_id !== message.user_id;
-    const firstMessageCondition = isFirstMessageByUser && message
+    const {user_id, author_avatar, author, message, inserted_at} = messageData
+
+    const isFirstMessageByUser = !lastMessage || lastMessage.user_id !== user_id;
+    const firstMessageCondition = isFirstMessageByUser && messageData
+
+    const dispatch = useDispatch()
+
+    const openProfile = () => {
+        dispatch(setTheirProfileData(message.user_id))
+        if (!isTheirProfileOpen) {
+            dispatch(handleOpenTheirProfile())
+        }
+    }
 
     return (
         <div className="relative flex items-start justify-start gap-2 w-full min-h-10 ">
@@ -29,9 +37,9 @@ export default memo(function Message({message, lastMessage}) {
                         onClick={openProfile}
                         className="their-avatar-resolve group absolute -left-14 top-2 flex items-center justify-center font-semibold text-2xl text-white w-12 h-12 grad-1 rounded-full shadow-custom cursor-pointer"
                     >
-                        <TheirAvatar 
-                            avatar={message.author_avatar} 
-                            username={message.author} 
+                        <Avatar 
+                            avatar={author_avatar} 
+                            username={author} 
                             size={48} 
                             text_size={'xl'}
                         />
@@ -43,16 +51,16 @@ export default memo(function Message({message, lastMessage}) {
                     isFirstMessageByUser && message
                     && (
                         <h6 className=' mb-4 italic font-semibold text-primary opacity-50 absolute '>
-                            {message.author}
+                            {author}
                         </h6>
                     )
                 }
                 <div className={`flex gap-2 items-end  bg-white p-2 rounded-2xl shadow-custom ${isFirstMessageByUser ? 'mt-6' : ''}`}>
                     <div >
-                        {message.message}
+                        {message}
                     </div>
                     <span className="text-sm bg-black bg-opacity-10 px-2 rounded-full">
-                        {moment(message.inserted_at).format('h:mm')}
+                        {moment(inserted_at).format('h:mm')}
                     </span>
                 </div>
             </div>
@@ -60,3 +68,7 @@ export default memo(function Message({message, lastMessage}) {
         </div>
     )
 })
+
+Message.displayName = 'Message';
+
+export default Message

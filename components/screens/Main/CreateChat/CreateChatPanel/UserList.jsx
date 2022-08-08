@@ -1,26 +1,59 @@
 // * react/next
-import {memo} from 'react'
+import {memo, useState, useEffect, useCallback} from 'react'
 
-// * hooks
-import { useCreateChatPanel } from './useCreateChatPanel';
+// * redux
+import {useSelector} from 'react-redux'
+
+// * hooks 
+import {useUser} from 'hooks/useUser'
+
+// * supabase
+import { fetchAllUsers} from 'supabase/modules/user';
 
 // * components
 import UserSelectCard from './UserSelectCard';
 import { ThreeDots } from 'react-loader-spinner';
 
-export default memo(function UserList({selectUser, selectedUsers}) {
-    const {
-        models: {
-            seacrhedUsers,
-            allUsers,
-            filteredUsers,
-            userListCondition,
-            searchUserCondition
-        },
-        commands: {
-            onChangeSearchValue,
+const UserList = memo(({selectUser, selectedUsers}) => {
+    const [searchValue, setSearchValue] = useState('')
+    const [seacrhedUsers, setSearchedUsers] = useState([])
+    const [allUsers, setAllUser] = useState(null)
+    const [filteredUsers, setFilteredUsers] = useState([])
+
+    const {user} = useSelector(state => state.auth)
+    const {newOrUpdatedUser} = useUser()
+
+    const onChangeSearchValue = useCallback(e => {
+        const {value} = e.target
+        setSearchValue(value)
+    }, [])
+
+    const fetchUsers = async () => {
+        const response = await fetchAllUsers()
+        const filtered = response.filter(item => item.id !== user.id)
+        setFilteredUsers(filtered)
+        setAllUser(response)
+    }
+
+    useEffect(() => {
+        fetchUsers()
+    }, [newOrUpdatedUser])
+
+    useEffect(() => {
+        if (filteredUsers !== null) {
+            const searched = filteredUsers.filter(user => {
+                const username = user.username_google ? user.username_google : user.username
+                
+                return username
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+            })
+            setSearchedUsers(searched)
         }
-    } = useCreateChatPanel()
+    }, [searchValue])
+
+    const userListCondition = seacrhedUsers?.length === 0 && searchValue.length === 0
+    const searchUserCondition = seacrhedUsers?.length > 0
 
     return (
         <div className='w-full'>
@@ -63,3 +96,7 @@ export default memo(function UserList({selectUser, selectedUsers}) {
         </div>
     )
 })
+
+UserList.displayName = 'UserList';
+
+export default UserList

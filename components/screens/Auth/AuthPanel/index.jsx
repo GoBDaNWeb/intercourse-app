@@ -1,8 +1,8 @@
 // * react/next
 import {memo} from 'react'
-
-// * hooks
-import {useAuthPanel} from './useAuthPanel'
+// * redux
+import {useDispatch} from 'react-redux'
+import { signInWithProvider } from 'store/authSlice';
 
 // * icons
 import {FcGoogle} from 'react-icons/fc'
@@ -11,12 +11,12 @@ import {FcGoogle} from 'react-icons/fc'
 import AuthComponents from './AuthComponents';
 
 
-export default memo(function AuthPanel() {
-    const {
-        commands: {
-            handleSignInWithProvider
-        }
-    } = useAuthPanel()
+ const AuthPanel = memo(() => {
+	const dispatch = useDispatch()
+
+    const handleSignInWithProvider = () => {
+        dispatch(signInWithProvider('google'))
+    }
 
     return (
         <div className='z-50'>
@@ -34,3 +34,7 @@ export default memo(function AuthPanel() {
         </div>
     )
 })
+
+AuthPanel.displayName = 'AuthPanel';
+
+export default AuthPanel

@@ -1,19 +1,16 @@
 // * react/next
-import { useCreateChat } from './useCreateChat';
+import { useState } from 'react';
 
 // * components
 import CreateChatBanner from './CreateChatBanner';
 import CreateChatPanel from './CreateChatPanel';
 
-export default function CreateChat() {
-    const {
-        models: {
-            createChat
-        },
-        commands: {
-            createChatWindow
-        }
-    } = useCreateChat()
+const CreateChat = () => {
+    const [createChat, setCreateChat] = useState(false)
+   
+    const createChatWindow = () => {
+        setCreateChat(!createChat)
+    }
 
     return (
         <div className='flex items-center justify-center w-full'>
@@ -25,3 +22,5 @@ export default function CreateChat() {
         </div>
     )
 }
+
+export default CreateChat

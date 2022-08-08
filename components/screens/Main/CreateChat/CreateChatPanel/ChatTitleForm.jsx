@@ -1,7 +1,7 @@
 // * react/next
 import {memo} from 'react'
 
-export default memo(function ChatTitleForm({onChangeChatTitle, chatTitle}) {
+const ChatTitleForm = memo(({onChangeChatTitle, chatTitle}) => {
     return (
         <label className='flex flex-col items-center'>
             <div className='text-center text-primary text-2xl font-semibold relative w-full'>
@@ -19,3 +19,7 @@ export default memo(function ChatTitleForm({onChangeChatTitle, chatTitle}) {
         </label>
     )
 })
+
+ChatTitleForm.displayName = 'ChatTitleForm';
+
+export default ChatTitleForm

@@ -1,26 +1,29 @@
-// * hooks
-import {useChatMenu} from './useChatMenu'
+// * react/next 
+import {useRouter} from 'next/router'
+
+// * redux 
+import {useSelector} from 'react-redux'
 
 // * icons
 import {AiOutlineEdit} from 'react-icons/ai'
 
 // * components
-import UploadGroupChatImage from './UploadGroupChatImage'
+import UploadChatImage from 'components/shared/UploadChatImage'
 
-export default function ChatMenuContent() {
-    const {
-        models: {
-            groupChatData
-        }
-    } = useChatMenu()
+const ChatMenuContent = () => {
+    const router = useRouter()
+    const {id} = router.query
+
+    const {groupChatData} = useSelector(state => state.chat)
 
     return (
         <div className='flex flex-col items-center'>
-            <UploadGroupChatImage 
+            <UploadChatImage 
+                isPrivate={false}
+                id={id}
                 size={128}
                 text_size={'6xl'}
             />
-
             <div className='relative flex items-center gap-2 text-primary font-semibold text-2xl'>
                 {groupChatData?.chat_title}
                 <span 
@@ -32,3 +35,5 @@ export default function ChatMenuContent() {
         </div>
     )
 }
+
+export default ChatMenuContent

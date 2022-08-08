@@ -1,6 +1,8 @@
 // * components
 import Chats from 'components/screens/Chats';
 
-export default function ChatsPage() {
+const ChatsPage = () => {
     return <Chats/>
 }
+
+export default ChatsPage

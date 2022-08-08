@@ -2,7 +2,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import {handleOpenSidebar} from 'store/sidebarSlice';
 
-export default function Burger() {
+const Burger = () => {
     const {isOpen} = useSelector(state => state.sidebar)
 
     const dispatch = useDispatch()
@@ -17,3 +17,5 @@ export default function Burger() {
         </div>
     )
 }
+
+export default Burger

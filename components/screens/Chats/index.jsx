@@ -1,10 +1,18 @@
 // * react/next
-import {memo} from 'react'
+import {memo, useState, useEffect} from 'react'
 import Head from "next/head";
 import { useRouter } from 'next/router';
 
+// * redux
+import {useSelector, useDispatch} from 'react-redux'
+import {setPrivatChatData, setGroupChatData} from 'store/chatSlice'
+
 // * hooks 
-import {useChats} from './useChats'
+import {useUser} from 'hooks/useUser'
+
+// * supabase
+import { updateUserTypingAnyway, updateUserTypingChat } from 'supabase/modules/user'
+import { fetchOnePrivatChat, fetchOneGroupChat } from 'supabase/modules/chat'
 
 // * components
 import PrivatChatHeader from './PrivatChatHeader/index';
@@ -12,17 +20,61 @@ import GroupChatHeader from './GroupChatHeader/index';
 import ChatWindow from './ChatWindow';
 import ChatFooter from './ChatFooter';
 
-export default memo(function ChatsPage() {
-    const router = useRouter()
+const ChatsPage = memo(() => {
+    const [typingData, setTypingData] = useState(null)
 
-    const {
-        models: {
-            typingData,
-            privatChatData,
-            groupChatData
-        }
-    } = useChats()
+    const dispatch = useDispatch()
+    const router = useRouter()
+    const {newOrUpdatedUser} = useUser()
+
+    const {user} = useSelector(state => state.auth)
+    const {privatChatData, groupChatData} = useSelector(state => state.chat)
+
+    const { id: chatId } = router.query
     
+    const userCondition = user?.id !== newOrUpdatedUser?.id
+
+    const typingDataObj = {
+        typing: newOrUpdatedUser?.is_typing, 
+        name: newOrUpdatedUser?.username || newOrUpdatedUser?.username_google, 
+        chat: newOrUpdatedUser?.typing_chat
+    }
+
+    useEffect(() => {
+        if (userCondition) {
+            setTypingData(typingDataObj)
+        }
+    }, [newOrUpdatedUser, userCondition])
+
+    useEffect(() => {
+        if (user !== null) {
+            updateUserTypingChat(user.id, chatId)
+            updateUserTypingAnyway(user.id)
+        }
+        if (userCondition) {
+            setTypingData(typingDataObj)
+        }
+    }, [chatId, userCondition])
+
+    const fetchPrivatChat = async () => {
+        const response = await fetchOnePrivatChat(chatId)
+        dispatch(setPrivatChatData(response))
+    }
+
+    const fetchGroupChat = async () => {
+        const response = await fetchOneGroupChat(chatId)
+        dispatch(setGroupChatData(response))
+    }
+
+    useEffect(() => {
+        if (router.query.type === 'p') {
+            fetchPrivatChat()
+        }
+        if (router.query.type === 'g') {
+            fetchGroupChat()
+        }
+    }, [chatId, router.query.type])
+ 
     return (
         <>
             <Head>
@@ -33,13 +85,11 @@ export default memo(function ChatsPage() {
             <div id='chat' className='z-50 transition-all duration-[0.4s] w-full fixed xl:relative top-0 left-0 bottom-0 right-0 border-l-2 border-solid border-gray-200 dark:border-gray-800'>
                 {
                     privatChatData && router.query.type === 'p' 
-                    ? <PrivatChatHeader/>
-                    : null
+                    && <PrivatChatHeader/>
                 }
                 {
                     groupChatData && router.query.type === 'g' 
-                    ? <GroupChatHeader/>
-                    : null
+                    && <GroupChatHeader/> 
                 }
                 <ChatWindow/>
                 <ChatFooter typingData={typingData}/>
@@ -48,3 +98,6 @@ export default memo(function ChatsPage() {
     )
 })
 
+ChatsPage.displayName = 'ChatsPage';
+
+export default ChatsPage

@@ -1,28 +1,37 @@
-// * hooks 
-import {useGroupChatHeader} from './useGroupChatHeader'
+// * react/next
+import {useEffect} from 'react'
+import {useRouter} from 'next/router'
+
+// * redux
+import {useDispatch, useSelector} from 'react-redux'
+import {setOpenMenuGroupChatHeader} from 'store/chatSlice'
 
 // * components
 import ChatHeader from './ChatHeader/index'
 import ChatMenu from './ChatMenu'
 
-export default function GroupChatHeader() {
-    const {
-        models: {
-            groupChatData
-        }
-    } = useGroupChatHeader()
+const GroupChatHeader = () => {
+    const dispatch = useDispatch()
+    const router = useRouter()
+    const {groupChatData} = useSelector(state => state.chat)
+
+    useEffect(() => {
+        dispatch(setOpenMenuGroupChatHeader(false))
+    }, [router.query.id])
 
     return (
         <>
             {
                 groupChatData
-                ? (
+                && (
                     <>
                         <ChatHeader/>
                         <ChatMenu/>
                     </>
-                ) : null
+                ) 
             }
         </>
     )
 }
+
+export default GroupChatHeader

@@ -1,6 +1,8 @@
 // * components 
 import Custom404 from 'components/screens/ErrorPage'
 
-export default function Custom404Page() {
+const Custom404Page = () => {
     return <Custom404/>
 }
+
+export default Custom404Page

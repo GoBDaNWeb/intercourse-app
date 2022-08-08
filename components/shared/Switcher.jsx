@@ -5,7 +5,7 @@ import {useRef, useEffect, useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
 import {setTheme} from 'store/themeSlice'
 
-export default function Switcher() {
+const Switcher = () => {
     const [checkBoxChange, setCheckBoxChange] = useState(false)
     
     const {theme} = useSelector(state => state.theme)
@@ -41,3 +41,5 @@ export default function Switcher() {
         
     )
 }
+
+export default Switcher

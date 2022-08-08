@@ -1,23 +1,24 @@
 // * react/next 
 import {memo} from 'react'
 
-// * hooks
-import {useChatHeader} from './useChatHeader'
+// * redux
+import {useSelector, useDispatch} from 'react-redux'
+import {setOpenMenuPrivatChatHeader} from 'store/chatSlice'
 
 // * icons
 import {IoMdSettings} from 'react-icons/io'
 
 
-export default memo(function HeaderContent() {
-    const {
-        models: {
-            user,
-            privatChatData
-        },
-        commands: {
-            handleOpenMenu
-        }
-    } = useChatHeader()
+const HeaderContent = memo(() => {
+    const {user} = useSelector(state => state.auth)
+    const {isOpenMenuPrivatChatHeader, privatChatData} = useSelector(state => state.chat)
+
+    const dispatch = useDispatch()
+
+
+    const handleOpenMenu = () => {
+        dispatch(setOpenMenuPrivatChatHeader(!isOpenMenuPrivatChatHeader))
+    }
 
     return (
         <div className='flex flex-col items-center'>
@@ -35,14 +36,14 @@ export default memo(function HeaderContent() {
             <div className='text-secondary text-sm flex items-center gap-2 px-8'>
                 this is privat chat with
                 {
-                    user && privatChatData && user.id === privatChatData?.created_by?.id
+                    user.id === privatChatData.created_by.id
                     ? (
                         <h4 className='text-primary font-semibold text-lg'>
                             {privatChatData?.interlocutor.username || privatChatData?.interlocutor.username_google}
                         </h4>
                     ) : (
                         <h4 className='text-primary font-semibold text-lg'>
-                            {privatChatData?.created_by?.user_metadata.username}
+                            {privatChatData?.created_by.user_metadata.username}
                         </h4>
                     )
                 }
@@ -50,3 +51,7 @@ export default memo(function HeaderContent() {
         </div>
     )
 })
+
+HeaderContent.displayName = 'HeaderContent';
+
+export default HeaderContent

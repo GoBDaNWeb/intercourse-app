@@ -5,8 +5,8 @@ const initialState = {
     notification: [],
     notificationForSound: [],
     messages: [],
-    privatChatData: {},
-    groupChatData: {},
+    privatChatData: null,
+    groupChatData: null,
     isOpenMenuPrivatChatHeader: false,
     isOpenMenuGroupChatHeader: false,
 }

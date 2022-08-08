@@ -1,7 +1,7 @@
 // * react/next 
 import {memo} from 'react'
 
-export default memo(function CreateChatHeading() {
+const CreateChatHeading = memo(() => {
     return (
         <div className='text-secondary'>
             <h2 className='font-bold text-2xl text-primary'>
@@ -16,3 +16,7 @@ export default memo(function CreateChatHeading() {
         </div>
     )
 })
+
+CreateChatHeading.displayName = 'CreateChatHeading';
+
+export default CreateChatHeading

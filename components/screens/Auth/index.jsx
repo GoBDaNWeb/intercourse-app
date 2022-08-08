@@ -5,7 +5,7 @@ import Image from 'next/image'
 // * components
 import AuthPanel from './AuthPanel';
 
-export default function Auth() {
+const Auth = () => {
 	return (
 		<>
 			<Head>
@@ -38,3 +38,5 @@ export default function Auth() {
 		</>
 	)
 }
+
+export default Auth

@@ -8,9 +8,9 @@ import {useSelector} from 'react-redux'
 import {motion, AnimatePresence} from 'framer-motion'
 
 // * components
-import Profile from 'components/shared/profile/Profile';
-import TheirProfile from 'components/shared/profile/TheirProfile';
-import PreviewProfileUser from 'components/shared/profile/PreviewProfileUser';
+import Profile from 'components/shared/Profile';
+import TheirProfile from 'components/shared/TheirProfile';
+import PreviewProfile from 'components/shared/PreviewProfile';
 
 const variant = {
     open: {
@@ -31,22 +31,24 @@ const variant = {
     }
 }
 
-export default memo(function SidebarProfile() {
+const SidebarProfile = memo(() => {
     const {isProfileOpen, isTheirProfileOpen} = useSelector(state => state.profile)
 
     return (
         <div className='relative min-h-[80px]'>
             <AnimatePresence exitBeforeEnter>
                 {
-                    isTheirProfileOpen && 
-                    <motion.div 
-                        className={`absolute bottom-0 border-t-2  border-solid border-gray-200 dark:border-gray-800 w-full h-[80px] bg-secondary `}
-                        variants={variant}
-                        animate={isTheirProfileOpen ? 'open' : 'close'}
-                        exit='close'
-                    >
-                        <TheirProfile/>
-                    </motion.div>
+                    isTheirProfileOpen 
+                    && (
+                        <motion.div 
+                            className={`absolute bottom-0 border-t-2  border-solid border-gray-200 dark:border-gray-800 w-full h-[80px] bg-secondary `}
+                            variants={variant}
+                            animate={isTheirProfileOpen ? 'open' : 'close'}
+                            exit='close'
+                        >
+                            <TheirProfile/>
+                        </motion.div>
+                    )
                 }
             </AnimatePresence>
             <motion.div 
@@ -55,8 +57,12 @@ export default memo(function SidebarProfile() {
                 animate={isProfileOpen ? 'open' : 'close'}
             >
                 <Profile/>
-                <PreviewProfileUser/>
+                <PreviewProfile/>
             </motion.div>
         </div>
     )
 })
+
+SidebarProfile.displayName = 'SidebarProfile';
+
+export default SidebarProfile

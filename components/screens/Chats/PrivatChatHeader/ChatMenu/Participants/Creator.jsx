@@ -1,34 +1,26 @@
 // * react/next 
 import {memo} from 'react'
 
-// * hooks 
-import {useParticipants} from './useParticipants'
+// * redux 
+import {useSelector} from 'react-redux'
 
 // * components
-import Avatar from 'components/shared/profile/Avatar'
-import TheirAvatar from 'components/shared/profile/TheirAvatar'
+import Avatar from 'components/shared/Avatar'
 
-export default memo(function Creator() {
-    const {
-        models: {
-            user,
-            privatChatData
-        }
-    } = useParticipants()
+const Creator = memo(() => {
+    const {user} = useSelector(state => state.auth)
+    const {privatChatData} = useSelector(state => state.chat)
+
     const username = privatChatData.created_by?.user_metadata.username_google || privatChatData.created_by?.user_metadata.username
 
     return (
         <div className='flex gap-4'>
-            {
-                user?.id === privatChatData.interlocutor?.id
-                ? <TheirAvatar 
-                    avatar={privatChatData.created_by?.avatar} 
-                    username={username}
-                    size={64} 
-                    text_size={'xl'}
-                    />
-                : <Avatar size={64}/>  
-            }
+            <Avatar 
+            avatar={privatChatData.created_by?.avatar} 
+            username={username}
+            size={64} 
+            text_size={'xl'}
+            />
             <div>
                 <h3 className='font-semibold text-2xl'>   
                     {username}
@@ -40,3 +32,7 @@ export default memo(function Creator() {
         </div>
     )
 })
+
+Creator.displayName = 'Creator';
+
+export default Creator

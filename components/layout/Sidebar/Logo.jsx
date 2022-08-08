@@ -5,7 +5,7 @@ import Image from 'next/image'
 // * redux
 import {useSelector} from 'react-redux'
 
-export default memo(function Logo() {
+const Logo = memo(() => {
     const {theme} = useSelector(state => state.theme)
 
     return (
@@ -31,3 +31,7 @@ export default memo(function Logo() {
         </div>
     )
 })
+
+Logo.displayName = 'Logo';
+
+export default Logo

@@ -1,21 +1,21 @@
 // * react/next 
 import {memo} from 'react'
 
-// * hooks 
-import {useChatHeader} from './useChatHeader'
+// * redux
+import {useDispatch, useSelector} from 'react-redux'
+import {setOpenMenuGroupChatHeader} from 'store/chatSlice'
 
 // * icons
 import {IoMdSettings} from 'react-icons/io'
 
-export default memo(function HeaderContent() {
-    const {
-        models: {
-            groupChatData
-        },
-        commands: {
-            handleOpenMenu
-        }
-    } = useChatHeader()
+const HeaderContent = memo(() => {
+    const dispatch = useDispatch()
+
+    const {isOpenMenuGroupChatHeader, groupChatData} = useSelector(state => state.chat)
+
+    const handleOpenMenu = () => {
+        dispatch(setOpenMenuGroupChatHeader(!isOpenMenuGroupChatHeader))
+    }
 
     return (
         <div className='flex flex-col items-center justify-center'>
@@ -33,3 +33,7 @@ export default memo(function HeaderContent() {
         </div>
     )
 })
+
+HeaderContent.displayName = 'HeaderContent';
+
+export default HeaderContent

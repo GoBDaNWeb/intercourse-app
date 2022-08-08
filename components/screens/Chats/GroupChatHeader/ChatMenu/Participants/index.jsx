@@ -2,7 +2,7 @@
 import Creator from './Creator'
 import Members from './Members'
 
-export default function Participants() {
+const Participants = () => {
     return (
         <>
             <Creator/>
@@ -10,3 +10,5 @@ export default function Participants() {
         </>
     )
 }
+
+export default Participants

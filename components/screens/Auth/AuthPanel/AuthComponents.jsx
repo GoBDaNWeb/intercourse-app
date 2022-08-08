@@ -1,33 +1,36 @@
 // * react/next
-import {memo} from 'react'
+import { memo, useState, useCallback } from 'react'
 
-// * hooks
-import {useAuthPanel} from './useAuthPanel'
+// * redux
+import {useDispatch} from 'react-redux'
+import { clearError } from 'store/authSlice';
+
 
 // * components
-import Login from '../Login/index';
-import Register from '../Register/index';
+import Login from './Login';
+import Register from './Register';
 
-export default memo(function AuthComponents() {
-    const {
-        modules: {
-            authComponent
-        },
-        commands: {
-            selectAuthComponent
-        }
-    } = useAuthPanel()
+const AuthComponents = memo(() => {
+    const [isLogin, setIsLogin] = useState(true)
+
+	const dispatch = useDispatch()
+
+	const selectAuthComponent = useCallback(type => {
+		setIsLogin(!isLogin)
+		dispatch(clearError())
+	}, [])
 
     return (
         <>
             {
-                authComponent === 'Login'
-                && <Login selectAuthComponent={selectAuthComponent}/> 
-            }
-            {
-                authComponent === 'Register'
-                && <Register selectAuthComponent={selectAuthComponent}/>
+                isLogin
+                ? <Login selectAuthComponent={selectAuthComponent}/> 
+                : <Register selectAuthComponent={selectAuthComponent}/>
             }
         </>
     )
 })
+
+AuthComponents.displayName = 'AuthComponents';
+
+export default AuthComponents
