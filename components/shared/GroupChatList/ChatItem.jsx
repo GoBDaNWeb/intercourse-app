@@ -27,10 +27,10 @@ const ChatItem = ({chatData}) => {
     const currentChat = (chatData && router.query?.id === chatData.id);
 
     const openChat = () => {
-        dispatch(clearNotification(notification.filter(item => item.chat_id !== chatId)))
-        if (document.scrollingElement.clientWidth <= 600) {
-            dispatch(closeSidebar())
-        }
+        const removeNotification = notification.filter(item => item.chat_id !== chatId)
+
+        dispatch(clearNotification(removeNotification))
+        document.scrollingElement.clientWidth <= 600 && dispatch(closeSidebar())
     }
 
     useEffect(() => {

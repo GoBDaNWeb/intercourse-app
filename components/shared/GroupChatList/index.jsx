@@ -12,7 +12,7 @@ import ChatItem from './ChatItem';
 import { ThreeDots } from 'react-loader-spinner';
 
 const GroupChatList = () => {
-    const [filteredChats, setFilteredChats] = useState(null)
+    const [filteredChats, setFilteredChats] = useState([])
     const [searchChats, setSearchChats] = useState(null)
 
     const {user} = useSelector(state => state.auth)
@@ -20,28 +20,43 @@ const GroupChatList = () => {
 
     const {groupChats} = useGroupChats()
 
+    const filteredByMembers = () => {
+        return groupChats.filter(chat => {
+            const isContainInChat = chat.members.map(item => item.id === user.id)
+            .indexOf(true) != -1
+            return isContainInChat === true
+        })   
+    }
+    
+    const filteredByCreated = () => {
+        return groupChats.filter(chat => {
+            return user.id === chat.created_by.id
+        }) 
+    }
+
+    const filterMembers = (arr, tmpArr) => {
+        arr.forEach(item => {
+            tmpArr.push(item)
+            setFilteredChats([...tmpArr])
+        })
+    }
+
+    const filterCreator = (arr, tmpArr) => {
+        arr.forEach(item => {
+            tmpArr.push(item)
+            setFilteredChats([...tmpArr])
+        })
+    }
+
+
     useEffect(() => {
-        if (user !== null) {
-            const filteredByMembers = groupChats.filter(chat => {
-                const boolUsers = chat.members.map(item => item.id === user.id)
-                const containsTheCurrentUser = boolUsers.indexOf(true) != -1
-                chat.filtered_by_member = containsTheCurrentUser
-                return chat.filtered_by_member === true
-            })      
-            const filteredByCreated = groupChats.filter(chat => {
-                return user.id === chat.created_by.id
-            })
-            let tmp = []
-            filteredByMembers.forEach(item => {
-                tmp.push(item)
-                setFilteredChats([...tmp])
-            })
-            filteredByCreated.forEach(item => {
-                tmp.push(item)
-                setFilteredChats([...tmp])
-            })
+        if (user !== null) {  
+            let tmpArr = []
+            filterMembers(filteredByMembers(), tmpArr)
+            filterCreator(filteredByCreated(), tmpArr)
         } 
     }, [groupChats])
+
 
     useEffect(() => {
         if(filteredChats !== null) {

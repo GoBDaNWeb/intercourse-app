@@ -31,10 +31,10 @@ const ChatItem = memo(({chatData}) => {
     const currentChat = (chatData && router.query.id === chatId);  
 
     const openChat = (chatId) => {
-        dispatch(clearNotification(notification.filter(item => item.chat_id !== chatId)))
-        if (document.scrollingElement.clientWidth <= 600) {
-            dispatch(closeSidebar())
-        }
+        const removeNotification = notification.filter(item => item.chat_id !== chatId)
+
+        dispatch(clearNotification(removeNotification))
+        document.scrollingElement.clientWidth <= 600 && dispatch(closeSidebar())
     }
 
     useEffect(() => {

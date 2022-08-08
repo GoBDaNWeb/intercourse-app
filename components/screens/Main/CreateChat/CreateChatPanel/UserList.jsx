@@ -14,7 +14,7 @@ import { fetchAllUsers} from 'supabase/modules/user';
 import UserSelectCard from './UserSelectCard';
 import { ThreeDots } from 'react-loader-spinner';
 
-const UserList = memo(({selectUser, selectedUsers}) => {
+const UserList = memo(({handleSelectUser, selectedUsers}) => {
     const [searchValue, setSearchValue] = useState('')
     const [seacrhedUsers, setSearchedUsers] = useState([])
     const [allUsers, setAllUser] = useState(null)
@@ -39,17 +39,19 @@ const UserList = memo(({selectUser, selectedUsers}) => {
         fetchUsers()
     }, [newOrUpdatedUser])
 
+    const filterAndSetUsers = () => {
+        const searched = filteredUsers.filter(user => {
+            const username = user.username_google ? user.username_google : user.username
+            
+            return username
+                .toLowerCase()
+                .includes(searchValue.toLowerCase())
+        })
+        setSearchedUsers(searched)
+    }
+
     useEffect(() => {
-        if (filteredUsers !== null) {
-            const searched = filteredUsers.filter(user => {
-                const username = user.username_google ? user.username_google : user.username
-                
-                return username
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase())
-            })
-            setSearchedUsers(searched)
-        }
+        filteredUsers !== null && filterAndSetUsers()
     }, [searchValue])
 
     const userListCondition = seacrhedUsers?.length === 0 && searchValue.length === 0
@@ -71,7 +73,7 @@ const UserList = memo(({selectUser, selectedUsers}) => {
                             key={user.id} 
                             user={user} 
                             index={index} 
-                            selectUser={selectUser}
+                            handleSelectUser={handleSelectUser}
                             selectedUsers={selectedUsers}
                         />
                     ))
@@ -83,7 +85,7 @@ const UserList = memo(({selectUser, selectedUsers}) => {
                         key={user.id}
                         user={user} 
                         index={index}
-                        selectUser={selectUser}
+                        handleSelectUser={handleSelectUser}
                         selectedUsers={selectedUsers}
                     />
                 ))

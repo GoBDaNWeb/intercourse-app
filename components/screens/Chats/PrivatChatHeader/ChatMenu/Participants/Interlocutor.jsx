@@ -8,7 +8,6 @@ import {useSelector} from 'react-redux'
 import Avatar from 'components/shared/Avatar'
 
 const Interlocutor = memo(() => {
-    const {user} = useSelector(state => state.auth)
     const {privatChatData} = useSelector(state => state.chat)
 
     const username = privatChatData.interlocutor.username_google || privatChatData.interlocutor.username

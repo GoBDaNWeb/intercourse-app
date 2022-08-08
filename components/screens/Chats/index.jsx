@@ -41,20 +41,10 @@ const ChatsPage = memo(() => {
     }
 
     useEffect(() => {
-        if (userCondition) {
-            setTypingData(typingDataObj)
-        }
-    }, [newOrUpdatedUser, userCondition])
-
-    useEffect(() => {
-        if (user !== null) {
-            updateUserTypingChat(user.id, chatId)
-            updateUserTypingAnyway(user.id)
-        }
-        if (userCondition) {
-            setTypingData(typingDataObj)
-        }
-    }, [chatId, userCondition])
+        updateUserTypingChat(user.id, chatId)
+        updateUserTypingAnyway(user.id)
+        userCondition && setTypingData(typingDataObj)
+    }, [chatId, userCondition, user])
 
     const fetchPrivatChat = async () => {
         const response = await fetchOnePrivatChat(chatId)
@@ -67,12 +57,8 @@ const ChatsPage = memo(() => {
     }
 
     useEffect(() => {
-        if (router.query.type === 'p') {
-            fetchPrivatChat()
-        }
-        if (router.query.type === 'g') {
-            fetchGroupChat()
-        }
+        router.query.type === 'p' && fetchPrivatChat()
+        router.query.type === 'g' && fetchGroupChat()
     }, [chatId, router.query.type])
  
     return (

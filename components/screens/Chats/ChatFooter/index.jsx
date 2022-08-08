@@ -39,23 +39,19 @@ const ChatFooter = memo(({typingData}) => {
         sound.play()
     }
 
-    // ** следит за иземениями в value
     const onChange = (e) => {
         const {value} = e.target 
         setValue(value)
     }
 
-    // ** функция добавляет выбранный emoji в value 
     const onEmojiClick = (event, emojiObject) => {
         setValue(value + emojiObject.emoji)
     }
 
-    // ** функция монтирует/размонтирует элемент emojiPicker
-    const handlePicker = () => {
+    const handleOpenPicker = () => {
         setShowPicker(showPicker = !showPicker)
     }
 
-    // ** функция отправки сообщения 
     const sendMessage = (value) => {
         const authorCondition =  user.user_metadata.name ? user.user_metadata.name : user.user_metadata.username
         const message = {
@@ -66,18 +62,19 @@ const ChatFooter = memo(({typingData}) => {
             author_avatar: avatar
         }
         addMessage(message)
-        callSound('/sendMessage.mp3')
     }
 
     const sendMessageMouse = () => {
         sendMessage(value)
         setValue('')
+        callSound('/sendMessage.mp3')
     }
 
     const sendMessageEnter = (e) => {
         if(e.code === 'Enter') {
             sendMessage(value)
             setValue('')
+            callSound('/sendMessage.mp3')
         }
     }
 
@@ -111,7 +108,7 @@ const ChatFooter = memo(({typingData}) => {
             }
             <div className='flex justify-center gap-2 items-center h-full w-full'>
                 <div 
-                    onClick={handlePicker}
+                    onClick={handleOpenPicker}
                     className='text-3xl text-secondary dark:text-gray-900 cursor-pointer'
                 >
                     <BsEmojiSmile/>

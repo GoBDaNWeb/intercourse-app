@@ -23,9 +23,7 @@ const Message = memo(({messageData, lastMessage}) => {
 
     const openProfile = () => {
         dispatch(setTheirProfileData(message.user_id))
-        if (!isTheirProfileOpen) {
-            dispatch(handleOpenTheirProfile())
-        }
+        !isTheirProfileOpen && dispatch(handleOpenTheirProfile())
     }
 
     return (

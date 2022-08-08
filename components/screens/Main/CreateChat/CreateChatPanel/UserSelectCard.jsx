@@ -4,12 +4,12 @@ import {memo} from 'react'
 // * components
 import Avatar from 'components/shared/Avatar'
 
-const UserSelectCard = memo(({user, selectUser, selectedUsers}) => {
+const UserSelectCard = memo(({user, handleSelectUser, selectedUsers}) => {
     const username = user.username || user.username_google
 
     return (
         <div 
-            onClick={() => selectUser(user)}
+            onClick={() => handleSelectUser(user)}
             className={`transition-all duration-[0.4s] relative flex-col bg-secondary border-b-2 border-solid border-gray-200 dark:border-gray-800 font-semibold w-full text-primary min-h-14 flex flex-wrap justify-center items-center p-2 gap-1 cursor-pointer hover:bg-opacity-70 transition ${selectedUsers.includes(user) ? 'bg-disable text-secondary' : ''}`}
         >
             <Avatar

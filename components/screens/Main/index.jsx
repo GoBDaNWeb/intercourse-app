@@ -15,21 +15,20 @@ import Burger from 'components/shared/Burger'
 const Main = () => {
     const {user} = useSelector(state => state.auth)
     
+    const setUserStatusOffline = (user) => {
+        user !== null && updateUserStatus(user.id, 'OFFLINE')
+    }
+
+    const setUserStatusOnline = (user) => {
+        user !== null && updateUserStatus(user.id, 'ONLINE')
+    }
+
     useEffect(() => {
         document.addEventListener("visibilitychange", () => {
-            if (document.hidden){
-                if(user !== null) {
-                    updateUserStatus(user.id, 'OFFLINE')
-                }
-                console.log('Вкладка не активна');
-        
-            } else {
-                if(user !== null) {
-                    updateUserStatus(user.id, 'ONLINE')
-                }
-                console.log('Вкладка активна');
-            }
-        });
+            document.hidden
+                ? setUserStatusOffline(user)
+                : setUserStatusOnline(user)
+        })
     })
 
     return (

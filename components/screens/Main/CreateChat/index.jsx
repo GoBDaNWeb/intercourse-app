@@ -8,7 +8,7 @@ import CreateChatPanel from './CreateChatPanel';
 const CreateChat = () => {
     const [createChat, setCreateChat] = useState(false)
    
-    const createChatWindow = () => {
+    const handleCreateChatWindow = () => {
         setCreateChat(!createChat)
     }
 
@@ -16,8 +16,8 @@ const CreateChat = () => {
         <div className='flex items-center justify-center w-full'>
             {
                 createChat 
-                ? <CreateChatPanel createChatWindow={createChatWindow}/>
-                : <CreateChatBanner createChatWindow={createChatWindow}/>
+                ? <CreateChatPanel handleCreateChatWindow={handleCreateChatWindow}/>
+                : <CreateChatBanner handleCreateChatWindow={handleCreateChatWindow}/>
             }
         </div>
     )

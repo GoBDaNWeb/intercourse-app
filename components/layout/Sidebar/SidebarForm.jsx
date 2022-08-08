@@ -13,7 +13,6 @@ const SidebarForm = memo(() => {
 
     const dispatch = useDispatch()
 
-    // ** записывает изменения в переменную
     const onChange = useCallback(e => {
         const {value} = e.target
         dispatch(setSearchValue(value))

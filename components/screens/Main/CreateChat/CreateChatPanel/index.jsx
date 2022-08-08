@@ -1,9 +1,8 @@
 // * react/next 
-import {memo} from 'react'
-
-// * react
-import {useState, useEffect, useCallback} from 'react'
+import {useState, memo, useCallback} from 'react'
 import { useRouter } from 'next/router';
+
+// * redux 
 import {useSelector} from 'react-redux'
 
 // * supabase
@@ -23,38 +22,51 @@ import UserList from './UserList';
 import CreateInfo from './CreateInfo';
 import ChatTitleForm from './ChatTitleForm';
 
-const CreateChatPanel = memo(({createChatWindow}) => {
+const CreateChatPanel = memo(({handleCreateChatWindow}) => {
     const [selectedUsers, setSelectedUsers] = useState([])
     const [chatTitle, setChatTitle] = useState('')
+
+    const {user: currentUser} = useSelector(state => state.auth)
+    const router = useRouter()
 
     const onChangeChatTitle = useCallback(e => {
         const {value} = e.target
         setChatTitle(value)
     }, [])
 
-    const selectUser = useCallback(user => {
+    const addSelectedUser = (user) => {
         const tmpArr = selectedUsers
-        if (selectedUsers.includes(user)) {
-            const filtered = tmpArr.filter(item => item.id !== user.id)
-            setSelectedUsers([...filtered])
-        }
-        if (!selectedUsers.includes(user)) {
-            tmpArr.push(user)
-            setSelectedUsers([...tmpArr])
-        }
+        tmpArr.push(user)
+        setSelectedUsers([...tmpArr])
+    }
+
+    const removeSelectedUser = (user) => {
+        const tmpArr = selectedUsers
+        const filtered = tmpArr.filter(item => item.id !== user.id)
+        setSelectedUsers([...filtered])
+    }
+
+    const handleSelectUser = useCallback(user => {
+        selectedUsers.includes(user) && removeSelectedUser(user)
+        !selectedUsers.includes(user) && addSelectedUser(user)
     }, [selectedUsers])
 
+    const createPrivateChat = (id, user, selectedUser, chatTitle) => {
+        addPrivatChat(id, user, selectedUser, chatTitle)
+        router.push({pathname:'chats/[id]', query: {type: 'p', id: `${id}`}})
+    }
+    
+    const createGroupChat = (id, user, selectedUsers, chatTitle) => {
+        addGroupChat(id, user, selectedUsers, chatTitle)
+        router.push({pathname:'chats/[id]', query: {type: 'g', id: `${id}`}})
+    }
+
+    const randomId = len => Math.random().toString(36).substr(3, len);
+
     const newChat = () => {
-        const randomId = len => Math.random().toString(36).substr(3, len);
         const id = randomId(15);
-        if (selectedUsers.length === 1) {
-            addPrivatChat(id, user, selectedUsers[0], chatTitle)
-            router.push({pathname:'chats/[id]', query: {type: 'p', id: `${id}`}})
-        }
-        if (selectedUsers.length > 1) {
-            addGroupChat(id, user, selectedUsers, chatTitle)
-            router.push({pathname:'chats/[id]', query: {type: 'g', id: `${id}`}})
-        }
+        selectedUsers.length === 1 && createPrivateChat(id, currentUser, selectedUsers[0], chatTitle)
+        selectedUsers.length > 1 && createGroupChat(id, currentUser, selectedUsers, chatTitle)
     }
 
     const createChat = () => {
@@ -71,7 +83,7 @@ const CreateChatPanel = memo(({createChatWindow}) => {
                     chatTitle={chatTitle}
                 />
                 <UserList
-                    selectUser={selectUser}
+                    handleSelectUser={handleSelectUser}
                     selectedUsers={selectedUsers}
                 />
                 <CreateInfo
@@ -80,7 +92,7 @@ const CreateChatPanel = memo(({createChatWindow}) => {
                     createChat={createChat}
                 />
                 <motion.button
-                    onClick={createChatWindow}
+                    onClick={handleCreateChatWindow}
                     className='absolute top-4 right-4 flex items-center font-semibold text-primary'
                     whileHover={{
                         x: -8

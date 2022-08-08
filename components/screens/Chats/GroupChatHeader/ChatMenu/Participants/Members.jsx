@@ -2,19 +2,21 @@
 import {memo} from 'react'
 
 // * redux 
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
+import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
 
 // * components
 import Avatar from 'components/shared/Avatar'
 
 const Members = memo(() => {
     const {groupChatData} = useSelector(state => state.chat)
+    const {isTheirProfileOpen} = useSelector(state => state.profile)
 
-    const openProfile = () => {
+    const dispatch = useDispatch()
+
+    const openProfile = (user) => {
         dispatch(setTheirProfileData(user.id))
-        if (!isTheirProfileOpen) {
-            dispatch(handleOpenTheirProfile())
-        }
+        !isTheirProfileOpen && dispatch(handleOpenTheirProfile())
     }
 
     return (
@@ -23,7 +25,7 @@ const Members = memo(() => {
                 groupChatData.members?.map((user, index) => (
                     <div key={index} className='flex gap-2'>
                         <div
-                            onClick={openProfile}
+                            onClick={() => openProfile(user)}
                             className='cursor-pointer'
                         >
                             <Avatar

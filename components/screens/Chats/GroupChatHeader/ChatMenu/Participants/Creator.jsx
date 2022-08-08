@@ -3,6 +3,7 @@ import {useEffect, useState, memo} from 'react'
 
 // * redux 
 import {useSelector, useDispatch} from 'react-redux'
+import {setTheirProfileData, handleOpenTheirProfile} from 'store/profileSlice'
 
 // * supabase 
 import {fetchCurrentUser} from 'supabase/modules/user'
@@ -17,12 +18,11 @@ const Creator = memo(() => {
 
     const {user} = useSelector(state => state.auth)
     const {groupChatData} = useSelector(state => state.chat)
+    const {isTheirProfileOpen} = useSelector(state => state.profile)
 
     const openProfile = () => {
         dispatch(setTheirProfileData(user.id))
-        if (!isTheirProfileOpen) {
-            dispatch(handleOpenTheirProfile())
-        }
+        !isTheirProfileOpen && dispatch(handleOpenTheirProfile())
     }
 
     const fetchCreatorUser = async () => {
