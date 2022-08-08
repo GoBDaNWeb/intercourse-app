@@ -4,7 +4,7 @@ import {memo} from 'react'
 // * components
 import LoginFields from './LoginFields'
 
-const Login = memo(({selectAuthComponent}) => {
+const Login = memo(({isLoginComponent}) => {
     return (
         <div className="flex flex-col items-center gap-4">
             <h2 className='text-center sm:text-3xl text-lg font-semibold text-gray-200 mb-6'>
@@ -13,7 +13,7 @@ const Login = memo(({selectAuthComponent}) => {
             <LoginFields/>
             <div className='flex gap-2'>
                 <h3 
-                    onClick={selectAuthComponent}
+                    onClick={() => isLoginComponent(false)}
                     className='underline cursor-pointer transition text-green-400 hover:text-green-500'
                 >
                     Dont have account?

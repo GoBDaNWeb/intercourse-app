@@ -29,27 +29,24 @@ const LoginFields = memo(() => {
         }
     }
 
+
+    const changeEmailValue = (value, error, empty) => {
+        setEmail(value)
+        error && dispatch(clearError())
+        empty && setEmpty(false)
+    }
+
+    const changePasswordValue = (value, error, empty) => {
+        setPassword(value)
+        error && dispatch(clearError())
+        empty && setEmpty(false)
+    }
+
     const onChange = useCallback((e) => {
         const {value} = e.target
         const {name} = e.target
-        if (name === 'email') {
-            setEmail(value)
-            if(error) {
-                dispatch(clearError())
-            }
-            if (empty) {
-                setEmpty(false)
-            }
-        }
-        if (name === 'password') {
-            setPassword(value)
-            if(error) {
-                dispatch(clearError())
-            }
-            if (empty) {
-                setEmpty(false)
-            }
-        }
+        name === 'email' && changeEmailValue(value, error, empty)
+        name === 'password' && changePasswordValue(value, error, empty)
     }, [])
 
     const isEmpty = () => {
@@ -58,7 +55,7 @@ const LoginFields = memo(() => {
         }
     }
 
-    const login = () => {
+    const handleLogin = () => {
         signInFunc(email, password)
         setLoader(true)
         isEmpty()
@@ -88,16 +85,12 @@ const LoginFields = memo(() => {
             />
             <>
                 {
-                    error && email.length > 0 && password.length > 0 && 
-                    <h4 className='text-red-500'>
-                        {error}
-                    </h4>
-                }
-                {
-                    empty && 
-                    <h4 className='text-red-500'>
-                        Invalid login credentials
-                    </h4>
+                    isEmpty 
+                    && (
+                        <h4 className='text-red-500'>
+                            {error}
+                        </h4>
+                    )
                 }
                 {
                     loader 
@@ -105,7 +98,7 @@ const LoginFields = memo(() => {
                         <ThreeDots color="#22C55E"/>
                     ) : (
                         <motion.button 
-                            onClick={login}
+                            onClick={handleLogin}
                             className='bg-white w-36 h-10 rounded-2xl font-semibold'
                             whileHover={{
                                 scale: 1.05

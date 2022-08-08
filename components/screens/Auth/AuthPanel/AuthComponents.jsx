@@ -15,8 +15,8 @@ const AuthComponents = memo(() => {
 
 	const dispatch = useDispatch()
 
-	const selectAuthComponent = useCallback(type => {
-		setIsLogin(!isLogin)
+	const isLoginComponent = useCallback(boolean => {
+		setIsLogin(boolean)
 		dispatch(clearError())
 	}, [])
 
@@ -24,8 +24,8 @@ const AuthComponents = memo(() => {
         <>
             {
                 isLogin
-                ? <Login selectAuthComponent={selectAuthComponent}/> 
-                : <Register selectAuthComponent={selectAuthComponent}/>
+                ? <Login isLoginComponent={isLoginComponent}/> 
+                : <Register isLoginComponent={isLoginComponent}/>
             }
         </>
     )

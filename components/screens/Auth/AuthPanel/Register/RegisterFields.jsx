@@ -28,18 +28,10 @@ const RegisterFields = memo(() => {
     const onChange = useCallback(e => {
         const {value} = e.target
         const {name} = e.target
-        if (name === 'username') {
-            setUsername(value)
-        }
-        if (name === 'email') {
-            setEmail(value)
-        }
-        if (name === 'password') {
-            setPassword(value)
-        }
-        if (name === 'confirm') {
-            setConfirm(value)
-        }
+        name === 'username' && setUsername(value)
+        name === 'email' && setEmail(value)
+        name === 'password' && setPassword(value)
+        name === 'confirm' && setConfirm(value)
     }, [])
 
     const register = () => {
@@ -58,7 +50,6 @@ const RegisterFields = memo(() => {
                     name='username'
                     placeholder='Enter your username'
                 />
-                {username}
                 {
                     username.length < 3
                     && (<h4 className='text-sm text-center text-gray-200'>username must be 3 symbol length or more</h4>)
@@ -72,7 +63,6 @@ const RegisterFields = memo(() => {
                 name='email'
                 placeholder='Enter your email'
             />
-            {email}
             <>
                 <input 
                     onChange={onChange}
@@ -82,7 +72,6 @@ const RegisterFields = memo(() => {
                     name='password'
                     placeholder='Enter your password'
                 />
-                {password}
                 {
                     password.length < 6 
                     && (<h4 className='text-sm text-center text-gray-200'>password must be 6 symbol length or more</h4>)
@@ -97,7 +86,6 @@ const RegisterFields = memo(() => {
                     name='confirm'
                     placeholder='Confirm your password'
                 />
-                {confirm}
                 {
                     error
                     && (<h4 className='text-sm text-center text-red-500'>passwords dont match</h4>)
