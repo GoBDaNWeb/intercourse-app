@@ -7,8 +7,8 @@ import {useSelector} from 'react-redux'
 
 // * components
 import Sidebar from './Sidebar';
-import GroupChatList from 'components/shared/GroupChatList';
-import PrivatChatList from 'components/shared/PrivatChatList';
+import GroupChatList from 'components/common/GroupChatList';
+import PrivatChatList from 'components/common/PrivatChatList';
 
 const Layout = memo(({children}) => {
     const router = useRouter()

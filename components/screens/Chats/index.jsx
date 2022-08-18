@@ -15,10 +15,10 @@ import { updateUserTypingAnyway, updateUserTypingChat } from 'supabase/modules/u
 import { fetchOnePrivatChat, fetchOneGroupChat } from 'supabase/modules/chat'
 
 // * components
-import PrivatChatHeader from './PrivatChatHeader/index';
-import GroupChatHeader from './GroupChatHeader/index';
-import ChatWindow from './ChatWindow';
-import ChatFooter from './ChatFooter';
+import PrivatChatHeader from './components/PrivatChatHeader';
+import GroupChatHeader from './components/GroupChatHeader';
+import ChatWindow from './components/ChatWindow';
+import ChatFooter from './components/ChatFooter';
 
 const ChatsPage = memo(() => {
     const [typingData, setTypingData] = useState(null)

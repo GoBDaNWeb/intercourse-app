@@ -2,9 +2,9 @@
 import {memo} from 'react'
 
 // * components
-import SidebarForm from './SidebarForm';
-import SidebarProfile from './SidebarProfile';
-import Logo from './Logo';
+import SidebarForm from './components/SidebarForm';
+import SidebarProfile from './components/SidebarProfile';
+import Logo from './components/Logo';
 
 const Sidebar = memo(({children}) => {
     return (

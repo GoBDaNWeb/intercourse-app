@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from 'next/image'
 
 // * components
-import AuthPanel from './AuthPanel';
+import AuthPanel from './components/AuthPanel';
 
 const Auth = () => {
 	return (

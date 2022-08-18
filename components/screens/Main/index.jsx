@@ -9,8 +9,8 @@ import { useSelector } from 'react-redux';
 import {updateUserStatus} from 'supabase/modules/user'
 
 // * components
-import CreateChat from './CreateChat'
-import Burger from 'components/shared/Burger'
+import CreateChat from './components/CreateChat'
+import Burger from 'components/ui/Burger'
 
 const Main = () => {
     const {user} = useSelector(state => state.auth)
