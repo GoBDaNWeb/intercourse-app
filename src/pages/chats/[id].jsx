@@ -2,7 +2,7 @@
 import Chats from 'components/screens/Chats';
 
 const ChatsPage = () => {
-    return <Chats/>
-}
+    return <Chats />;
+};
 
-export default ChatsPage
+export default ChatsPage;

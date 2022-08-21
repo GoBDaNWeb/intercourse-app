@@ -8,9 +8,9 @@
         --color-bg-secondary: #f8f8f8;
         --color-bg-select: #f2f2f2;
         --color-bg-accent: #273345;
-        --color-bg-disable: #F3F4F6;
+        --color-bg-disable: #f3f4f6;
         --color-text-primary: #273345;
-        --color-text-secondary: #6B7280;
+        --color-text-secondary: #6b7280;
         --color-text-accent: #fff;
     }
 
@@ -24,14 +24,12 @@
         --color-text-secondary: #e2e8f0;
         --color-text-accent: #273345;
     }
-    
 }
 
 @layer components {
     @media (max-width: 1280px) {
         #sidebar {
             transform: translate3d(-5rem, 0, 0);
-            
         }
         #main {
             transform: translate3d(0, 0, 0);
@@ -41,18 +39,17 @@
         }
         .sidebar-open #sidebar {
             transform: translate3d(0, 0, 0);
-          }
+        }
         .sidebar-open #main {
             transform: translate3d(26.5rem, 0, 0);
         }
         .sidebar-open #chat {
             transform: translate3d(26.5rem, 0, 0);
         }
-    } 
+    }
     @media (max-width: 600px) {
         #sidebar {
             transform: translate3d(-20rem, 0, 0);
-            
         }
         #main {
             transform: translate3d(0, 0, 0);
@@ -62,14 +59,14 @@
         }
         .sidebar-open #sidebar {
             transform: translate3d(0, 0, 0);
-          }
+        }
         .sidebar-open #main {
             transform: translate3d(100vw, 0, 0);
         }
         .sidebar-open #chat {
             transform: translate3d(100vw, 0, 0);
         }
-    } 
+    }
     #main {
         transform: translate3d(0, 0, 0);
     }
@@ -85,17 +82,21 @@
     }
     .custom-scroll {
         scrollbar-width: thin;
-        scrollbar-color: rgba(90,90,90,1) rgba(0,0,0,.2);
-        transition: scrollbar-color .3s ease;
+        scrollbar-color: rgba(90, 90, 90, 1) rgba(0, 0, 0, 0.2);
+        transition: scrollbar-color 0.3s ease;
         pointer-events: auto;
     }
-    .their-avatar-resolve:hover .their-avatar-child{
+    .their-avatar-resolve:hover .their-avatar-child {
         opacity: 100;
         pointer-events: auto;
     }
 
     .bg-gradient {
-        background: linear-gradient(109.59deg, #DBF8FF -4.01%, rgba(251, 209, 252, 0) 125.57%);
+        background: linear-gradient(
+            109.59deg,
+            #dbf8ff -4.01%,
+            rgba(251, 209, 252, 0) 125.57%
+        );
     }
     .swiper {
         height: 50px;
@@ -103,7 +104,7 @@
     .swiper-wrapper {
     }
     .swiper-slide {
-        background: rgba(0,0,0,.30);
+        background: rgba(0, 0, 0, 0.3);
         color: #fff;
         font-weight: 600;
         display: flex;
@@ -117,28 +118,28 @@
     #element::-webkit-scrollbar {
         width: 5px;
         height: 5px;
-        background: rgba(0,0,0,0.3);
+        background: rgba(0, 0, 0, 0.3);
     }
     #element::-webkit-scrollbar-thumb {
         background: #000;
         border-radius: 1.5rem;
     }
     .grad-1 {
-        background-image: linear-gradient( 135deg, #2AFADF 10%, #4C83FF 100%);
+        background-image: linear-gradient(135deg, #2afadf 10%, #4c83ff 100%);
     }
     .bg-chat-standart {
-        @apply bg-white dark:bg-[#2d3748]
+        @apply bg-white dark:bg-[#2d3748];
     }
     .bg-chat-galaxy {
-        background-image: linear-gradient( 135deg, #EE9AE5 10%, #5961F9 100%);
+        background-image: linear-gradient(135deg, #ee9ae5 10%, #5961f9 100%);
     }
     .bg-chat-ocean {
-        background-image: linear-gradient( 135deg, #5EFCE8 10%, #736EFE 100%);
+        background-image: linear-gradient(135deg, #5efce8 10%, #736efe 100%);
     }
     .bg-chat-sunset {
-        background-image: linear-gradient( 135deg, #FFF6B7 10%, #F6416C 100%);
+        background-image: linear-gradient(135deg, #fff6b7 10%, #f6416c 100%);
     }
     .bg-chat-emerald {
-        background-image: linear-gradient( 135deg, #69FF97 10%, #00E4FF 100%);
+        background-image: linear-gradient(135deg, #69ff97 10%, #00e4ff 100%);
     }
-}  
+}

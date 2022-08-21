@@ -1,34 +1,35 @@
-// * react/next 
-import {useState, useEffect} from 'react'
+// * react/next
+import { useState, useEffect } from 'react';
 
-// * supabase 
-import { supabase } from 'supabase/supabaseClient';
-import {fetchAllPrivatChats} from 'supabase/modules/chat'
+// * supabase
+import supabase from 'supabase/supabaseClient';
+import { fetchAllPrivatChats } from 'supabase/modules/chat';
 
-export function usePrivatChats() {
-    const [privatChats, setPrivatChats] = useState([])
-    const [newPrivatChat, handleNewPrivatChat] = useState(null)
+export default function usePrivatChats() {
+    const [privatChats, setPrivatChats] = useState([]);
+    const [newPrivatChat, handleNewPrivatChat] = useState(null);
 
     useEffect(() => {
-        fetchAllPrivatChats(setPrivatChats)
+        fetchAllPrivatChats(setPrivatChats);
 
         const privatChatListener = supabase
             .from('privat_chats')
-            .on('INSERT', payload => {
-                handleNewPrivatChat(payload.new)
+            .on('INSERT', (payload) => {
+                handleNewPrivatChat(payload.new);
             })
-            .on('DELETE', payload => {handleNewPrivatChat(payload.old)})
-            .subscribe()
-
+            .on('DELETE', (payload) => {
+                handleNewPrivatChat(payload.old);
+            })
+            .subscribe();
 
         return () => {
-            privatChatListener.unsubscribe()
-        }
-    }, [])
+            privatChatListener.unsubscribe();
+        };
+    }, []);
 
     useEffect(() => {
-        if (newPrivatChat) setPrivatChats(privatChats.concat(newPrivatChat))
-    }, [newPrivatChat])
+        if (newPrivatChat) setPrivatChats(privatChats.concat(newPrivatChat));
+    }, [newPrivatChat, privatChats]);
 
-    return {privatChats}
+    return { privatChats };
 }
