@@ -1,30 +1,35 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
     isOpen: false,
     isPrivatChats: true,
     searchValue: '',
-}
+};
 
 const sidebarSlice = createSlice({
     name: 'sidebar',
     initialState,
     reducers: {
         handleOpenSidebar(state) {
-            state.isOpen = !state.isOpen
-        }, 
+            state.isOpen = !state.isOpen;
+        },
         closeSidebar(state) {
-            state.isOpen = false
+            state.isOpen = false;
         },
         handleTypeChats(state) {
-            state.isPrivatChats = !state.isPrivatChats
+            state.isPrivatChats = !state.isPrivatChats;
         },
         setSearchValue(state, action) {
-            state.searchValue = action.payload
+            state.searchValue = action.payload;
         },
-    }
-})
+    },
+});
 
-export const {handleOpenSidebar, handleTypeChats, closeSidebar, setSearchValue} = sidebarSlice.actions
+export const {
+    handleOpenSidebar,
+    handleTypeChats,
+    closeSidebar,
+    setSearchValue,
+} = sidebarSlice.actions;
 
-export default sidebarSlice.reducer
+export default sidebarSlice.reducer;

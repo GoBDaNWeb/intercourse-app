@@ -1,11 +1,8 @@
-// * raect/next 
-import {memo} from 'react'
-
 // * redux
-import {useSelector} from 'react-redux'
+import { useSelector } from 'react-redux';
 
 // *  framer-motion
-import {motion, AnimatePresence} from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion';
 
 // * components
 import Profile from 'components/common/Profile';
@@ -28,41 +25,38 @@ const variant = {
             damping: 45,
             stiffness: 900,
         },
-    }
-}
+    },
+};
 
-const SidebarProfile = memo(() => {
-    const {isProfileOpen, isTheirProfileOpen} = useSelector(state => state.profile)
+const SidebarProfile = () => {
+    const { isProfileOpen, isTheirProfileOpen } = useSelector(
+        (state) => state.profile,
+    );
 
     return (
-        <div className='relative min-h-[80px]'>
+        <div className="relative min-h-[80px]">
             <AnimatePresence exitBeforeEnter>
-                {
-                    isTheirProfileOpen 
-                    && (
-                        <motion.div 
-                            className={`absolute bottom-0 border-t-2  border-solid border-gray-200 dark:border-gray-800 w-full h-[80px] bg-secondary `}
-                            variants={variant}
-                            animate={isTheirProfileOpen ? 'open' : 'close'}
-                            exit='close'
-                        >
-                            <TheirProfile/>
-                        </motion.div>
-                    )
-                }
+                {isTheirProfileOpen && (
+                    <motion.div
+                        className="absolute bottom-0 border-t-2  border-solid border-gray-200 dark:border-gray-800 w-full h-[80px] bg-secondary "
+                        variants={variant}
+                        animate={isTheirProfileOpen ? 'open' : 'close'}
+                        exit="close"
+                    >
+                        <TheirProfile />
+                    </motion.div>
+                )}
             </AnimatePresence>
-            <motion.div 
-                className={`absolute bottom-0 border-t-2  border-solid border-gray-200 dark:border-gray-800 w-full bg-secondary `}
+            <motion.div
+                className="absolute bottom-0 border-t-2  border-solid border-gray-200 dark:border-gray-800 w-full bg-secondary "
                 variants={variant}
                 animate={isProfileOpen ? 'open' : 'close'}
             >
-                <Profile/>
-                <PreviewProfile/>
+                <Profile />
+                <PreviewProfile />
             </motion.div>
         </div>
-    )
-})
+    );
+};
 
-SidebarProfile.displayName = 'SidebarProfile';
-
-export default SidebarProfile
+export default SidebarProfile;

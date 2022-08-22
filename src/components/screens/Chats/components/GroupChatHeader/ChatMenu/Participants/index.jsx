@@ -1,14 +1,14 @@
-// * components 
-import Creator from './Creator'
-import Members from './Members'
+// * components
+import Creator from './Creator';
+import Members from './Members';
 
 const Participants = () => {
     return (
         <>
-            <Creator/>
-            <Members/>
+            <Creator />
+            <Members />
         </>
-    )
-}
+    );
+};
 
-export default Participants
+export default Participants;
